@@ -1,0 +1,42 @@
+MEB Fit v5.0 - Ekim revizyonu
+=============================
+Bu klasordeki dosyalari GitHub Pages (veya herhangi bir https adres) uzerine yukleyin,
+eskilerinin uzerine yazin. iPhone'da uygulamayi kapatip yeniden acin.
+Ilk kurulum icin: Safari ile acip Paylas > Ana Ekrana Ekle.
+Ayrintili anlatim: MEB_Fit_Kurulum.pdf
+
+GUNCELLEMEDEN ONCE:
+ - Mevcut uygulamada Ayarlar > "Yedegi dosya olarak indir" ile yedek alin.
+
+YENI (v5.0):
+ - 4 gunluk program Ust/Alt bolunmeye cevrildi. Bacak yalnizca SALI ve CUMA.
+     PZT  Ust A  - ust gogus, sirt, omuz, kol (supersetli)
+     SAL  Alt A  - quadriceps, hamstring, karin, baldir
+     PER  Ust B  - orta gogus, sirt, omuz, kol (iki superset)
+     CUM  Alt B  - kalca & hamstring, karin, baldir (kisa gun)
+ - Deadlift / Romanian Deadlift tamamen cikarildi. Yerine: Leg Press (ayaklar
+   yuksek-genis), 45 derece Back Extension, oturarak + yatarak Leg Curl.
+ - 3 gunluk program yenilendi: PZT Ust A / CAR Alt / CUM Ust B.
+   Bacak haftada 1 gun. Bulgarian, Hip Thrust, Hanging Leg Raise, Plank/Pallof
+   ve RDL cikti; yerlerine makine alternatifleri geldi.
+ - Superset destegi: kol hareketleri cift halinde. Ilk hareketten sonra 20 sn
+   "gecis", ikinciden sonra 90 sn dinlenme; kronometre siradaki hareketi gosterir.
+ - Diyet/Takviye sekmesi antrenman gununu secili programa gore bulur
+   (3 gunlukte Carsamba da antrenman gunu sayilir). Elle secim yalnizca o gun gecerli.
+ - "Tum verileri sil" sonrasinda kayitlarin yeniden yanlis tasinmasina yol
+   acan hata giderildi.
+
+KAYITLAR:
+ - Eski kayitlar otomatik olarak yeni gune ve siraya tasinir; ilerleme grafikleri
+   devam eder (or. Barfiks ve Cable Row Cuma'dan Persembe'ye, Leg Curl ve
+   Seated Calf Cuma'ya gecti).
+ - Programdan cikan hareketlerin kayitlari (RDL, Reverse Pec Deck, Preacher Curl,
+   yatay Pec Deck) silinmez; S.bak_v4 icinde arsivde kalir.
+ - Eski surum bir yedegi geri yuklerseniz o da otomatik olarak tasinir.
+
+Dosyalar:
+  index.html             uygulamanin kendisi            (DEGISTI)
+  sw.js                  cevrimdisi calisma + bildirim  (DEGISTI)
+  manifest.webmanifest   uygulama adi/simgesi/tam ekran ayari
+  icon-192.png           simge
+  icon-512.png           simge

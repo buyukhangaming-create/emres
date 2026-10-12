@@ -93,6 +93,7 @@ main{padding:14px 14px 20px;max-width:640px;margin:0 auto}
 .tag.rir{background:rgba(240,169,46,.16);color:var(--warn)}
 .tag.ust{background:rgba(78,163,255,.16);color:var(--ust)}
 .tag.alt{background:rgba(199,138,240,.16);color:var(--alt)}
+.tag.ss{background:rgba(51,196,129,.16);color:var(--ok)}
 .last{font-size:11.5px;color:var(--tx2);margin-top:7px;display:flex;align-items:center;gap:6px}
 .last b{color:var(--tx);font-weight:700}
 .copybtn{font-size:10.5px;font-weight:700;background:var(--card2);color:var(--acc);
@@ -349,700 +350,117 @@ textarea{width:100%;height:130px;background:var(--bg);border:1px solid var(--lin
 <div class="toast" id="toast"></div>
 
 <script>
-const PROGRAMS = {
- "4g": {
-  "name": "4 Günlük Program",
-  "days": [
-   {
-    "id": "u1",
-    "short": "PZT",
-    "dow": 1,
-    "name": "Üst Vücut",
-    "sub": "Göğüs → Sırt → Omuz → Kol",
-    "ex": [
-     {
-      "n": "Incline Dumbbell Press (30°)",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2",
-      "rest": 150,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "5 haftada 15 → 25 kg. Artık 8-10 tekrar bandındasınız; 25 kg ile 4 sette de 10 tekrara ulaştığınızda 27,5 kg'a geçin. Sehpa 30°, iniş 3 sn, altta 1 sn duraklama, tepede dirsek kilitleme yok."
-     },
-     {
-      "n": "Incline Smith / Makine Press (30°)",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1-2",
-      "rest": 90,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "YENİ — göğüs önceliğinin ana eklemesi. Sabit rayda olduğu için dengeye enerji harcamadan üst göğse yüklenirsiniz; dumbbell press'ten sonra tam da bunu istiyoruz. Bar klavikulanın 2-3 cm altına insin. Makine yoksa Incline Barbell Press."
-     },
-     {
-      "n": "Pec Deck / Üst Göğüs Fly",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "Cable fly 5 hafta boyunca 9-10 kg'da takıldı — kablo yerine MAKİNE kullanın, kademeli yüklenme çok daha kolay. Pec deck sehpası varsa 1-2 delik yükseltin (üst göğüs vurgusu). Sıkıştırmada 1 sn bekleyin."
-     },
-     {
-      "n": "Chest Supported Row / T-Bar Row",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "48 → 75 kg, programın en iyi ilerleyen hareketi. Bu tempoyu koruyun. Göğüs sehpaya yaslı, dirsekler gövdeyle ~45°, tepede kürekleri 1 sn sıkıştırın."
-     },
-     {
-      "n": "Lat Pulldown (geniş tutuş)",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1-2",
-      "rest": 90,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "47 → 63,5 kg. Barı göğüs hizasına indirin, gövdeyi geriye yatırmayın. Yukarıda omuzları tamamen salıp latı esnetin."
-     },
-     {
-      "n": "Seated DB Lateral Raise",
-      "s": 4,
-      "r": "12-15",
-      "rir": "0-1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "7,5-10 kg'da duruyor — bu normaldir, yan omuz ağırlıkla değil TEKRAR ve tekniğe ile büyür. Hedef: 10 kg ile 4 sette 15 tekrar. Son sette drop set: %40 düşürüp tükenene kadar."
-     },
-     {
-      "n": "Face Pull",
-      "s": 2,
-      "r": "15-20",
-      "rir": "2",
-      "rest": 45,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "15 → 25 kg, düzenli yapılmış. Eylül fotoğraflarında omuz duruşunun düzelmesinin sebebi büyük ölçüde budur. Asla atlanmaz."
-     },
-     {
-      "n": "Incline DB Curl",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "KOL",
-      "note": "KOL ÖNCELİĞİ. Sehpa 45-60°, kollar gövdenin gerisinde serbest sarkık — biceps uzun başını yalnızca bu pozisyon gerer. İniş 3 sn. Aşağıdaki triceps hareketiyle SÜPERSET yapabilirsiniz (dinlenmeden geçin, ikisi bitince 90 sn dinlenin)."
-     },
-     {
-      "n": "Overhead Rope Triceps Extension",
-      "s": 4,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "KOL",
-      "note": "KOL ÖNCELİĞİ — 3 → 4 set. Kollar baş üstünde, triceps uzun başı gerili konumda. Dirsekler sabit ve kulaklara yakın; yalnızca ön kol hareket eder."
-     }
-    ]
-   },
-   {
-    "id": "a1",
-    "short": "SAL",
-    "dow": 2,
-    "name": "Alt Vücut",
-    "sub": "Quadriceps → Kalça/Hamstring → Karın → Baldır",
-    "ex": [
-     {
-      "n": "Barbell Back Squat / Hack Squat",
-      "s": 4,
-      "r": "6-8",
-      "rir": "2-3",
-      "rest": 180,
-      "t": "alt",
-      "blk": "QUADRICEPS",
-      "note": "35 → 70 kg, çok iyi. 4. haftada 70-70-50-60 şeklinde düştü: ilk iki set fazla ağır demektir. Bu blokta 60 kg ile başlayıp dört seti de aynı ağırlıkla bitirin, sonra artırın. Topuklar yerde, bel nötr, RIR 2'nin altına inmeyin."
-     },
-     {
-      "n": "Leg Press (ayaklar yüksek ve geniş)",
-      "s": 3,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 120,
-      "t": "alt",
-      "blk": "QUADRICEPS",
-      "note": "Bulgarian Split Squat yerine. 4 hafta boyunca Bulgarian'ı hep kendi vücut ağırlığınızla 10 tekrar yaptınız — yani hiç ilerlemedi. Leg Press'te ayakları platformun ÜST ve GENİŞ kısmına koyun: kalça ve hamstring baskın olur, tam da eksik olan bölge. Ölçülebilir ve her hafta artırılabilir."
-     },
-     {
-      "n": "Leg Extension",
-      "s": 3,
-      "r": "12-15",
-      "rir": "0-1",
-      "rest": 60,
-      "t": "alt",
-      "blk": "QUADRICEPS",
-      "note": "2 → 3 set. 31 kg'dan 26 kg'a düşmüş; muhtemelen makine değişiyor. Aynı makineyi kullanın ve pimi not edin. Son set rest-pause: tükenene kadar → 15 sn dinlen → tekrar tükenene kadar."
-     },
-     {
-      "n": "45° Back Extension (kalça odaklı)",
-      "s": 3,
-      "r": "12-15",
-      "rir": "2",
-      "rest": 75,
-      "t": "alt",
-      "blk": "KALÇA & HAMSTRING",
-      "note": "HIP THRUST YERİNE — 5 hafta boyunca hiç yapılmadı. Bu istasyonda sehpa kurmak, bar yüklemek yok; salonun köşesinde, kimsenin dikkatini çekmeden yapılır. Kalça odaklı yapmak için: sırtı hafif yuvarlak tutun, hareketi belden değil KALÇADAN başlatın, tepede kalçayı 2 sn sıkın. Ağırlık için göğse plaka tutun."
-     },
-     {
-      "n": "Seated Leg Curl",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 75,
-      "t": "alt",
-      "blk": "KALÇA & HAMSTRING",
-      "note": "22 → 52 kg, programın en hızlı ilerleyen ikinci hareketi. Tepede 1 sn sıkıştırma, iniş 3 sn."
-     },
-     {
-      "n": "Karın Makinesi (Abdominal Crunch)",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "KARIN",
-      "note": "PALLOF PRESS YERİNE — 5 hafta boyunca hiç yapılmadı. Yerde değil, MAKİNEDE oturarak: dışarıdan sıradan bir makine hareketi gibi görünür. Belden değil karnı kıvırarak; kaburgayı kalçaya yaklaştırın. Karnın kalınlaşması, yağ inince hattın görünmesini sağlar."
-     },
-     {
-      "n": "Captain's Chair Diz Çekme",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 60,
-      "t": "alt",
-      "blk": "KARIN",
-      "note": "HANGING LEG RAISE YERİNE — dikey karın istasyonu: sırt destekli, kollar pedlerde, yalnızca dizleri göğse çekersiniz. Barda sallanmaya göre çok daha kolay ve göze batmaz. Sallanma yok; dizleri kaldırmakla kalmayın, kalçayı yukarı kıvırın."
-     },
-     {
-      "n": "Standing Calf Raise",
-      "s": 4,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "BALDIR",
-      "note": "45 kg'dan 34 kg'a düşmüş. Karın bloğundan sonraya alındı: baldırı zaten hiç atlamıyorsunuz, böylece karın bloğu da atlanamaz hale geliyor. En altta 2 sn gerilme, tepede 1 sn sıkıştırma."
-     }
-    ]
-   },
-   {
-    "id": "i1",
-    "short": "PER",
-    "dow": 4,
-    "name": "İtiş",
-    "sub": "Göğüs → Omuz → Triceps → Bacak",
-    "ex": [
-     {
-      "n": "Chest Press Machine / Flat DB Press",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "45 → 71 kg, çok iyi ilerleme. Makinede sap göğüs hizasında; dirsekler en altta 90°, tepede kilitleme yok. Pazartesi üst göğüs, bugün orta göğüs — ikisi birbirinin tekrarı değildir."
-     },
-     {
-      "n": "Pec Deck / Cable Fly (yatay)",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 75,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "45 → 48,5 kg'da yavaşladı. Tam hareket açıklığı: kollar tamamen yanlara açılsın, gerilmeyi hissedin, sıkıştırmada 1 sn bekleyin. Ağırlık artmıyorsa önce tekrarı 15'e çıkarın."
-     },
-     {
-      "n": "Dips / Destekli Dips",
-      "s": 3,
-      "r": "8-12",
-      "rir": "1",
-      "rest": 90,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "2 → 3 set (göğüs önceliği). Kendi ağırlığınızla 25 tekrar yapabiliyorsunuz — artık AĞIRLIK EKLEYİN: kemere 5-10 kg takıp 8-12 tekrar bandına inin. Gövdeyi hafif öne eğin → göğüs vurgusu."
-     },
-     {
-      "n": "Seated DB Shoulder Press",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "22 → 36 kg. 30-35 kg civarında takıldı; 4 sette de 8 tekrarı tamamlayamıyorsanız 30 kg'da kalıp tekrar biriktirin. Sırt tamamen yaslı, bel köprü yapıyorsa ağırlık fazladır."
-     },
-     {
-      "n": "Cable Lateral Raise (tek kol)",
-      "s": 3,
-      "r": "15-20",
-      "rir": "0-1",
-      "rest": 45,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "4,5-10 kg arasında çok değişken — ağırlığı sabitleyin: 5 kg ile 3 sette 20 tekrar yapana kadar artırmayın. Makara en alt konumda, gövdenin arkasından başlatın, omuz hizasını geçmeyin."
-     },
-     {
-      "n": "V-Bar Pushdown",
-      "s": 4,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "TRICEPS",
-      "note": "KOL ÖNCELİĞİ. 30 → 55 kg. Dirsek gövdeye sabit, yalnızca ön kol hareket eder. En altta 1 sn sıkıştırma."
-     },
-     {
-      "n": "Skull Crusher / EZ French Press",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "TRICEPS",
-      "note": "YENİ — kol önceliğinin triceps ayağı. Sehpada sırt üstü, EZ bar alına doğru iner, dirsekler sabit ve içeri kaçmaz. Pushdown yan başı, bu hareket uzun başı vurur; ikisi birlikte kolun arka hacmini büyütür. Ağrı olursa dirsekleri hafif geriye yatırın (JM press)."
-     },
-     {
-      "n": "Leg Press (ayaklar orta-alt)",
-      "s": 3,
-      "r": "12-15",
-      "rir": "2",
-      "rest": 90,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "54 → 75 kg. Quadriceps'in haftalık 2. uyarımı. Ayaklar platformun orta-alt kısmında, omuz genişliğinde. Salı gününden farklı olarak burada amaç yüksek tekrarlı hacim; RIR 2'de kalın."
-     },
-     {
-      "n": "Seated Calf Raise",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "41 kg'dan 34 kg'a düşmüş. Oturarak versiyon soleus kasını hedefler. Ağırlığı sabitleyip tekrarı tamamlayın."
-     }
-    ]
-   },
-   {
-    "id": "c1",
-    "short": "CUM",
-    "dow": 5,
-    "name": "Çekiş",
-    "sub": "Arka zincir → Sırt → Arka omuz → Biceps → Karın",
-    "ex": [
-     {
-      "n": "Romanian Deadlift (RDL)",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2-3",
-      "rest": 150,
-      "t": "alt",
-      "blk": "ARKA ZİNCİR",
-      "note": "40 → 60 kg. Dizler hafif bükülü ve sabit; kalçayı geriye itin, bar bacağa değecek kadar yakın insin. Hamstring gerilimini kaybettiğiniz noktada durun. Kavrama için kayış kullanın."
-     },
-     {
-      "n": "Lying Leg Curl / Nordic Curl",
-      "s": 3,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 75,
-      "t": "alt",
-      "blk": "ARKA ZİNCİR",
-      "note": "22,5 → 34 kg. Salı oturarak, bugün yatarak — hamstring iki farklı kalça açısında çalışır. Eksantrik (iniş) fazına 4 sn ayırın."
-     },
-     {
-      "n": "Destekli Barfiks (net yük)",
-      "s": 4,
-      "r": "6-10",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "Kayda NET YÜKÜ giriyorsunuz (vücut ağırlığı − destek): 50 → 60 kg, yani destek 22 kg'dan 12 kg'a inmiş. Bu doğru ve iyi bir ilerleme. Aynı mantıkla devam: hedef desteği sıfırlayıp serbest barfikse geçmek. En altta tam esneme, en tepede çene bar hizası."
-     },
-     {
-      "n": "Seated Cable Row (V-bar)",
-      "s": 3,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "47 → 60 kg. Dar tutuş, barı göbeğe doğru çekin, tepede sırtı 1 sn sıkıştırın. Gövdeyi geriye yatırarak momentum üretmeyin. (Dumbbell Row programdan çıkarıldı: 5 hafta boyunca 15-17,5 kg'da sabit kaldı, sırt hacmi zaten yeterli.)"
-     },
-     {
-      "n": "Reverse Pec Deck",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "ARKA OMUZ",
-      "note": "40 kg'dan 22,5 kg'a düşmüş — muhtemelen tekniği düzelttiniz, bu iyi. 25 kg'da sabitleyip 3 sette 15 tekrarı tamamlayın, sonra artırın. Dirsekler omuz hizasında, odak arka omuz, trapez değil."
-     },
-     {
-      "n": "EZ / Barbell Curl",
-      "s": 3,
-      "r": "8-10",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "BICEPS",
-      "note": "KOL ÖNCELİĞİ — biceps haftalık hacmi 6 setten 12'ye çıktı, doğrudan sizin talebiniz. 20 → 30 kg. Tam hareket açıklığı, iniş 3 sn, dirsekler gövdeye sabit, savurma yok."
-     },
-     {
-      "n": "Hammer Curl (çekiç)",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "BICEPS",
-      "note": "YENİ. Nötr tutuş (avuçlar birbirine bakar): brachialis ve brachioradialis kaslarını çalıştırır. Bu iki kas biceps'in ALTINDA yer alır; büyüdüklerinde biceps'i yukarı iterler — kolun kalınlık algısını en çok artıran hareket budur."
-     },
-     {
-      "n": "Preacher / Makine Curl",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "BICEPS",
-      "note": "YENİ. Kollar sehpaya sabit olduğu için savurma imkânsız; biceps kısa başı tam gerilimde çalışır. En altta kolu tamamen açın — bu hareketin değeri o gerilmede. Makine yoksa yatık sehpada tek kol konsantrasyon curl."
-     },
-     {
-      "n": "Karın Makinesi (Abdominal Crunch)",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "KARIN",
-      "note": "CABLE CRUNCH YERİNE — 5 hafta boyunca hiç yapılmadı. Diz üstü halat yerine oturarak makine: hem daha kolay hem göze batmıyor. Haftada 2 karın günü (Salı + Cuma) yeterlidir."
-     }
-    ]
-   }
-  ]
- },
- "3g": {
-  "name": "3 Günlük Program",
-  "days": [
-   {
-    "id": "fa",
-    "short": "A",
-    "dow": 1,
-    "name": "Full Body A",
-    "sub": "Bacak → Göğüs → Sırt → Omuz → Karın",
-    "ex": [
-     {
-      "n": "Barbell Back Squat / Hack Squat",
-      "s": 4,
-      "r": "6-8",
-      "rir": "2-3",
-      "rest": 180,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Günün en ağır hareketi, en başa. Bel nötr, topuklar yerde."
-     },
-     {
-      "n": "Seated Leg Curl",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 75,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Squat'tan sonra hamstring dengeleyici. Tepede 1 sn, iniş 3 sn."
-     },
-     {
-      "n": "Standing Calf Raise",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Tam gerilme, tam sıkıştırma."
-     },
-     {
-      "n": "Incline Dumbbell Press (30°)",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "Üst göğüs önceliği. Sehpa 30°, dirsekler gövdeyle 45°."
-     },
-     {
-      "n": "Chest Supported Row / T-Bar Row",
-      "s": 4,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "Bel yüksüz sırt kalınlığı. Tepede kürekleri sıkıştırın."
-     },
-     {
-      "n": "Seated DB Lateral Raise",
-      "s": 4,
-      "r": "12-15",
-      "rir": "0-1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "Son sette drop set."
-     },
-     {
-      "n": "Reverse Pec Deck",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "Arka omuz + duruş."
-     },
-     {
-      "n": "Cable Crunch",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 60,
-      "t": "alt",
-      "blk": "KARIN",
-      "note": "Karnı kıvırarak; belden bükmeyin."
-     }
-    ]
-   },
-   {
-    "id": "fb",
-    "short": "B",
-    "dow": 3,
-    "name": "Full Body B",
-    "sub": "Bacak → Sırt → Omuz → Triceps → Karın",
-    "ex": [
-     {
-      "n": "Romanian Deadlift",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2-3",
-      "rest": 150,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Dizler sabit, kalça geriye. Bel nötr. İlk 2 hafta hafif."
-     },
-     {
-      "n": "Leg Press",
-      "s": 3,
-      "r": "12-15",
-      "rir": "2",
-      "rest": 90,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Quadriceps hacmi. Bel platformdan kalkmasın."
-     },
-     {
-      "n": "Seated Calf Raise",
-      "s": 3,
-      "r": "15",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Soleus."
-     },
-     {
-      "n": "Lat Pulldown (geniş tutuş)",
-      "s": 4,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "Göğüs hizasına indirin, yukarıda tam esneme."
-     },
-     {
-      "n": "Seated DB Shoulder Press",
-      "s": 4,
-      "r": "8-10",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "Sırt destekli sehpa."
-     },
-     {
-      "n": "Cable Lateral Raise (tek kol)",
-      "s": 3,
-      "r": "15-20",
-      "rir": "0-1",
-      "rest": 45,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "Omuz genişliği."
-     },
-     {
-      "n": "Face Pull",
-      "s": 3,
-      "r": "15-20",
-      "rir": "2",
-      "rest": 60,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "Duruş için atlanmayacak hareket."
-     },
-     {
-      "n": "V-Bar / Rope Pushdown",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "TRICEPS",
-      "note": "Altta 1 sn sıkıştırma."
-     },
-     {
-      "n": "Hanging Leg Raise",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 60,
-      "t": "alt",
-      "blk": "KARIN",
-      "note": "Kalçayı kıvırın."
-     }
-    ]
-   },
-   {
-    "id": "fc",
-    "short": "C",
-    "dow": 5,
-    "name": "Full Body C",
-    "sub": "Bacak → Göğüs → Sırt → Omuz → Kol → Karın",
-    "ex": [
-     {
-      "n": "Bulgarian Split Squat",
-      "s": 3,
-      "r": "10/bacak",
-      "rir": "2",
-      "rest": 90,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Tek bacak — denge ve kalça."
-     },
-     {
-      "n": "Hip Thrust",
-      "s": 3,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 90,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Tepede 2 sn sıkıştırma."
-     },
-     {
-      "n": "Nordic Curl / Lying Leg Curl",
-      "s": 3,
-      "r": "10-15",
-      "rir": "2",
-      "rest": 75,
-      "t": "alt",
-      "blk": "BACAK",
-      "note": "Hamstring 3. uyarım, eksantrik odaklı."
-     },
-     {
-      "n": "Chest Press Machine / Flat DB Press",
-      "s": 4,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "Yatay itiş."
-     },
-     {
-      "n": "Pec Deck / Cable Fly",
-      "s": 3,
-      "r": "12-15",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "GÖĞÜS",
-      "note": "Göğüs izolasyonu."
-     },
-     {
-      "n": "Seated Cable Row (V-bar)",
-      "s": 4,
-      "r": "10-12",
-      "rir": "2",
-      "rest": 120,
-      "t": "ust",
-      "blk": "SIRT",
-      "note": "Sırt kalınlığı."
-     },
-     {
-      "n": "DB Lateral Raise",
-      "s": 3,
-      "r": "15-20",
-      "rir": "0-1",
-      "rest": 45,
-      "t": "ust",
-      "blk": "OMUZ",
-      "note": "Haftanın 3. omuz uyarımı."
-     },
-     {
-      "n": "Incline DB Curl",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "KOL",
-      "note": "Biceps uzun başı."
-     },
-     {
-      "n": "Overhead Rope Triceps Extension",
-      "s": 3,
-      "r": "10-12",
-      "rir": "1",
-      "rest": 60,
-      "t": "ust",
-      "blk": "KOL",
-      "note": "Triceps uzun başı."
-     },
-     {
-      "n": "Plank / Pallof Press",
-      "s": 3,
-      "r": "max / 12",
-      "rir": "1",
-      "rest": 45,
-      "t": "alt",
-      "blk": "KARIN",
-      "note": "Karın stabilitesi."
-     }
-    ]
-   }
-  ]
- }
+/* ===== PROGRAM v5.0 — Üst/Alt bölünme · deadlift yok · göğüs + kol önceliği ===== */
+const X=(n,s,r,rir,rest,t,blk,note,ss)=>{ const o={n,s,r,rir,rest,t,blk,note}; if(ss) o.ss=ss; return o; };
+
+/* ÜST A — üst göğüs ağırlıklı */
+const UA=[
+ X('Incline Dumbbell Press (30°)',4,'8-10','2',150,'ust','GÖĞÜS',
+  'Haftanın ana göğüs hareketi. Sehpa 30°, iniş 3 sn, altta 1 sn duraklama, tepede dirsek kilitleme yok. Çift ilerleme: 4 sette de 10 tekrara ulaştığınızda 2,5 kg artırıp 8 tekrardan yeniden başlayın.'),
+ X('Incline Smith / Makine Press (30°)',3,'10-12','1-2',90,'ust','GÖĞÜS',
+  'Sabit ray dengeyi ortadan kaldırır; enerjinin tamamı üst göğse gider. Bar köprücük kemiğinin 2-3 cm altına insin. Makine yoksa Incline Barbell Press.'),
+ X('Pec Deck / Üst Göğüs Fly',3,'12-15','1',60,'ust','GÖĞÜS',
+  'Kablo yerine makine: kademeli yüklenme çok daha kolay. Açılışta göğüste gerilmeyi hissedin, sıkıştırmada 1 sn bekleyin. Ağırlık artmıyorsa önce tekrarı 15\'e çıkarın.'),
+ X('Chest Supported Row / T-Bar Row',4,'8-10','2',120,'ust','SIRT',
+  'Bel yükü olmadan sırt kalınlığı. Göğüs sehpaya yaslı, dirsekler gövdeyle ~45°, tepede kürekleri 1 sn sıkıştırın. Göğüs sehpadan kalkıyorsa ağırlık fazladır.'),
+ X('Lat Pulldown (geniş tutuş)',3,'10-12','1-2',90,'ust','SIRT',
+  'Barı göğüs hizasına indirin, gövdeyi geriye yatırmayın. Yukarıda omuzları tamamen salıp latı esnetin.'),
+ X('Seated DB Lateral Raise',4,'12-15','0-1',60,'ust','OMUZ',
+  'Yan omuz ağırlıkla değil tekrar ve teknikle büyür. Dirsekler hafif bükük, omuz hizasını geçmeyin. Son sette drop set: ağırlığı %40 düşürüp tükenene kadar.'),
+ X('Face Pull',3,'15-20','2',45,'ust','OMUZ',
+  'Arka omuz ve duruşun ana hareketi; Reverse Pec Deck programdan çıktığı için 3 sete çıktı. Halatı alın hizasına çekin, sonunda kolları dışa çevirin. Asla atlanmaz.'),
+ X('Incline DB Curl',4,'10-12','1',20,'ust','KOL',
+  'SÜPERSET A1. Sehpa 45-60°, kollar gövdenin gerisinde serbest sarkık: biceps uzun başını yalnızca bu pozisyon gerer. İniş 3 sn. Seti bitirince 20 sn içinde triceps hareketine geçin. İstasyon meşgulse normal set yapın ve kronometreye +30 sn ekleyin.','A1'),
+ X('Overhead Rope Triceps Extension',4,'10-12','1',90,'ust','KOL',
+  'SÜPERSET A2. Kollar baş üstünde, triceps uzun başı gerili konumda. Dirsekler sabit ve kulaklara yakın; yalnızca ön kol hareket eder. Bu setten sonra 90 sn dinlenip curl\'e dönün.','A2')
+];
+
+/* ALT A — quadriceps ağırlıklı */
+const LA=[
+ X('Barbell Back Squat / Hack Squat',4,'6-8','2-3',180,'alt','QUADRICEPS',
+  'Haftanın ana bacak hareketi. Dört setin hepsini AYNI ağırlıkla bitirebileceğiniz yükle başlayın; ilk setlerde tükenip sonrakilerde ağırlık düşürmek ilerletmez. Topuklar yerde, bel nötr, RIR 2\'nin altına inmeyin. Belde rahatsızlık olursa Hack Squat\'a geçin.'),
+ X('Leg Press (ayaklar orta-alt)',3,'10-12','2',120,'alt','QUADRICEPS',
+  'Ayaklar platformun orta-alt kısmında, omuz genişliğinde: quadriceps baskın çalışır. En altta dizler ~90°, bel ve kalça platformdan kalkmasın.'),
+ X('Leg Extension',3,'12-15','0-1',60,'alt','QUADRICEPS',
+  'Her hafta aynı makineyi ve aynı koltuk ayarını kullanın, ayarı not edin. Tepede 1 sn sıkıştırma. Son set rest-pause: tükenene kadar → 15 sn dinlen → tekrar tükenene kadar.'),
+ X('Seated Leg Curl',3,'12-15','1',75,'alt','HAMSTRING',
+  'Oturarak versiyon hamstring\'i uzamış pozisyonda çalıştırır; yatarak versiyona göre daha fazla kas gelişimi sağladığı gösterilmiştir. Tepede 1 sn sıkıştırma, iniş 3 sn.'),
+ X('Karın Makinesi (Abdominal Crunch)',3,'15','1',45,'alt','KARIN',
+  'Belden değil karnı kıvırarak: kaburgayı kalçaya yaklaştırın. Karnın kalınlaşması, yağ indikçe hattın görünmesini sağlar.'),
+ X("Captain's Chair Diz Çekme",3,'12-15','1',60,'alt','KARIN',
+  'Sırt destekli, kollar pedlerde. Sallanma yok; dizleri kaldırmakla kalmayın, kalçayı yukarı kıvırın. Kolaylaşınca ayak bileklerine ağırlık ekleyin.'),
+ X('Standing Calf Raise',4,'12-15','1',45,'alt','BALDIR',
+  'Bilinçli olarak karın bloğundan sonra: baldırı hiç atlamıyorsunuz, böylece karın da atlanamaz. En altta 2 sn gerilme, tepede 1 sn sıkıştırma.')
+];
+
+/* ÜST B — orta göğüs + kol hacmi */
+const UB=[
+ X('Chest Press Machine / Flat DB Press',4,'8-10','2',120,'ust','GÖĞÜS',
+  'Pazartesi üst göğüs, bugün orta göğüs: ikisi birbirinin tekrarı değildir. Sap göğüs hizasında, en altta dirsekler ~90°, tepede kilitleme yok.'),
+ X('Dips (ağırlıklı / destekli)',3,'8-12','1-2',90,'ust','GÖĞÜS',
+  'Gövde hafif öne eğik → göğüs vurgusu. Kendi ağırlığınızla 12\'den fazla yapabiliyorsanız kemere ağırlık takıp 8-12 bandına inin; KG sütununa takılan ağırlığı girin. Omuzda batma olursa derinliği azaltın.'),
+ X('Destekli Barfiks (net yük)',3,'6-10','2',120,'ust','SIRT',
+  'Kayda NET YÜKÜ girin: vücut ağırlığı − destek. Hedef desteği sıfırlayıp serbest barfikse geçmek. En altta tam esneme, tepede çene bar hizası.'),
+ X('Seated Cable Row (V-bar)',3,'10-12','2',90,'ust','SIRT',
+  'Dar tutuş, barı göbeğe doğru çekin, tepede sırtı 1 sn sıkıştırın. Gövdeyi geriye yatırarak momentum üretmeyin.'),
+ X('Seated DB Shoulder Press',3,'8-10','2',120,'ust','OMUZ',
+  'Göğüs presleri ön omzu zaten çalıştırdığı için 3 set yeterli. Sırt tamamen yaslı; bel köprü yapıyorsa ağırlık fazladır. 3 sette de 10 tekrara ulaşınca artırın.'),
+ X('Cable Lateral Raise (tek kol)',3,'15-20','0-1',45,'ust','OMUZ',
+  'Ağırlığı sabitleyin: 3 sette de 20 tekrar yapana kadar artırmayın. Makara en alt konumda, hareketi gövdenin arkasından başlatın, omuz hizasını geçmeyin.'),
+ X('EZ / Barbell Curl',3,'8-10','1',20,'ust','KOL',
+  'SÜPERSET A1. Tam hareket açıklığı, iniş 3 sn, dirsekler gövdeye sabit, savurma yok. Pushdown istasyonunun yanında yapın; seti bitirince 20 sn içinde geçin.','A1'),
+ X('V-Bar Pushdown',3,'10-12','1',90,'ust','KOL',
+  'SÜPERSET A2. Dirsek gövdeye sabit, yalnızca ön kol hareket eder. En altta 1 sn sıkıştırma. Sonra 90 sn dinlenip curl\'e dönün.','A2'),
+ X('Hammer Curl (çekiç)',3,'10-12','1',20,'ust','KOL',
+  'SÜPERSET B1. Nötr tutuş: biceps\'in altındaki brachialis ve brachioradialis kaslarını çalıştırır; bunlar büyüdükçe kol daha kalın görünür. Dambılları sehpanın yanına alın.','B1'),
+ X('Skull Crusher / EZ French Press',3,'10-12','1',90,'ust','KOL',
+  'SÜPERSET B2. Sehpada sırt üstü, EZ bar alına doğru iner, dirsekler sabit ve içeri kaçmaz. Pushdown yan başı, bu hareket uzun başı vurur. Dirsekte ağrı olursa dirsekleri hafif geriye yatırın (JM press).','B2')
+];
+
+/* ALT B — kalça & hamstring, deadlift yok */
+const LB=[
+ X('Leg Press (ayaklar yüksek ve geniş)',4,'8-12','2',150,'alt','KALÇA & HAMSTRING',
+  'Deadlift yerine bugünün ana hareketi; bel tamamen yüksüz. Ayaklar platformun ÜST ve GENİŞ kısmında: kalça ve hamstring baskın çalışır. Kalça platformdan kalkmayacak kadar derine inin.'),
+ X('45° Back Extension (kalça odaklı)',3,'12-15','2',75,'alt','KALÇA & HAMSTRING',
+  'Kalça menteşesini (hip hinge) deadlift olmadan, bel yükü en aza inmiş şekilde çalıştırır. Hareketi belden değil KALÇADAN başlatın, tepede kalçayı 2 sn sıkın, beli geriye bükmeyin. Kolaylaşınca göğse plaka tutun.'),
+ X('Lying Leg Curl',4,'10-12','1-2',75,'alt','KALÇA & HAMSTRING',
+  'Salı oturarak, bugün yatarak: hamstring iki farklı kalça açısında çalışır. İniş (eksantrik) 4 sn; kalçayı pedden kaldırmayın.'),
+ X('Karın Makinesi (Abdominal Crunch)',3,'15','1',45,'alt','KARIN',
+  'Haftanın 2. karın günü. Karnı kıvırarak, belden bükmeden; kaburgayı kalçaya yaklaştırın.'),
+ X('Seated Calf Raise',4,'15','1',45,'alt','BALDIR',
+  'Oturarak versiyon soleus kasını hedefler. Ağırlığı sabitleyip tekrarı tamamlayın; en altta 2 sn gerilme.')
+];
+
+/* 3 GÜN — tek ve tam bacak günü */
+const LF=[
+ X('Barbell Back Squat / Hack Squat',4,'6-8','2-3',180,'alt','QUADRICEPS',
+  'Haftanın tek bacak gününün ana hareketi. Dört setin hepsini AYNI ağırlıkla bitirebileceğiniz yükle başlayın. Topuklar yerde, bel nötr, RIR 2\'nin altına inmeyin. Belde rahatsızlık olursa Hack Squat\'a geçin.'),
+ X('Leg Press (ayaklar yüksek ve geniş)',3,'10-12','2',120,'alt','QUADRICEPS',
+  'Ayaklar platformun ÜST ve GENİŞ kısmında: squat\'ın ardından kalça ve hamstring\'e de yüklenir. Kalça platformdan kalkmasın.'),
+ X('Leg Extension',3,'12-15','0-1',60,'alt','QUADRICEPS',
+  'Aynı makine, aynı koltuk ayarı. Tepede 1 sn sıkıştırma. Son set rest-pause.'),
+ X('Seated Leg Curl',3,'12-15','1',75,'alt','KALÇA & HAMSTRING',
+  'Hamstring\'i uzamış pozisyonda çalıştırır. Tepede 1 sn sıkıştırma, iniş 3 sn.'),
+ X('45° Back Extension (kalça odaklı)',3,'12-15','2',75,'alt','KALÇA & HAMSTRING',
+  'Deadlift yerine kalça menteşesi. Hareketi kalçadan başlatın, tepede kalçayı 2 sn sıkın, beli geriye bükmeyin.'),
+ X('Karın Makinesi (Abdominal Crunch)',3,'15','1',45,'alt','KARIN',
+  'Karnı kıvırarak, belden bükmeden; kaburgayı kalçaya yaklaştırın.'),
+ X("Captain's Chair Diz Çekme",3,'12-15','1',60,'alt','KARIN',
+  'Sallanma yok; dizleri kaldırmakla kalmayın, kalçayı yukarı kıvırın.'),
+ X('Standing Calf Raise',4,'12-15','1',45,'alt','BALDIR',
+  'Karın bloğundan sonra. En altta 2 sn gerilme, tepede 1 sn sıkıştırma.')
+];
+
+const PROGRAMS={
+ '4g':{name:'4 Günlük · Üst/Alt',days:[
+  {id:'u1',short:'PZT',dow:1,name:'Üst A',sub:'Üst göğüs → Sırt → Omuz → Kol',ex:UA},
+  {id:'a1',short:'SAL',dow:2,name:'Alt A',sub:'Quadriceps → Hamstring → Karın → Baldır',ex:LA},
+  {id:'u2',short:'PER',dow:4,name:'Üst B',sub:'Orta göğüs → Sırt → Omuz → Kol',ex:UB},
+  {id:'a2',short:'CUM',dow:5,name:'Alt B',sub:'Kalça & Hamstring → Karın → Baldır',ex:LB}]},
+ '3g':{name:'3 Günlük · Üst/Alt/Üst',days:[
+  {id:'t1',short:'PZT',dow:1,name:'Üst A',sub:'Üst göğüs → Sırt → Omuz → Kol',ex:UA},
+  {id:'t2',short:'ÇAR',dow:3,name:'Alt',sub:'Quadriceps → Kalça & Hamstring → Karın → Baldır',ex:LF},
+  {id:'t3',short:'CUM',dow:5,name:'Üst B',sub:'Orta göğüs → Sırt → Omuz → Kol',ex:UB}]}
 };
 
 const DIET = {
@@ -1091,7 +509,7 @@ let MEM=null, useLS=true;
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ useLS=false; }
 function load(){
   try{ const r = useLS ? localStorage.getItem(KEY) : MEM; if(r) return JSON.parse(r); }catch(e){}
-  return {logs:{},meas:{},diet:{},supp:{},ui:{prog:'4g',day:null,week:1}};
+  return {logs:{},meas:{},diet:{},supp:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,seen5:1};
 }
 function save(){
   const s=JSON.stringify(S);
@@ -1125,6 +543,45 @@ function migrate4(){
   console.log('v4 göç: '+tasinan+' kayıt taşındı, '+dusen+' kayıt arşive alındı');
 }
 migrate4();
+
+/* ---------- v5 KAYIT GÖÇÜ: İtiş/Çekiş → Üst/Alt; 3 gün Full Body → Üst/Alt/Üst ---------- */
+/* eski "gün|sıra" → yeni "gün:sıra". Listede olmayanlar (RDL, Reverse Pec Deck, Preacher Curl,
+   yatay Pec Deck ve 3 günlükten çıkan hareketler) S.bak_v4 içinde aynen arşivde kalır. */
+const MIG5={
+ '4g':{
+  u1:{0:'u1:0',1:'u1:1',2:'u1:2',3:'u1:3',4:'u1:4',5:'u1:5',6:'u1:6',7:'u1:7',8:'u1:8'},
+  a1:{0:'a1:0',1:'a2:0',2:'a1:2',3:'a2:1',4:'a1:3',5:'a1:4',6:'a1:5',7:'a1:6'},
+  i1:{0:'u2:0',2:'u2:1',3:'u2:4',4:'u2:5',5:'u2:7',6:'u2:9',7:'a1:1',8:'a2:4'},
+  c1:{1:'a2:2',2:'u2:2',3:'u2:3',5:'u2:6',6:'u2:8',8:'a2:3'}
+ },
+ '3g':{
+  fa:{0:'t2:0',1:'t2:3',2:'t2:7',3:'t1:0',4:'t1:3',5:'t1:5'},
+  fb:{1:'t2:1',3:'t1:4',4:'t3:4',5:'t3:5',6:'t1:6',7:'t3:7'},
+  fc:{3:'t3:0',4:'t1:2',5:'t3:3',7:'t1:7',8:'t1:8'}
+ }
+};
+function migrate5(){
+  if(S.mig5) return;
+  const old=S.logs||{}, neu={};
+  let tasinan=0, arsiv=0;
+  for(const k in old){
+    const p=k.split('|'), dm=MIG5[p[0]]&&MIG5[p[0]][p[1]];
+    if(!dm){ neu[k]=old[k]; continue; }
+    const tg=dm[p[3]];
+    if(!tg){ arsiv++; continue; }
+    const q=tg.split(':'), nd=q[0], ni=+q[1];
+    const day=PROGRAMS[p[0]].days.find(d=>d.id===nd), ex=day&&day.ex[ni];
+    if(!ex || +p[4]>=ex.s){ arsiv++; continue; }
+    neu[[p[0],nd,p[2],ni,p[4]].join('|')]=old[k]; tasinan++;
+  }
+  S.bak_v4=old;            // ham v4 kaydı saklanır, hiçbir şey kaybolmaz
+  S.logs=neu; S.mig5=1; S.rest=null;
+  if(S.ui) S.ui.day=null;
+  save();
+  console.log('v5 göç: '+tasinan+' kayıt taşındı, '+arsiv+' kayıt arşivde');
+  return {tasinan:tasinan, arsiv:arsiv};
+}
+migrate5();
 
 
 /* ---------- YARDIMCI ---------- */
@@ -1260,7 +717,7 @@ function sessTxt(){
 }
 
 /* ---------- DINLENME KRONOMETRESI ---------- */
-const R={on:false,end:0,total:0,ei:-1,si:-1,alarmed:false,iv:0,mini:false};
+const R={on:false,end:0,total:0,ei:-1,si:-1,alarmed:false,iv:0,mini:false,lab:'DİNLENME'};
 function paintMode(){
   $('rest').classList.toggle('show', R.on && !R.mini);
   $('restMini').classList.toggle('show', R.on && R.mini);
@@ -1268,15 +725,24 @@ function paintMode(){
 function restMini(){ R.mini=true; paintMode(); }
 function restBig(){ R.mini=false; paintMode(); unlockAudio(); }
 function fmt(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function ssPair(ei){
+  const d=curDay(), e=d.ex[ei]; if(!e||!e.ss) return null;
+  const first=e.ss[1]==='1', j=first?ei+1:ei-1, p=d.ex[j];
+  return (p&&p.ss===e.ss[0]+(first?'2':'1')) ? {j:j,first:first} : null;
+}
+function restLab(ei){ const ps=ssPair(ei); return (ps&&ps.first)?'SÜPERSET GEÇİŞİ':'DİNLENME'; }
 function nextTxt(ei,si){
   const d=curDay(); const e=d.ex[ei]; if(!e) return '';
-  if(si+1 < e.s) return 'Sıradaki: '+(si+2)+'. set — '+e.n+'  ·  '+e.r+' tekrar, RIR '+e.rir;
+  const ps=ssPair(ei);
+  if(ps&&ps.first){ const p=d.ex[ps.j]; return 'Süperset → '+p.n+'  ·  '+(si+1)+'. set, '+p.r+' tekrar'; }
+  if(ps){ const a=d.ex[ps.j]; if(si+1 < a.s) return 'Sıradaki tur: '+(si+2)+'. set — '+a.n+'  ·  '+a.r+' tekrar'; }
+  else if(si+1 < e.s) return 'Sıradaki: '+(si+2)+'. set — '+e.n+'  ·  '+e.r+' tekrar, RIR '+e.rir;
   const nx=d.ex[ei+1];
   return nx ? 'Sıradaki hareket: '+nx.n+'  ·  '+nx.s+' × '+nx.r
             : 'Bu günün son seti — antrenman tamam.';
 }
 function startRest(sec,ei,si){
-  R.on=true; R.ei=ei; R.si=si; R.total=sec; R.end=Date.now()+sec*1000; R.alarmed=false;
+  R.on=true; R.ei=ei; R.si=si; R.total=sec; R.end=Date.now()+sec*1000; R.alarmed=false; R.lab=restLab(ei);
   S.rest={end:R.end,total:sec,ei:ei,si:si,day:S.ui.day,prog:S.ui.prog,week:S.ui.week}; save();
   const e=curDay().ex[ei];
   $('rEx').textContent = e ? e.n : '';
@@ -1288,7 +754,7 @@ function startRest(sec,ei,si){
   R.mini=false; paintMode();
   $('rest').classList.remove('zero'); $('restMini').classList.remove('zero');
   $('rmEx').textContent = e ? e.n : 'Dinlenme';
-  $('rLab').textContent='DİNLENME'; $('rSub').textContent='KALAN';
+  $('rLab').textContent=R.lab||'DİNLENME'; $('rSub').textContent='KALAN';
   unlockAudio(); scheduleCues(sec); if(ST().extra) keepOn(); wakeOn();
   paintRest(); clearInterval(R.iv); R.iv=setInterval(paintRest,150);
 }
@@ -1324,7 +790,7 @@ function restAdd(s){
   const nl=Math.max(5,left+s);
   R.end=Date.now()+nl*1000; R.total=Math.max(R.total,nl); R.alarmed=false;
   $('rest').classList.remove('zero'); $('restMini').classList.remove('zero');
-  $('rLab').textContent='DİNLENME'; $('rSub').textContent='KALAN';
+  $('rLab').textContent=R.lab||'DİNLENME'; $('rSub').textContent='KALAN';
   if(S.rest){ S.rest.end=R.end; S.rest.total=R.total; save(); }
   scheduleCues(nl); paintRest();
 }
@@ -1343,6 +809,7 @@ function restResume(){
   const e=curDay().ex[r.ei];
   $('rEx').textContent=e?e.n:''; $('rmEx').textContent=e?e.n:'Dinlenme';
   $('rNext').textContent=nextTxt(r.ei,r.si);
+  R.lab=restLab(r.ei); $('rLab').textContent=R.lab;
   R.mini=false; paintMode();
   if(left>0){ scheduleCues(left); } else { $('rest').classList.add('zero'); $('rLab').textContent='SÜRE DOLDU'; }
   clearInterval(R.iv); R.iv=setInterval(paintRest,150); paintRest();
@@ -1365,6 +832,7 @@ function stopTimer(){ restStop(true); }
 function chWeek(d){ S.ui.week=Math.min(16,Math.max(1,S.ui.week+d)); save(); render(); }
 function header(){
   const p=PROGRAMS[S.ui.prog], dow=new Date().getDay();
+  $('progSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.p===S.ui.prog));
   $('dayChips').innerHTML=p.days.map(d=>
     `<button class="chip ${d.id===S.ui.day?'on':''} ${d.dow===dow?'today':''}" onclick="setDay('${d.id}')">
       <div class="d">${esc(d.short)}</div><div class="s">${esc(d.name.split(' + ')[0])}</div></button>`).join('');
@@ -1451,6 +919,10 @@ function prevTxt(ei){
   if(kg===null&&!reps.length) return '';
   return (kg!==null?kg+' kg':'')+(reps.length?' · '+reps.join('/'):'');
 }
+function restLabel(e){
+  const v=e.rest>=60 ? String(Math.round(e.rest/60*10)/10).replace('.',',')+' dk' : e.rest+' sn';
+  return (e.ss&&e.ss[1]==='1') ? 'geçiş '+v : v+' dinlenme';
+}
 function updateSummary(){
   const d=curDay(); let tot=0,done=0,vol=0;
   d.ex.forEach((e,ei)=>{ for(let si=0;si<e.s;si++){ tot++; const o=get(ei,si);
@@ -1503,7 +975,7 @@ function renderW(){
           <h3>${esc(e.n)}</h3>
           <div class="tags"><span class="tag sets">${e.s} × ${esc(e.r)}</span>
             <span class="tag rir">RIR ${esc(e.rir)}</span>
-            <span class="tag">${e.rest>=60?Math.round(e.rest/60*10)/10+' dk':e.rest+' sn'} dinlenme</span>
+            ${e.ss?`<span class="tag ss">Süperset ${esc(e.ss)}</span>`:''}<span class="tag">${restLabel(e)}</span>
             <span class="tag ${e.t}">${e.t==='ust'?'üst vücut':'alt vücut'}</span></div>
           ${pv?`<div class="last">Geçen hafta: <b>${esc(pv)}</b>
             <button class="copybtn" onclick="copyPrev(${ei})">kopyala</button></div>`:''}
@@ -1569,9 +1041,11 @@ function renderM(){
 }
 
 /* ---------- DİYET ---------- */
-function dietType(){ const dow=new Date().getDay(); const auto=[1,2,4,5].includes(dow)?'antrenman':'dinlenme';
-  return S.ui.dt || auto; }
-function setDT(t){ S.ui.dt=t; save(); renderD(); }
+function autoDay(){ const dow=new Date().getDay();
+  return PROGRAMS[S.ui.prog].days.some(d=>d.dow===dow) ? 'antrenman' : 'dinlenme'; }
+function dayPick(o){ return (o && typeof o==='object' && o.d===today()) ? o.t : null; }
+function dietType(){ return dayPick(S.ui.dt) || autoDay(); }
+function setDT(t){ S.ui.dt={d:today(),t:t}; save(); renderD(); }
 function tickMeal(i){ const k=today()+'|'+dietType()+'|'+i; S.diet[k]=!S.diet[k]; save(); renderD(); }
 function renderD(){
   const t=dietType(), D=DIET[t];
@@ -1607,8 +1081,8 @@ function renderD(){
 }
 
 /* ---------- TAKVİYE ---------- */
-function suppType(){ const dow=new Date().getDay(); return S.ui.st || ([1,2,4,5].includes(dow)?'antrenman':'dinlenme'); }
-function setST(t){ S.ui.st=t; save(); renderS(); }
+function suppType(){ return dayPick(S.ui.st) || autoDay(); }
+function setST(t){ S.ui.st={d:today(),t:t}; save(); renderS(); }
 function tickSupp(i){ const k=today()+'|s|'+suppType()+'|'+i; S.supp[k]=!S.supp[k]; save(); renderS(); }
 function renderS(){
   const t=suppType(), L=SUPP[t];
@@ -1688,7 +1162,7 @@ function renderSheet(){
   <button class="btn" style="margin-top:9px" onclick="importData()">↻ Yedekten geri yükle</button>
   <div style="height:12px"></div>
   <button class="btn dan" onclick="resetAll()">Tüm verileri sil</button>
-  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v4.0 · 9 Eylül 2026 · Hacim bloğu · göğüs + kol önceliği</p>`;
+  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v5.0 · 12 Ekim 2026 · Üst/Alt bölünme · deadlift yok · göğüs + kol önceliği</p>`;
   $('sheetC').innerHTML=h;
   const ib=$('impBox'); if(ib) ib.value=JSON.stringify(S);
 }
@@ -1718,11 +1192,12 @@ function exportData(){
 function importData(){
   const v=$('impBox').value.trim(); if(!v){toast('Kutu boş');return;}
   try{ const o=JSON.parse(v); if(!o.logs) throw 0; S=o; if(!S.ui)S.ui={prog:'4g',day:null,week:1};
+    migrate4(); migrate5(); S.ui.day=null;
     save(); closeSheet(); render(); toast('Yedek geri yüklendi'); }
   catch(e){ toast('Geçersiz yedek metni'); }
 }
 function resetAll(){ if(!confirm('Tüm antrenman kayıtları, ölçümler ve işaretlemeler silinecek. Emin misiniz?'))return;
-  S={logs:{},meas:{},diet:{},supp:{},ui:{prog:'4g',day:null,week:1}}; save(); closeSheet(); render(); toast('Silindi'); }
+  S={logs:{},meas:{},diet:{},supp:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,seen5:1}; save(); closeSheet(); render(); toast('Silindi'); }
 
 /* ---------- BAŞLAT ---------- */
 function render(){
@@ -1743,8 +1218,8 @@ if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 if(!useLS) setTimeout(()=>toast('Uyarı: tarayıcı kaydı kapalı — Ana Ekrandan açın'),1200);
-setTimeout(()=>{ if(!S.seen4){ S.seen4=1; save();
-  toast('v4.0 — program revize edildi, kayıtlarınız korundu'); } },900);
+setTimeout(()=>{ if(!S.seen5){ S.seen5=1; save();
+  toast('v5.0 — yeni program, kayıtlarınız taşındı'); } },900);
 
 </script>
 </body>
