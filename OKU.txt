@@ -1,38 +1,43 @@
-MEB Fit v5.0 - Ekim revizyonu
-=============================
+MEB Fit v6.0 - Hacim dongusu (14 Ekim 2026)
+=============================================
 Bu klasordeki dosyalari GitHub Pages (veya herhangi bir https adres) uzerine yukleyin,
-eskilerinin uzerine yazin. iPhone'da uygulamayi kapatip yeniden acin.
+eskilerinin uzerine yazin. iPhone'da uygulamayi tamamen kapatip yeniden acin.
 Ilk kurulum icin: Safari ile acip Paylas > Ana Ekrana Ekle.
-Ayrintili anlatim: MEB_Fit_Kurulum.pdf
 
 GUNCELLEMEDEN ONCE:
  - Mevcut uygulamada Ayarlar > "Yedegi dosya olarak indir" ile yedek alin.
 
-YENI (v5.0):
- - 4 gunluk program Ust/Alt bolunmeye cevrildi. Bacak yalnizca SALI ve CUMA.
-     PZT  Ust A  - ust gogus, sirt, omuz, kol (supersetli)
-     SAL  Alt A  - quadriceps, hamstring, karin, baldir
-     PER  Ust B  - orta gogus, sirt, omuz, kol (iki superset)
-     CUM  Alt B  - kalca & hamstring, karin, baldir (kisa gun)
- - Deadlift / Romanian Deadlift tamamen cikarildi. Yerine: Leg Press (ayaklar
-   yuksek-genis), 45 derece Back Extension, oturarak + yatarak Leg Curl.
- - 3 gunluk program yenilendi: PZT Ust A / CAR Alt / CUM Ust B.
-   Bacak haftada 1 gun. Bulgarian, Hip Thrust, Hanging Leg Raise, Plank/Pallof
-   ve RDL cikti; yerlerine makine alternatifleri geldi.
- - Superset destegi: kol hareketleri cift halinde. Ilk hareketten sonra 20 sn
-   "gecis", ikinciden sonra 90 sn dinlenme; kronometre siradaki hareketi gosterir.
- - Diyet/Takviye sekmesi antrenman gununu secili programa gore bulur
-   (3 gunlukte Carsamba da antrenman gunu sayilir). Elle secim yalnizca o gun gecerli.
- - "Tum verileri sil" sonrasinda kayitlarin yeniden yanlis tasinmasina yol
-   acan hata giderildi.
+YENI (v6.0):
+ - 16 haftalik HACIM DONGUSU Hafta 1'den baslar.
+     H1        Giris haftasi  - agirliklari bul, RIR 3
+     H2-5      Blok 1 Birikim - RIR 2
+     H6        Deload         - setler otomatik azalir
+     H7-10     Blok 2 Hacim   - oncelikli hareketlere otomatik +1 set
+     H11       Deload
+     H12-15    Blok 3 Yogunlasma - izolasyonlarda son set drop set
+     H16       Deload + olcum - yeni dongu bu sonuclara gore kurulur
+   Set sayisi ve RIR her hafta kartlarda otomatik degisir.
+ - Kayitlara gore degisen hareketler:
+     Seated DB Lateral  -> Lateral Raise Makinesi / Kablo Y-Raise (9 hafta durgun)
+     Incline DB Curl    -> Bayesian Cable Curl (9 hafta durgun)
+     Seated DB Shoulder Press -> Makine Shoulder Press (8 hafta durgun)
+     Standing Calf (en sonda, atlaniyordu) -> Leg Press'te Baldir
+     Seated Calf -> Alt B gununun ILK hareketi
+     Reverse Pec Deck geri dondu (Ust B)
+     Hammer + Pushdown supersetinden olusan kol finiseri Alt B'de (4 gun)
+     Captain's Chair cikti; karin her bacak gununde tek hareket
+ - Diyet hacim donemine gore artirildi (antrenman 2777 / dinlenme 2322 kcal).
+   Eklenen miktarlar diyet sekmesinde "▲" ile isaretli.
+ - Olcum sekmesi hacim donemine gore: kilo artmali, bel en fazla +2,5 cm.
+ - "Gecen hafta" satiri artik hareketin EN SON kaydini gosterir; 3 gun ile 4 gun
+   arasinda gecis yapsaniz da referans kaybolmaz. Ilerleme grafigi de iki programi
+   birlikte cizer.
 
 KAYITLAR:
- - Eski kayitlar otomatik olarak yeni gune ve siraya tasinir; ilerleme grafikleri
-   devam eder (or. Barfiks ve Cable Row Cuma'dan Persembe'ye, Leg Curl ve
-   Seated Calf Cuma'ya gecti).
- - Programdan cikan hareketlerin kayitlari (RDL, Reverse Pec Deck, Preacher Curl,
-   yatay Pec Deck) silinmez; S.bak_v4 icinde arsivde kalir.
- - Eski surum bir yedegi geri yuklerseniz o da otomatik olarak tasinir.
+ - Eski kayitlarin tamami silinmez, S.bak_v5 icinde arsivlenir.
+ - Devam eden her hareketin son haftasi Hafta 1'de "Onceki dongu" olarak gorunur
+   ve "kopyala" ile set kutularina yazilabilir.
+ - Eski surum bir yedegi geri yuklerseniz o da otomatik olarak yeni donguye tasinir.
 
 Dosyalar:
   index.html             uygulamanin kendisi            (DEGISTI)
