@@ -95,7 +95,37 @@ main{padding:14px 14px 20px;max-width:640px;margin:0 auto}
 .tag.alt{background:rgba(199,138,240,.16);color:var(--alt)}
 .tag.ss{background:rgba(51,196,129,.16);color:var(--ok)}
 .tag.pr{background:rgba(240,169,46,.16);color:var(--warn)}
-.last{font-size:11.5px;color:var(--tx2);margin-top:7px;display:flex;align-items:center;gap:6px}
+.tag.yuk{background:rgba(239,95,95,.16);color:#ff8a8a}
+.tag.his{background:rgba(199,138,240,.18);color:var(--alt)}
+.tag.pompa{background:rgba(51,196,129,.16);color:var(--ok)}
+.tag.tr{background:rgba(78,163,255,.10);color:var(--tx2);border:1px dashed rgba(78,163,255,.35)}
+.tag.new{background:var(--acc);color:#04121f}
+/* birim düğmesi */
+.ubtn{display:inline-flex;align-items:center;gap:4px;margin:0 auto;padding:2px 8px;border-radius:7px;
+ background:rgba(78,163,255,.14);color:var(--acc);font-size:10px;font-weight:800;letter-spacing:.4px}
+.ubtn i{font-style:normal;opacity:.7}
+.netline{font-size:11px;color:var(--tx2);margin:-2px 0 8px;line-height:1.45}
+.netline b{color:var(--tx)}
+/* nasıl yapılır paneli */
+.how{padding:4px 13px 12px;background:var(--bg2);border-top:1px solid var(--line)}
+.how .hs{margin-top:10px}
+.how .hs b{display:block;font-size:10.5px;font-weight:800;letter-spacing:.7px;color:var(--tx3);text-transform:uppercase;margin-bottom:3px}
+.how .hs p{margin:0;font-size:13px;color:var(--tx2);line-height:1.55}
+.how .odk{margin-top:10px;border-radius:11px;padding:10px 11px;border:1px solid var(--line)}
+.how .odk.yuk{background:rgba(239,95,95,.08);border-color:rgba(239,95,95,.3)}
+.how .odk.his{background:rgba(199,138,240,.08);border-color:rgba(199,138,240,.3)}
+.how .odk.pompa{background:rgba(51,196,129,.08);border-color:rgba(51,196,129,.3)}
+.how .odk b{display:block;font-size:12.5px;font-weight:800;margin-bottom:4px;color:var(--tx)}
+.how .odk p{margin:0;font-size:13px;color:var(--tx2);line-height:1.55}
+.guide{padding:0}
+.guide>button{width:100%;text-align:left;padding:12px 13px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800}
+.guide>button span{margin-left:auto;color:var(--tx2);transition:.15s}
+.guide.open>button span{transform:rotate(180deg)}
+.guide .gb{padding:0 13px 13px;font-size:12.5px;color:var(--tx2);line-height:1.55}
+.guide .gb .gi{border-left:3px solid var(--line);padding:6px 0 6px 10px;margin:9px 0}
+.guide .gb .gi b{color:var(--tx);display:block;font-size:13px}
+.guide .gb .gi.yuk{border-color:#ff8a8a}.guide .gb .gi.his{border-color:var(--alt)}.guide .gb .gi.pompa{border-color:var(--ok)}
+.last{font-size:11.5px;color:var(--tx2);margin-top:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .last b{color:var(--tx);font-weight:700}
 .copybtn{font-size:10.5px;font-weight:700;background:var(--card2);color:var(--acc);
  padding:3px 8px;border-radius:6px;flex:none}
@@ -351,121 +381,401 @@ textarea{width:100%;height:130px;background:var(--bg);border:1px solid var(--lin
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== PROGRAM v6.0 — HACİM DÖNGÜSÜ · 16 hafta · Üst/Alt · deadlift yok · göğüs + omuz + kol önceliği =====
-   k: 'c' ana (çok eklemli) / 'i' izolasyon  → RIR bloğa göre otomatik
-   pr: öncelikli → Blok 2 ve 3'te +1 set      safe: RIR hiçbir blokta 2'nin altına inmez
-   ss: süperset (A1 → A2)                      Set ve RIR değerleri curDay() içinde haftaya göre hesaplanır. */
-const X=(n,s,r,k,rest,t,blk,note,o)=>Object.assign({n,s,r,k,rest,t,blk,note},o||{});
+/* ===== PROGRAM v7.0 — HACİM DÖNGÜSÜ · 16 hafta · 4 gün Üst/Alt · 3 gün Full Body · deadlift yok =====
+   Hareket kütüphanesi (EX) tek yerde tanımlanır; programlar P(id, ayar) ile hareketi çağırır.
+   k   : 'c' ana (çok eklemli) / 'i' izolasyon → RIR bloğa göre otomatik
+   m   : hedef kas (geçiş dinlenmesi hesabında kullanılır) · syn: yardımcı kaslar
+   st  : istasyon (aynı istasyonda geçiş 15 sn, farklı istasyonda 30 sn)
+   eq  : 'f' serbest ağırlık / plaka (varsayılan kg) · 'm' makine-kablo yığını (varsayılan lbs) · 'a' destekli (destek girilir)
+   o   : odak → 'yuk' AĞIR + İLERLET · 'his' KONTROL + HİSSET · 'pompa' POMPA + TÜKENİŞE YAKIN
+   rest: aynı hareketin setleri arası dinlenme (sn). Süperset A1'de rest = A2'ye geçiş süresi.
+   pr  : öncelikli → Blok 2 ve 3'te +1 set   safe: RIR hiçbir blokta 2'nin altına inmez */
+const MUS={gogus:'Göğüs',on_omuz:'Ön omuz',yan_omuz:'Yan omuz',arka_omuz:'Arka omuz',sirt_lat:'Sırt (genişlik)',
+  sirt_orta:'Sırt (kalınlık)',biceps:'Biceps',triceps:'Triceps',onkol:'Ön kol',quad:'Quadriceps',ham:'Hamstring',
+  kalca:'Kalça',baldir:'Baldır',karin:'Karın'};
+const ODAK={
+ yuk:{t:'AĞIR · İLERLET',c:'yuk',s:'Kilo ve tekrar her hafta artmalı. Form sabit, yük öncelikli.'},
+ his:{t:'KONTROL · HİSSET',c:'his',s:'Kası hissederek, yavaş inişle. Kilo, tempo korunabildiği ölçüde artar.'},
+ pompa:{t:'POMPA · TÜKENİŞ',c:'pompa',s:'Hafif-orta kilo, yüksek tekrar, setin sonuna kadar gerilim.'}
+};
 
-/* ÜST A — üst göğüs · sırt kalınlığı · yan omuz · kol (uzamış pozisyon) */
-const UA=[
- X('Incline Dumbbell Press (30°)',4,'6-10','c',150,'ust','GÖĞÜS',
-  'Haftanın ana göğüs hareketi. 2 ısınma seti yapın (kayda girilmez), sonra 4 seti AYNI dambılla. Sehpa 30°, iniş 3 sn, altta 1 sn duraklama, tepede kilitleme yok. 4 sette de 10 tekrara ulaşınca 2,5 kg artırıp 6-7 tekrardan devam edin.',{pr:1}),
- X('Incline Smith / Makine Press (30°)',3,'8-12','c',120,'ust','GÖĞÜS',
-  'Sabit ray dengeyi ortadan kaldırır, enerjinin tamamı üst göğse gider. Bar köprücük kemiğinin 2-3 cm altına insin, dirsekler gövdeyle ~60°. Makine yoksa Incline Barbell Press.'),
- X('Pec Deck / Üst Göğüs Fly',3,'12-15','i',75,'ust','GÖĞÜS',
-  'Her hafta AYNI makine ve aynı koltuk ayarı. Kayıtlarınızda bu harekette 7,5 kg ile 54 kg arası değerler var; farklı makineler ilerlemeyi okunmaz hale getiriyor. Açılışta göğüste tam gerilme, kapanışta 1 sn sıkıştırma.'),
- X('Chest Supported Row / T-Bar Row',4,'8-10','c',120,'ust','SIRT',
-  'Kayıtlarda setler piramitle çıkıyor (ör. 30 → 45 → 58 → 63 kg) ve hedefin üstünde 12 tekrar yapılıyor; grafiğin zikzak çizmesinin nedeni bu. Bu döngüde: 2 ısınma (kaydedilmez) + 4 set aynı ağırlık. Göğüs sehpaya yaslı, tepede kürekleri 1 sn sıkıştırın.'),
- X('Lat Pulldown (geniş tutuş)',3,'8-12','c',120,'ust','SIRT',
-  'Geçen döngünün en iyi ilerleyen hareketlerinden biri (47 → 67,5 kg). Aynen devam. Bar göğüs hizasına, gövde sabit; yukarıda omuzları salıp latı tam esnetin.'),
- X('Lateral Raise Makinesi / Kablo Y-Raise',4,'12-20','i',60,'ust','OMUZ',
-  'NEDEN DEĞİŞTİ: Dambıl lateral 9 hafta 7,5–10 kg arasında kaldı. 7,5 → 10 kg geçişi %33\'lük bir sıçrama; yan omuz gibi küçük bir kas bunu taşıyamaz. Makine veya kablo 1-2,5 kg\'lık artışa izin verir. 4 sette de 20 tekrara ulaşınca artırın. Makine yoksa: iki kablo makarası en altta, kollar çapraz, Y şeklinde omuz hizasına kaldırın.',{pr:1}),
- X('Face Pull',2,'15-20','i',60,'ust','OMUZ',
-  'Halatı alın hizasına çekin, hareketin sonunda kolları dışa çevirin. Arka omuz, omzu yandan ve arkadan dolgun gösterir.'),
- X('Bayesian Cable Curl (tek kol)',4,'10-15','i',20,'ust','KOL',
-  'SÜPERSET A1. NEDEN DEĞİŞTİ: Incline DB Curl 9 hafta 7,5–10 kg\'da kaldı (aynı dambıl sıçraması sorunu). Bayesian aynı "kol gövdenin gerisinde" gerilmesini verir, kablo küçük artışla ilerletir. Makara en altta, makineye sırtınızı dönün, bir adım öne çıkın. Önce sol, sonra sağ kol = 1 set. Bitirince 20 sn içinde triceps\'e geçin.',{pr:1,ss:'A1'}),
- X('Overhead Rope Triceps Extension',4,'10-15','i',90,'ust','KOL',
-  'SÜPERSET A2. Triceps\'in en büyük bölümü uzun baştır ve yalnızca kol baş üstündeyken tam gerilir; baş üstü uzatma, pushdown\'a göre belirgin şekilde daha fazla büyüme sağlamıştır (Maeo ve ark., 2023). Dirsekler sabit ve kulaklara yakın. Sonra 90 sn dinlenip curl\'e dönün.',{pr:1,ss:'A2'})
+const EX={
+ incdb:{n:'Incline Dumbbell Press (30°)',k:'c',m:'gogus',syn:['on_omuz','triceps'],st:'bench',eq:'f',o:'yuk',r:'6-10',rest:150,t:'ust',
+  kur:'Sehpa 30° (genelde 2. veya 3. delik; 45° göğüsten çok ön omzu çalıştırır). Dambılları dizlerinize koyup oturun, sırt üstü uzanırken dizlerle iterek omuz hizasına getirin. Kürek kemiklerini geriye ve aşağıya toplayın, göğüs hafif yukarıda, ayaklar yere basılı, kalça sehpada.',
+  yap:'Dambıllar göğsün üst kısmına (meme ucunun biraz üstü) insin; dirsekler gövdeyle 45-60° açı yapsın, tam yana açık değil. En altta göğüste gerilmeyi hissedin ve 1 sn durun. Sonra dambılları hafifçe birbirine yaklaşan bir yayla yukarı itin. Tepede dambılları çarpıştırmayın, dirseği kilitlemeyin.',
+  tempo:'İniş 3 sn · altta 1 sn duraklama · çıkış güçlü (≈1 sn) · tepede bekleme yok',
+  odak:'Haftanın ana göğüs hareketi; göğüsteki ilerlemeyi bu hareket gösterir. Her hafta ya bir sette 1 tekrar ya da kilo artmalı. Ağır girin ama iniş hızını ve alttaki duraklamayı bırakmayın: duraklaması olmayan tekrar sayılmaz. Hissetmek için kiloyu düşürmenize gerek yok; açı ve derinlik doğruysa göğüs zaten çalışır.',
+  ilerle:'4 setin hepsinde 10 tekrara ulaşınca bir sonraki dambıla geçin (+2 / +2,5 kg). Yeni kiloda 6-7 tekrardan başlamak normal. Örnek: 27,5 × 10/10/10/10 → 30 × 8/7/7/6 → … → 30 × 10/10/10/10 → 32,5.',
+  hata:'Dambılları göğse kadar indirmeden yarım tekrar · Kalçayı sehpadan kaldırıp köprü kurmak · Dirsekleri 90° yana açmak (omuz ağrısı) · Isınma setlerini kayda girmek · Her sette farklı kilo (piramit).',
+  neden:'Göğüs öncelikli programın merkezinde üst göğüs var. Dambıl, barbelden daha derin bir alt nokta verir; kası uzamış pozisyonda yüklemek büyümeye katkı sağlar.',
+  alt:'Sehpa doluysa Incline Smith Press (aynı açı, aynı tekrar aralığı).'},
+
+ incsm:{n:'Incline Smith / Makine Press (30°)',k:'c',m:'gogus',syn:['on_omuz','triceps'],st:'smith',eq:'f',o:'yuk',r:'8-12',rest:120,t:'ust',
+  kur:'Sehpayı 30°\'ye ayarlayıp Smith rayının altına yerleştirin: bar indiğinde köprücük kemiğinin 2-3 cm altına gelmeli. Tutuş omuz genişliğinin biraz dışında. Kürekler geride, göğüs yukarıda. Makinede yapıyorsanız koltuğu tutamaklar üst göğüs hizasında olacak şekilde ayarlayın.',
+  yap:'Barı kancadan çevirip açın. Kontrollü indirin, bar üst göğse değmeden 1-2 cm önce durun, sonra dik bir çizgide itin. Dirsekler gövdeyle yaklaşık 60°. Son tekrarda barı kancaya çevirerek bırakın.',
+  tempo:'İniş 2-3 sn · altta kısa duraklama · çıkış ≈1 sn',
+  odak:'Ray dengeyi ortadan kaldırdığı için göğüs ve triceps tükenişe güvenle yaklaşır; burada yük ilerlemesi önceliklidir. Günün ikinci göğüs hareketi olduğundan kilonuz serbest ağırlığa göre düşük kalır, bu normaldir.',
+  ilerle:'3 setin hepsinde 12 tekrar → +2,5 kg (her yana 1,25 kg). Makinede +5 lb ya da 1 kademe.',
+  hata:'Barı boyna doğru indirmek · Sehpayı yanlış yerleştirip barın karna inmesi · Tepede dirseği kilitleyip göğsü dinlendirmek.',
+  neden:'Üst göğse ikinci bir açıdan, stabil ve ağır yükleme. Dambıl presin tamamlayıcısı.',
+  alt:'Incline Chest Press makinesi ya da Incline Barbell Press.'},
+
+ pec:{n:'Pec Deck / Üst Göğüs Fly',k:'i',m:'gogus',syn:['on_omuz'],st:'pec',eq:'m',o:'his',r:'12-15',rest:90,t:'ust',
+  kur:'Koltuğu, kollar açıkken tutamaklar göğüs ortasında ya da biraz altında olacak şekilde ayarlayın. Üst göğüs için koltuğu bir kademe aşağı alın (kollar hafif yukarı doğru kapanır). Koltuk numarasını aklınızda tutun: her hafta aynı makine, aynı ayar.',
+  yap:'Dirsekler hafif bükük ve sabit kalır; hareket omuzdan yapılan bir "sarılma" yayıdır. Açılışta göğüste belirgin gerilme hissedene kadar geri gidin (omuz önünde batma olmadan). Kapanışta kolları birleştirip göğsü 1 sn sıkın.',
+  tempo:'Kapanış 1 sn · önde 1 sn sıkıştırma · açılış 3 sn · en açık noktada 1 sn gerilme',
+  odak:'Amaç ağır kaldırmak değil, göğsü uzamış pozisyonda zorlamak. Set boyunca göğüs kasının kasılmasını düşünün; izolasyon hareketlerinde kasa odaklanarak çalışmak büyümeyi artırabilir. Kilo yine artmalı, ama yalnızca bu tempo korunarak.',
+  ilerle:'3 sette de 15 tekrar → 1 kademe (+5 lb / +2,5 kg). Kayıtlarınızda bu harekette 9 ile 54 arası değerler var; farklı makine ve birim ilerlemeyi okunmaz hale getiriyor. Birimi bir kez seçin ve hep aynı makinede yapın.',
+  hata:'Dirsekleri bükerek hareketi prese çevirmek · Açılışta omzu öne düşürmek · Ağırlığı yığına çarptırmak.',
+  neden:'Göğsü uzamış pozisyonda ve triceps yorgunluğu olmadan çalıştırır; ağır preslerden sonra en verimli göğüs bitiricisi.',
+  alt:'Kablo crossover (makaralar omuz altında, aşağıdan yukarı kapatın).'},
+
+ cpress:{n:'Chest Press Machine / Flat DB Press',k:'c',m:'gogus',syn:['on_omuz','triceps'],st:'cpress',eq:'m',o:'yuk',r:'6-10',rest:150,t:'ust',
+  kur:'Koltuğu, tutamaklar meme ucu hizasında olacak şekilde ayarlayın. Sırt ve kalça tamamen yaslı, kürekler geride ve aşağıda. Ayak pedi varsa tutamakları onunla başlangıca getirin.',
+  yap:'Tutamakları göğüste tam gerilme hissedilene kadar geri bırakın, ağırlık yığına değmeden itmeye başlayın. Dirseği kilitlemeden itin. Flat DB Press yapıyorsanız aynı kurallar geçerli: dambıllar meme hizasına, dirsekler 45-60°.',
+  tempo:'İniş 3 sn · altta yığına dokunmadan dönüş · çıkış güçlü',
+  odak:'Geçen döngüde en istikrarlı ilerleyen hareketiniz (60 → 71 kg). Ağırlık artırmaya öncelik verin; makine dengeyi sağladığı için RIR hedefine dürüstçe yaklaşabilirsiniz.',
+  ilerle:'4 setin hepsinde 10 tekrar → +5 lb (makine 10\'ar lb artıyorsa +10 lb) ya da +2,5 kg.',
+  hata:'Sırtı koltuktan kaldırıp bel boşluğu yapmak · Yarım iniş · Isınma setlerini kayda girmek.',
+  neden:'Haftanın ikinci ana göğüs hareketi; orta göğüs ve stabil, ağır yükleme.',
+  alt:'Flat Dumbbell Press.'},
+
+ csrow:{n:'Chest Supported Row / T-Bar Row',k:'c',m:'sirt_orta',syn:['sirt_lat','arka_omuz','biceps'],st:'csrow',eq:'m',o:'yuk',r:'8-10',rest:120,t:'ust',
+  kur:'Göğüs pedini, tutamaklara uzandığınızda kollar tam gergin ve kürekler öne açılmış olacak şekilde ayarlayın. Göğüs pede yaslı, ayaklar sabit. Nötr tutuş (avuçlar karşılıklı) ya da geniş tutuş; hangisini seçtiyseniz her hafta aynısı.',
+  yap:'Hareketi kürek kemiklerini geriye çekerek başlatın, sonra dirsekleri kalçaya (nötr tutuş) ya da yana (geniş tutuş) doğru çekin. Tepede kürekleri 1 sn sıkın. Dönüşte kolları tam uzatıp kürekleri öne bırakın: sırt gerilmeli.',
+  tempo:'Çekiş ≈1 sn · tepede 1 sn sıkıştırma · dönüş 2-3 sn',
+  odak:'Göğüs desteği beli korur, yükü rahatça artırabilirsiniz. Ölçüt şu: göğüs pedden kalkmıyor ve tepede 1 sn tutabiliyorsanız kilo doğru. Kayıtlarınızda setler piramitle çıkıyor (30 → 63 kg); bu döngüde 4 set aynı kilo.',
+  ilerle:'4 setin hepsinde 10 tekrar → +10 lb (ya da +5 lb) / +2,5-5 kg.',
+  hata:'Göğsü pedden kaldırıp gövdeyle çekmek · Dirsek yerine elle (biceps ile) çekmek · Yarım dönüş: sırt hiç gerilmiyor.',
+  neden:'Sırt kalınlığı (orta trapez, rhomboid, arka omuz); bel yükü olmadan ağır kürek çekişi.',
+  alt:'T-Bar Row (göğüs destekli) ya da sehpaya dayanarak tek kol dambıl row.'},
+
+ latpd:{n:'Lat Pulldown (geniş tutuş)',k:'c',m:'sirt_lat',syn:['biceps','sirt_orta'],st:'latpd',eq:'m',o:'yuk',r:'8-12',rest:120,t:'ust',
+  kur:'Diz pedini uylukları sıkıca sabitleyecek şekilde ayarlayın. Barı omuz genişliğinin yaklaşık 1,5 katı genişlikte tutun. Gövde 10-15° geriye eğik ve sabit.',
+  yap:'Önce omuzları aşağı indirin, sonra dirsekleri kaburgalara doğru indirerek barı üst göğse çekin. Altta 1 sn sıkın. Dönüşte kolları tam uzatın, omuzları yukarı bırakıp sırtın yanlarını esnetin.',
+  tempo:'Çekiş ≈1 sn · altta 1 sn · dönüş 3 sn · üstte tam esneme',
+  odak:'Geçen döngüde iyi ilerledi (47 → 67,5 kg), ilerlemeye devam edin. Ancak kilo gövdeyi geriye savurmanızı gerektiriyorsa fazladır. Çekişi koltuk altında (sırtın yanlarında) hissetmelisiniz, ön kolda değil.',
+  ilerle:'3 setin hepsinde 12 tekrar → +5 / +10 lb.',
+  hata:'Gövdeyi 45° geriye yatırıp hareketi kürek çekişine çevirmek · Barı ense arkasına çekmek · Üstte esnemeden kısa tekrar.',
+  neden:'Sırt genişliği (latissimus); barfiksin makine karşılığı.',
+  alt:'Tek kol kablo pulldown ya da makine pulldown.'},
+
+ barfiks:{n:'Destekli Barfiks (net yük)',k:'c',m:'sirt_lat',syn:['biceps','sirt_orta'],st:'barfiks',eq:'a',o:'yuk',r:'6-10',rest:150,t:'ust',
+  kur:'Makinede destek ağırlığını seçin. Uygulamaya makinede yazan DESTEK değerini girin (makine lbs ise kartta birimi lbs yapın). Net yükü, yani vücut ağırlığı eksi desteği, uygulama Ölçüm sekmesindeki son kilonuza göre kendisi hesaplar. Tutuş omuz genişliğinden biraz geniş, avuçlar öne.',
+  yap:'Kollar tam düz asılarak başlayın. Önce omuzları aşağı çekin, sonra göğsü bara doğru götürerek çekin; çene barı geçsin. İnişte kollar tamamen düzleşene kadar inin.',
+  tempo:'Çekiş ≈1 sn · tepede kısa duraklama · iniş 2-3 sn',
+  odak:'Bu harekette ilerleme desteği azaltmaktır. Hedef desteği sıfırlamak, sonra kemerle ağırlık eklemek. Net yükünüz geçen döngüde 50\'den 60 kg\'a çıktı; doğru yoldasınız.',
+  ilerle:'3 setin hepsinde 10 tekrar → desteği 1 kademe azaltın (−5 / −10 lb). Destek sıfıra inince vücut ağırlığıyla 6-10 tekrar yapın; 10\'a ulaşınca kemerle ağırlık ekleyin. Kemer ağırlığını DESTEK alanına eksi olarak girin (−5 kg = kemerde +5 kg).',
+  hata:'Kollar düzleşmeden yarım tekrar · Bacak savurma · Destek yerine net yükü girmek (bu sürümde destek girilir, net yükü uygulama hesaplar).',
+  neden:'Sırt genişliği ve biceps; kendi vücut ağırlığını taşıma kuvveti.',
+  alt:'Lat Pulldown (aynı tekrar aralığı).'},
+
+ cabrow:{n:'Seated Cable Row (V-bar)',k:'c',m:'sirt_orta',syn:['sirt_lat','biceps','arka_omuz'],st:'cabrow',eq:'m',o:'his',r:'10-12',rest:120,t:'ust',
+  kur:'Ayaklar platformda, dizler hafif bükük. V-bar ile dar ve nötr tutuş. Gövde dik, göğüs yukarıda.',
+  yap:'Kolları tam uzatıp kürekleri öne bırakın; gövde en fazla 10° öne gelebilir. Sonra kürekleri geriye çekerek tutamağı göbeğe getirin, tepede 1 sn sıkın. Gövde dik kalır, geriye yatmak yok.',
+  tempo:'Çekiş ≈1 sn · tepede 1 sn · dönüş 3 sn',
+  odak:'Haftanın ikinci sırt hareketi; amaç orta sırtı tam açıklıkta çalıştırmak. Gövde sallanmaya başladıysa kilo fazladır. Hissi kürek kemiklerinin birbirine yaklaşmasında arayın.',
+  ilerle:'3 sette de 12 tekrar → +5 lb ya da 1 kademe.',
+  hata:'Geriye yatıp gövdeyle çekmek · Omuzları kulaklara kaldırmak · Kısa dönüş.',
+  neden:'Sırt kalınlığı ve orta trapez; barfiksten sonra yatay çekiş dengesi.',
+  alt:'Seated Row makinesi.'},
+
+ latmac:{n:'Lateral Raise Makinesi / Kablo Y-Raise',k:'i',m:'yan_omuz',syn:[],st:'latmac',eq:'m',o:'pompa',r:'12-20',rest:75,t:'ust',
+  kur:'Makine: koltuğu, omuz eklemi makinenin dönme ekseniyle aynı hizada olacak şekilde ayarlayın; pedler dirseğin hemen üstünde. Kablo Y-Raise: iki makara en altta, sağ elle sol kabloyu, sol elle sağ kabloyu tutun (çapraz).',
+  yap:'Dirsekleri yana ve hafif öne doğru kaldırın (Y şekli, gövdenin yaklaşık 30° önünde). Hareketi el değil dirsek yönetir. Omuz hizasına kadar çıkın, kısa durun, kontrollü inin. Omuzları kulaklara kaldırmayın, yoksa iş trapeze geçer.',
+  tempo:'Kaldırış 1-2 sn · tepede 1 sn · iniş 2-3 sn · altta yığına değmeden yeniden başlayın',
+  odak:'Yan omuz küçük bir kastır; burada ağır kilo, sallanma ve trapez hilesi demektir. Asıl ilerleme tekrar sayısından gelir. Setleri yanma noktasının ötesine, RIR hedefine kadar götürün. Blok 3\'te son set drop set.',
+  ilerle:'4 setin hepsinde 20 tekrar → en küçük kademe (+2,5 / +5 lb). Kabloda hep aynı makara.',
+  hata:'Gövdeyi sallayarak kaldırmak · Omuz hizasının çok üstüne çıkmak · Dirseği büküp ağırlığı kısaltmak · Elleri dirsekten yukarı çıkarmak.',
+  neden:'NEDEN DEĞİŞTİ: Dambıl lateral 9 hafta 7,5-10 kg arasında kaldı. 7,5\'ten 10 kg\'a geçiş %33\'lük bir sıçrama ve yan omuz bunu taşıyamıyor. Makine ve kablo 1-2,5 kg\'lık artışa izin verir ve hareketin altında da gerilim sağlar.',
+  alt:'Tek kol kablo lateral.'},
+
+ cablat:{n:'Cable Lateral Raise (tek kol)',k:'i',m:'yan_omuz',syn:[],st:'cable_low',eq:'m',o:'pompa',r:'12-20',rest:60,t:'ust',
+  kur:'Makara en altta. Kabloyu karşı elle tutun ve makineye yan durun; boştaki elle direğe tutunun. Kablo gövdenin önünden değil arkasından geçsin: alt noktada gerilim artar.',
+  yap:'Dirsek hafif bükük, kolu yana ve hafif öne kaldırın, omuz hizasında durun. İnişte kol gövdenin önüne kadar gelsin ama kablo gergin kalsın. Önce zayıf kol (genelde sol); diğer kol onun tekrar sayısını geçmesin.',
+  tempo:'Kaldırış 1-2 sn · tepede kısa duraklama · iniş 3 sn',
+  odak:'Ölçüt kilo değil, tekrar ve gerilim. Kablo hareketin en altında da yük verdiği için hafif kilo bile çok etkilidir. Yanmayı hissettiğiniz an setin asıl başladığı andır.',
+  ilerle:'3 setin hepsinde 20 tekrar → bir sonraki kademe (+2,5 / +5 lb). Kayıtlarınızda 4,5 → 10 kg; ilerliyor.',
+  hata:'Gövdeyi yana yatırarak kaldırmak · Kolu büküp çekiş yapmak · Hızlı iniş.',
+  neden:'Yan omuzun haftadaki ikinci seansı; omuz genişliğinin ana belirleyicisi.',
+  alt:'Lateral Raise Makinesi.'},
+
+ smp:{n:'Makine Shoulder Press',k:'c',m:'on_omuz',syn:['yan_omuz','triceps'],st:'smp',eq:'m',o:'yuk',r:'8-12',rest:120,t:'ust',
+  kur:'Koltuğu, tutamaklar omuz hizasında ya da biraz altında olacak şekilde ayarlayın. Sırt tamamen yaslı, ayaklar yerde. Tutuş omuz genişliğinin biraz dışında.',
+  yap:'Tutamakları dirsekler hafif önde (tam yanda değil) olacak şekilde yukarı itin, tepede kilitlemeden durun. İnişte tutamaklar çene hizasının altına gelene kadar inin.',
+  tempo:'İniş 2-3 sn · altta duraklama yok · çıkış ≈1 sn',
+  odak:'Makine dengeyi sağladığı için tükenişe güvenle yaklaşabilirsiniz; yük ilerlemesi önceliklidir. Bu hareket ön omuz ve triceps ağırlıklıdır; yan omuzun asıl işi lateral hareketlerdedir.',
+  ilerle:'3 setin hepsinde 12 tekrar → +5 / +10 lb.',
+  hata:'Beli koltuktan kaldırıp boşluk yapmak · Yarım iniş · Dirsekleri tamamen yana açmak (omuz sıkışması).',
+  neden:'NEDEN DEĞİŞTİ: Seated DB Shoulder Press 8 hafta 30 kg\'da kaldı. Makine küçük artışla ilerletir.',
+  alt:'Smith Shoulder Press (oturarak).'},
+
+ facep:{n:'Face Pull',k:'i',m:'arka_omuz',syn:['sirt_orta'],st:'cable_high',eq:'m',o:'his',r:'15-20',rest:60,t:'ust',
+  kur:'Makara alın hizasının biraz üstünde, halat takılı. Halatın uçlarını başparmaklar size bakacak şekilde tutun. Bir adım geri çekilin, gövde dik.',
+  yap:'Halatı yüzünüze doğru çekerken dirsekleri omuz hizasında yana açın. Sonda elleri kulakların yanına getirip kolları dışa çevirin (çift biceps pozu gibi). 1 sn tutun, kontrollü bırakın.',
+  tempo:'Çekiş ≈1 sn · sonda 1 sn dış rotasyon · dönüş 2 sn',
+  odak:'Arka omuz ve omzun dış rotator kasları ağır yük için değildir. Kilo, kolları dışa çevirmenizi engelliyorsa fazladır.',
+  ilerle:'2 setin hepsinde 20 tekrar → +5 lb. Kayıtlarınızda bu hareket kg ve lbs karışık girilmiş (13,6 kg = 30 lb); birimi lbs olarak sabitleyin.',
+  hata:'Gövdeyle geriye yatarak çekmek · Dirsekleri aşağıda tutup hareketi kürek çekişine çevirmek.',
+  neden:'Arka omuz omzu yandan ve arkadan dolgun gösterir; omuz sağlığını da destekler.',
+  alt:'Reverse Pec Deck.'},
+
+ rpd:{n:'Reverse Pec Deck',k:'i',m:'arka_omuz',syn:[],st:'pec',eq:'m',o:'pompa',r:'15-20',rest:60,t:'ust',
+  kur:'Pec deck makinesinde yüzünüz makineye dönük oturun ve tutamakları ters konuma alın. Koltuğu, kollar omuz hizasında ya da biraz altında olacak şekilde ayarlayın. Göğüs pede yaslı.',
+  yap:'Kollar hafif bükük ve sabit; kolları yana doğru geniş bir yay çizerek gövde hizasına kadar açın. Kürekleri birbirine sıkıştırmayın: hareket omuzdan gelsin, sırttan değil. Kontrollü dönün.',
+  tempo:'Açılış ≈1 sn · sonda 1 sn · dönüş 2-3 sn',
+  odak:'Hafif kilo, yüksek tekrar, sürekli gerilim. Arka omuzda yanma hissetmek hareketin doğru yapıldığını gösterir.',
+  ilerle:'3 setin hepsinde 20 tekrar → +5 lb.',
+  hata:'Kürekleri sıkıştırıp hareketi sırta yaptırmak · Kolları büküp ağırlığı kısaltmak · Savurma.',
+  neden:'Arka omuz izolasyonu; omzun üç boyutlu görünümü.',
+  alt:'Face Pull ya da kablo reverse fly.'},
+
+ bayes:{n:'Bayesian Cable Curl (tek kol)',k:'i',m:'biceps',syn:['onkol'],st:'cable2',eq:'m',o:'his',r:'10-15',rest:15,t:'ust',
+  kur:'Makara en altta, tek tutamak. Makineye sırtınızı dönün ve bir adım öne çıkın; çalışan kol gövdenin gerisinde kalsın, kablo gergin.',
+  yap:'Dirseği gövdenin hafif gerisinde sabit tutarak eli omza doğru bükün; tepede biceps\'i 1 sn sıkın. İnişte kolu tam düzleştirip biceps\'in gerildiğini hissedin. Önce sol, sonra sağ kol = 1 set.',
+  tempo:'Kaldırış ≈1 sn · tepede 1 sn · iniş 3 sn · altta tam gerilme',
+  odak:'Bu hareketin değeri, biceps\'i kol gövdenin gerisindeyken (uzamış pozisyonda) yüklemesidir. Ağır kilo dirseği öne kaydırır ve bu avantajı yok eder. Biceps\'e odaklanarak çalışmanın kol büyümesini artırdığı gösterilmiştir; burada his birinci, kilo ikinci sırada.',
+  ilerle:'3 setin hepsinde 15 tekrar (iki kol) → +2,5 / +5 lb.',
+  hata:'Dirseği öne kaydırmak · Gövdeyi öne eğip kolu kısaltmak · Altta kolu tam açmamak.',
+  neden:'NEDEN DEĞİŞTİ: Incline DB Curl 9 hafta 7,5-10 kg\'da kaldı. Bayesian aynı gerilmeyi verir, kablo küçük artışla ilerletir. SÜPERSET 1. hareket: bitince 15 sn içinde triceps\'e geçin.',
+  alt:'Incline Dumbbell Curl.'},
+
+ ohtri:{n:'Overhead Rope Triceps Extension',k:'i',m:'triceps',syn:[],st:'cable2',eq:'m',o:'his',r:'10-15',rest:90,t:'ust',
+  kur:'Makara en altta ya da bel hizasında, halat takılı. Makineye sırtınızı dönüp bir adım öne çıkın, bir ayak önde. Halat başınızın arkasında, dirsekler yukarıda.',
+  yap:'Dirsekler kulaklara yakın ve sabit; kolları başın üstüne doğru tam açın, sonda halatı hafifçe ayırın. İnişte elleri başın arkasına, triceps\'in uzun başı gerilene kadar indirin.',
+  tempo:'Açılış ≈1 sn · sonda 1 sn · iniş 3 sn · altta gerilme',
+  odak:'Triceps\'in en büyük bölümü (uzun baş) yalnızca kol baş üstündeyken tam gerilir; baş üstü uzatma pushdown\'a göre belirgin biçimde daha fazla büyüme sağlamıştır. Alttaki gerilmeyi hissedin; dirsekler açılıyorsa kilo fazladır.',
+  ilerle:'3 setin hepsinde 15 tekrar → +5 lb.',
+  hata:'Dirsekleri yana açmak · Gövdeyi öne yatırıp hareketi pushdown\'a çevirmek · Altta yarım iniş.',
+  neden:'SÜPERSET 2. hareket. Bitince yazılan süre kadar dinlenip curl\'e dönün.',
+  alt:'Tek kol dambıl overhead extension.'},
+
+ ezcurl:{n:'EZ / Barbell Curl',k:'i',m:'biceps',syn:['onkol'],st:'ez',eq:'f',o:'yuk',r:'8-12',rest:15,t:'ust',
+  kur:'EZ barı omuz genişliğinde, eğimli kısımdan tutun. Ayaklar kalça genişliğinde, dizler hafif bükük, dirsekler gövdenin yanında.',
+  yap:'Dirsekleri sabit tutarak barı göğse doğru bükün, tepede 1 sn sıkın; dirsekleri öne kaydırmayın. Kollar tamamen açılana kadar indirin.',
+  tempo:'Kaldırış ≈1 sn · tepede 1 sn · iniş 3 sn',
+  odak:'Haftanın ağır biceps hareketi; burada yük ilerlemesi önemlidir. Ama gövde savrulmaya başladıysa tekrar sayılmaz. Yalnızca son 1-2 tekrarda çok hafif bir gövde desteği kabul edilir.',
+  ilerle:'3 setin hepsinde 12 tekrar → +2,5 kg (her yana 1,25 kg).',
+  hata:'Belden savurmak · Dirsekleri öne getirip ön omzu kullanmak · Hızlı iniş.',
+  neden:'SÜPERSET 1. hareket. Skull crusher da AYNI EZ barla yapılır: tek istasyon, 15 sn geçiş.',
+  alt:'Düz barla kablo curl.'},
+
+ skull:{n:'Skull Crusher / EZ French Press',k:'i',m:'triceps',syn:[],st:'ez',eq:'f',o:'his',r:'8-12',rest:90,t:'ust',
+  kur:'Düz sehpada sırt üstü uzanın. EZ barı omuz genişliğinden dar tutun. Kollar tam dik değil, hafifçe başın gerisine eğik (uzun baş gerili kalır).',
+  yap:'Yalnızca dirsekleri bükerek barı alnın biraz gerisine indirin; dirsekler içe-dışa oynamasın. Altta triceps gerildiğinde açın, tepede tam kilitlemeden durun.',
+  tempo:'İniş 3 sn · altta kısa duraklama · açılış ≈1 sn',
+  odak:'Önce dirsek açısı ve tempo, form oturduktan sonra kilo. Dirsekte ağrı olursa kiloyu değil hareketi değiştirin (JM press ya da kablo).',
+  ilerle:'3 setin hepsinde 12 tekrar → +2,5 kg.',
+  hata:'Dirsekleri yana açmak · Barı yüze indirmek · Hareketi prese çevirmek.',
+  neden:'SÜPERSET 2. hareket. Uzun baş ve ağır triceps. Sonra yazılan süre kadar dinlenip curl\'e dönün.',
+  alt:'EZ French Press (oturarak, baş üstü) ya da JM Press.'},
+
+ hammer:{n:'Hammer Curl (çekiç)',k:'i',m:'biceps',syn:['onkol'],st:'cable1',eq:'m',o:'yuk',r:'10-15',rest:15,t:'ust',
+  kur:'Kablo istasyonunda makara en altta, halat takılı. Avuçlar birbirine bakar (nötr tutuş). Pushdown ile aynı istasyon.',
+  yap:'Dirsekler gövde yanında sabit; halatı omza doğru bükün, tepede halatı hafifçe ayırın. Kollar tam açılana kadar indirin.',
+  tempo:'Kaldırış ≈1 sn · tepede 1 sn · iniş 2-3 sn',
+  odak:'Brachialis ve ön kol ağır yüke iyi cevap verir; kiloyu ilerletin ama dirsek sabit kalsın. Kolu yandan kalın gösteren kas burasıdır.',
+  ilerle:'3 setin hepsinde 15 tekrar → +5 lb.',
+  hata:'Gövdeyi geriye atmak · Dirsekleri öne kaydırmak.',
+  neden:'SÜPERSET 1. hareket, kol finişeri. Kol haftada üç kez çalışır.',
+  alt:'Dambıl Hammer Curl.'},
+
+ pushd:{n:'V-Bar Pushdown',k:'i',m:'triceps',syn:[],st:'cable1',eq:'m',o:'pompa',r:'10-15',rest:75,t:'ust',
+  kur:'Aynı makarayı en üste alın, halatı V-bar ile değiştirin. Gövde hafif öne eğik, dirsekler gövdenin yanında.',
+  yap:'Dirsekleri sabit tutup barı kollar tam düzleşene kadar aşağı itin, altta triceps\'i 1 sn sıkın. Dirsekler kıpırdamadan bar göğüs hizasına dönsün.',
+  tempo:'İtiş ≈1 sn · altta 1 sn · dönüş 2 sn',
+  odak:'Günün son hareketi: kilo değil, kasta yanma ve sıkıştırma. Dirsekler yukarı-aşağı oynamaya başladıysa set bitmiştir.',
+  ilerle:'3 setin hepsinde 15 tekrar → +5 lb. Kayıtlarınızda hem 40-55 hem 20-27 aralığında değerler var; büyük olasılıkla farklı makine ya da birim. Birimi lbs sabitleyin, aynı makinede kalın.',
+  hata:'Omuzla bastırmak · Dirsekleri açıp hareketi göğüs hareketine çevirmek.',
+  neden:'SÜPERSET 2. hareket. Sonra yazılan süre kadar dinlenip hammer\'a dönün.',
+  alt:'Halat Pushdown.'},
+
+ squat:{n:'Barbell Back Squat / Hack Squat',k:'c',m:'quad',syn:['kalca'],st:'squat',eq:'f',o:'yuk',r:'6-8',rest:180,t:'alt',safe:1,
+  kur:'Barbell: bar trapezin üstünde, ayaklar omuz genişliğinde, burunlar hafif dışa. Güvenlik çubuklarını en alt noktanızın biraz altına ayarlayın. Hack squat: sırt pede yaslı, ayaklar platformun ortasında.',
+  yap:'Nefes alıp karnı sıkın. Kalça ve diz aynı anda bükülsün, dizler ayak uçlarının yönünde gitsin. Uyluk en az yere paralel olana kadar ya da belin yuvarlanmadığı en derin noktaya inin. Ayağın ortasından iterek kalkın, tepede nefes verin.',
+  tempo:'İniş 2-3 sn · altta duraklama yok · çıkış kontrollü ama güçlü',
+  odak:'Geçen döngünün en hızlı ilerleyen hareketi (45 → 77 kg). Yük ilerlemesi önceliklidir ama RIR hiçbir blokta 2\'nin altına inmez: ağır squat\'ta form bozulması sakatlık riskidir. "Hissetmeye" çalışmayın; derinliği ve tekniği her tekrarda aynı tutun.',
+  ilerle:'4 setin hepsinde 8 tekrar → +2,5 kg (barbell) ya da +5-10 kg (hack squat plakası).',
+  hata:'Kilo arttıkça derinliği azaltmak · Dizlerin içe kapanması · Topukların kalkması · Altta belin yuvarlanması.',
+  neden:'Ana bacak hareketi; quadriceps ve kalça.',
+  alt:'Hack Squat ya da Smith Squat.'},
+
+ lpmid:{n:'Leg Press (ayaklar orta-alt)',k:'c',m:'quad',syn:['kalca'],st:'lp',eq:'m',o:'yuk',r:'10-12',rest:150,t:'alt',
+  kur:'Ayaklar platformun orta-alt kısmında, omuz genişliğinde. Sırt ve kalça pede tamamen yaslı. Güvenlik kollarını açın.',
+  yap:'Platformu dizler yaklaşık 90° bükülene kadar (ya da kalçanın pedden kalkmadığı en derin noktaya) indirin, ayağın ortasından itin. Tepede dizleri kilitlemeyin.',
+  tempo:'İniş 3 sn · altta kısa duraklama · çıkış ≈1 sn',
+  odak:'Quadriceps\'e bel yükü olmadan ağır hacim. Derinlik aynı kaldığı sürece kilo ekleyin.',
+  ilerle:'3 setin hepsinde 12 tekrar → +10 kg (her yana 5 kg) ya da +20 lb.',
+  hata:'Kalçayı pedden kaldırmak (bel yuvarlanır) · Dizleri kilitlemek · Yarım tekrar.',
+  neden:'Bitince makineden kalkmayın: baldır burada yapılır (aynı istasyon, 15 sn ayak değişimi).',
+  alt:'Smith Squat ya da Pendulum Squat.'},
+
+ lphigh:{n:'Leg Press (ayaklar yüksek ve geniş)',k:'c',m:'kalca',syn:['ham','quad'],st:'lp',eq:'m',o:'yuk',r:'8-12',rest:150,t:'alt',
+  kur:'Ayaklar platformun ÜST ve GENİŞ kısmında, burunlar hafif dışa. Sırt ve kalça pede tamamen yaslı.',
+  yap:'Dizleri hafifçe dışa açarak derine inin; kalça pedden kalkmamalı. Topuklardan iterek kalkın. Bu ayak konumunda kalça ve hamstring baskın çalışır.',
+  tempo:'İniş 3 sn · altta 1 sn · çıkış ≈1 sn',
+  odak:'Deadlift\'in yerini tutan ana kalça hareketi: bel yüksüz, ağır yük. Kilo ilerletin.',
+  ilerle:'4 setin hepsinde 12 tekrar → +10 kg ya da +20 lb.',
+  hata:'Derinlik için kalçayı pedden kaldırmak · Ayak ucundan itmek.',
+  neden:'"Deadlift yok" kuralına uygun kalça ve hamstring yüklemesi.',
+  alt:'Smith Hip Thrust ya da Hip Thrust makinesi.'},
+
+ calfp:{n:"Leg Press'te Baldır (Calf Press)",k:'i',m:'baldir',syn:[],st:'lp',eq:'m',o:'pompa',r:'12-15',rest:60,t:'alt',
+  kur:'Leg press\'te ayak uçlarını platformun alt kenarına koyun, topuklar boşta kalsın. Dizler düz ama kilitli değil. Güvenlik kolları açık.',
+  yap:'Ayak bileklerini tamamen açarak platformu parmak uçlarıyla itin. Sonra topukları olabildiğince geriye bırakın: baldırda derin bir gerilme. Dizler hareket etmez.',
+  tempo:'İtiş ≈1 sn · tepede 1 sn · iniş 2 sn · en altta 2 sn gerilme',
+  odak:'Baldırda büyümeyi alt noktadaki gerilme getirir; sektirerek yapılan tekrar sayılmaz. Önce tam hareket açıklığı, kilo ikinci planda.',
+  ilerle:'4 setin hepsinde 15 tekrar → +10 kg ya da +20 lb.',
+  hata:'Dizleri büküp hareketi leg press\'e çevirmek · Altta beklemeden sektirmek · Yarım açıklık.',
+  neden:'Baldır seansın sonunda sürekli atlanıyordu; artık leg press\'ten kalkmadan yapılıyor.',
+  alt:'Standing Calf Raise.'},
+
+ scalf:{n:'Seated Calf Raise',k:'i',m:'baldir',syn:[],st:'scalf',eq:'m',o:'pompa',r:'12-20',rest:60,t:'alt',
+  kur:'Diz pedini uyluğun ön üst kısmına sıkıca oturtun; ayak uçları platformun kenarında.',
+  yap:'Parmak uçlarına tamamen yükselin, tepede 1 sn sıkın. Topukları en aşağı bırakıp 2 sn gerilmede bekleyin.',
+  tempo:'Kalkış ≈1 sn · tepede 1 sn · iniş 2 sn · altta 2 sn',
+  odak:'Oturarak versiyon baldırın soleus kısmını çalıştırır. Yanma erken gelir; setleri RIR hedefine kadar sürdürün.',
+  ilerle:'Setlerin hepsinde üst sınıra ulaşınca +5-10 lb ya da 1 plaka.',
+  hata:'Sektirmek · Yarım açıklık.',
+  neden:'Günün ilk hareketi: ısınmanın parçası olur ve atlanmaz.',
+  alt:'Leg Press\'te Baldır.'},
+
+ legext:{n:'Leg Extension',k:'i',m:'quad',syn:[],st:'legext',eq:'m',o:'his',r:'10-15',rest:90,t:'alt',
+  kur:'Sırt pedini, diz eklemi makinenin dönme ekseniyle hizalı olacak şekilde ayarlayın; ayak pedi ayak bileğinin hemen üstünde. Yan tutamakları sıkı tutun, kalça koltuktan kalkmasın.',
+  yap:'Dizleri tamamen açarak kaldırın, tepede quadriceps\'i 1 sn sıkın. Kontrollü olarak dizler 90°\'den fazla bükülene kadar indirin.',
+  tempo:'Kaldırış ≈1 sn · tepede 1 sn · iniş 3 sn',
+  odak:'Quadriceps izolasyonu: tepede sıkıştırma ve yavaş iniş. Kilo 6 haftadır 27-31 kg arasında; önce tüm setlerde 15 tekrar, sonra 1 kademe.',
+  ilerle:'3 setin hepsinde 15 tekrar → 1 kademe (+5 / +10 lb).',
+  hata:'Kalçayı koltuktan kaldırmak · Ağırlığı savurmak · Yarım iniş.',
+  neden:'Quadriceps\'in rectus femoris kısmını squat\'tan farklı açıdan çalıştırır.',
+  alt:'Sissy squat (vücut ağırlığıyla).'},
+
+ slc:{n:'Seated Leg Curl',k:'i',m:'ham',syn:[],st:'slc',eq:'m',o:'his',r:'10-12',rest:90,t:'alt',
+  kur:'Diz eklemi makinenin dönme ekseniyle hizalı; uyluk pedi sıkı, ayak pedi aşil tendonunun hemen üstünde. Gövdeyi hafif öne eğin, hamstring daha çok gerilir.',
+  yap:'Topukları altınıza doğru tamamen bükün, 1 sn sıkın. Kontrollü olarak dizler neredeyse düzleşene kadar geri bırakın.',
+  tempo:'Büküş ≈1 sn · sonda 1 sn · dönüş 3 sn',
+  odak:'Hamstring makinede ağır yüke iyi cevap verir, kilo ilerletin; ama dönüş yavaş olmalı. Oturarak versiyon hamstring\'i uzamış pozisyonda çalıştırır.',
+  ilerle:'3 setin hepsinde 12 tekrar → +5 / +10 lb.',
+  hata:'Kalçayı koltuktan kaldırmak · Hızlı dönüş · Yarım büküş.',
+  neden:'Oturarak leg curl, yatarak versiyona göre daha fazla hamstring büyümesi sağlamıştır (Maeo ve ark., 2021).',
+  alt:'Lying Leg Curl.'},
+
+ llc:{n:'Lying Leg Curl',k:'i',m:'ham',syn:[],st:'llc',eq:'m',o:'his',r:'10-12',rest:90,t:'alt',
+  kur:'Yüzüstü uzanın; diz kapakları pedin hemen dışında, ayak pedi aşilin üstünde. Kalça pede bastırılmış.',
+  yap:'Topukları kalçaya doğru bükün, tepede 1 sn durun. Çok yavaş indirin.',
+  tempo:'Büküş ≈1 sn · tepede 1 sn · iniş 4 sn',
+  odak:'Günün ana hamstring hareketi; taze başladığı için kiloyu ilerletin. Kalça pedden kalkıyorsa kilo fazladır.',
+  ilerle:'Setlerin hepsinde 12 tekrar → +5 / +10 lb.',
+  hata:'Kalçayı kaldırmak · Belde boşluk yapmak.',
+  neden:'Geçen döngüde istikrarlı ilerledi (30 → 37,5 kg).',
+  alt:'Seated Leg Curl.'},
+
+ bext:{n:'45° Back Extension (kalça odaklı)',k:'c',m:'kalca',syn:['ham'],st:'bext',eq:'f',o:'his',r:'10-15',rest:90,t:'alt',
+  kur:'Kalça pedini, leğen kemiği pedin hemen üst kenarında olacak şekilde ayarlayın. Ayak uçları hafif dışa. Ağırlık alanına yalnızca göğse tuttuğunuz plakayı girin; plakasızsanız 0.',
+  yap:'Sırt düz kalsın; hareketi KALÇADAN başlatarak inin. Sonra kalçayı sıkarak gövdeyi bacaklarla düz bir çizgiye getirin. Tepede kalçayı 2 sn sıkın, beli geriye bükmeyin.',
+  tempo:'İniş 2 sn · kalkış ≈1 sn · tepede 2 sn',
+  odak:'Önce kalçayı hissetmeyi öğrenin; tüm setlerde 15 tekrara ulaşınca plaka ekleyin.',
+  ilerle:'3 setin hepsinde 15 tekrar → +5 kg plaka.',
+  hata:'Hareketi belden yapmak · Tepede aşırı geriye bükülmek · Hızlı sallanma.',
+  neden:'Bel yüksüz kalça menteşesi; deadlift\'in yerine.',
+  alt:'Cable Pull-Through.'},
+
+ abs:{n:'Karın Makinesi (Abdominal Crunch)',k:'i',m:'karin',syn:[],st:'abs',eq:'m',o:'his',r:'10-15',rest:60,t:'alt',
+  kur:'Göğüs pedleri ya da tutamaklar omuz hizasında, ayaklar sabit.',
+  yap:'Kaburgaları kalçaya yaklaştırarak omurgayı yuvarlayın; amaç belden bükülmek değil, karnı "katlamak". Altta 1 sn sıkın, kontrollü dönün.',
+  tempo:'Büküş ≈1 sn · altta 1 sn · dönüş 2 sn',
+  odak:'Kollarla çekmeyin; işi karın kası yapmalı. Tüm setlerde 15 tekrarı geçince kilo artırın.',
+  ilerle:'Tüm setlerde 15 tekrar → +5 / +10 lb.',
+  hata:'Kollarla çekmek · Kalçadan bükülmek.',
+  neden:'Karın, öğünden en az 2 saat sonra ve antrenmanın sonunda yapılır (reflü).',
+  alt:'Kablo crunch (diz üstünde).'}
+};
+/* programda kullanım: P('incdb',{s:4,pr:1,blk:'GÖĞÜS'}) → hareketin kopyası + o güne özel ayar */
+const P=(id,o)=>Object.assign({id:id},EX[id],o||{});
+
+/* ===== 4 GÜN · ÜST / ALT ===== PZT Üst A · SAL Alt A · PER Üst B · CUM Alt B */
+const U4A=[
+ P('incdb',{s:4,pr:1,blk:'GÖĞÜS'}),
+ P('pec',{s:3,blk:'GÖĞÜS'}),
+ P('csrow',{s:4,blk:'SIRT'}),
+ P('latpd',{s:3,blk:'SIRT'}),
+ P('latmac',{s:4,pr:1,blk:'OMUZ'}),
+ P('facep',{s:2,blk:'OMUZ'}),
+ P('bayes',{s:3,pr:1,ss:'A1',blk:'KOL'}),
+ P('ohtri',{s:3,pr:1,ss:'A2',blk:'KOL'})
+];
+const L4A=[
+ P('squat',{s:4,blk:'QUADRICEPS'}),
+ P('legext',{s:3,blk:'QUADRICEPS'}),
+ P('lpmid',{s:3,blk:'QUADRICEPS'}),
+ P('calfp',{s:4,blk:'BALDIR'}),
+ P('slc',{s:3,blk:'HAMSTRING'}),
+ P('abs',{s:3,blk:'KARIN'})
+];
+const U4B=[
+ P('cpress',{s:4,pr:1,blk:'GÖĞÜS'}),
+ P('incsm',{s:3,blk:'GÖĞÜS'}),
+ P('barfiks',{s:3,blk:'SIRT'}),
+ P('cabrow',{s:3,blk:'SIRT'}),
+ P('smp',{s:3,blk:'OMUZ'}),
+ P('cablat',{s:3,pr:1,blk:'OMUZ'}),
+ P('ezcurl',{s:3,pr:1,ss:'A1',blk:'KOL'}),
+ P('skull',{s:3,pr:1,ss:'A2',blk:'KOL'})
+];
+const L4B=[
+ P('scalf',{s:4,blk:'BALDIR'}),
+ P('llc',{s:4,blk:'KALÇA & HAMSTRING'}),
+ P('lphigh',{s:4,blk:'KALÇA & HAMSTRING'}),
+ P('bext',{s:3,blk:'KALÇA & HAMSTRING'}),
+ P('rpd',{s:3,blk:'ARKA OMUZ & KOL'}),
+ P('hammer',{s:3,ss:'A1',blk:'ARKA OMUZ & KOL'}),
+ P('pushd',{s:3,ss:'A2',blk:'ARKA OMUZ & KOL'}),
+ P('abs',{s:2,blk:'KARIN'})
 ];
 
-/* ÜST B (4 gün) — orta göğüs · sırt genişliği · omuz · kol */
-const UB4=[
- X('Chest Press Machine / Flat DB Press',4,'6-10','c',150,'ust','GÖĞÜS',
-  'Haftanın ikinci ana göğüs hareketi ve geçen döngüde en istikrarlı ilerleyen hareketiniz. Sap göğüs hizasında, en altta tam gerilme, tepede kilitleme yok. 4 sette de 10 olunca artırın.',{pr:1}),
- X('Dips (ağırlıklı / destekli)',3,'8-12','c',120,'ust','GÖĞÜS',
-  'Kayda NET YÜKÜ girin: vücut ağırlığı − destek (ya da vücut ağırlığı + kemer). Son kayıtta 15-20 tekrar var; bu aralığın çok üstü. Desteği azaltın veya kemere ağırlık takın ki 8-12\'ye inin. Gövde hafif öne eğik; omuzda batma olursa derinliği azaltın.'),
- X('Destekli Barfiks (net yük)',3,'6-10','c',120,'ust','SIRT',
-  'Net yük = vücut ağırlığı − destek. Geçen döngüde 50 → 60 kg net: destek azalıyor, doğru yoldasınız. Hedef desteği sıfırlamak. En altta tam esneme, tepede göğüs bara.',{pr:1}),
- X('Seated Cable Row (V-bar)',3,'10-12','c',120,'ust','SIRT',
-  'Dar tutuş, barı göbeğe doğru çekin, tepede 1 sn sıkıştırın. Gövdeyi geriye atarak momentum yaratmayın. Her hafta aynı kablo istasyonu.'),
- X('Makine Shoulder Press',3,'6-10','c',120,'ust','OMUZ',
-  'NEDEN DEĞİŞTİ: Seated DB Shoulder Press 8 hafta 30 kg\'da kaldı (Hf 1: 30×12 → Hf 8: 30×9). Makine dengeyi ortadan kaldırır; tükenişe güvenle yaklaşılır ve küçük artışla ilerlenir. Sırt tamamen yaslı. Makine yoksa Smith Shoulder Press.'),
- X('Cable Lateral Raise (tek kol)',3,'12-20','i',45,'ust','OMUZ',
-  'İlerleyen bir hareket (4,5 → 10 kg). Makara en altta, hareketi gövdenin arkasından başlatın, omuz hizasını geçmeyin. Önce zayıf kol.',{pr:1}),
- X('Reverse Pec Deck',3,'15-20','i',60,'ust','OMUZ',
-  'Programa geri döndü: arka omuz, omzun dolgunluğunu belirleyen bölüm. Kollar hafif bükük ve sabit, kürekleri sıkıştırmadan kollarla açın.'),
- X('EZ / Barbell Curl',3,'8-12','i',20,'ust','KOL',
-  'SÜPERSET A1. Skull crusher da AYNI EZ barla yapılır: tek istasyon, sıfır bekleme. İniş 3 sn, dirsekler gövdeye sabit, savurma yok.',{pr:1,ss:'A1'}),
- X('Skull Crusher / EZ French Press',3,'8-12','i',90,'ust','KOL',
-  'SÜPERSET A2. Aynı EZ bar. Sehpada sırt üstü, bar alnın biraz gerisine iner; uzun baş gerilir. Dirsekte ağrı olursa JM press. Sonra 90 sn dinlenip curl\'e dönün.',{ss:'A2'})
+/* ===== 3 GÜN · FULL BODY ===== her kas haftada 2-3 kez · bacak her gün ama düşük dozda */
+const F3A=[
+ P('incdb',{s:4,pr:1,blk:'GÖĞÜS'}),
+ P('squat',{s:3,blk:'BACAK'}),
+ P('slc',{s:3,blk:'BACAK'}),
+ P('csrow',{s:4,blk:'SIRT'}),
+ P('latmac',{s:4,pr:1,blk:'OMUZ'}),
+ P('bayes',{s:3,pr:1,ss:'A1',blk:'KOL'}),
+ P('ohtri',{s:3,pr:1,ss:'A2',blk:'KOL'})
 ];
-
-/* ÜST B (3 gün) — Alt B'deki kol süperseti burada; ters pec deck yer açmak için çıkar */
-const UB3=UB4.filter(e=>e.n!=='Reverse Pec Deck').concat([
- X('Hammer Curl (çekiç)',3,'10-12','i',20,'ust','KOL',
-  'SÜPERSET B1. Halatla, kablo istasyonunda (pushdown ile aynı makara). Brachialis ve ön kol, kolu kalın gösterir.',{ss:'B1'}),
- X('V-Bar Pushdown',3,'10-12','i',60,'ust','KOL',
-  'SÜPERSET B2. Aynı makarada halatı V-bar ile değiştirin. Dirsek gövdeye sabit, altta 1 sn sıkıştırma. Sonra 60 sn dinlenip hammer\'a dönün.',{ss:'B2'})
-]);
-
-/* ALT A — quadriceps · hamstring · baldır · karın */
-const LA=[
- X('Barbell Back Squat / Hack Squat',4,'6-8','c',180,'alt','QUADRICEPS',
-  'Geçen döngünün en hızlı ilerleyen hareketi (45 kg × 10 → 77 kg × 8). Ana bacak hareketi olarak kalıyor. RIR 2\'nin altına inilmez, bloklar ilerlese bile. 4 seti AYNI ağırlıkla yapın; 4 sette de 8 olunca +2,5 kg.',{safe:1}),
- X('Leg Extension',3,'10-15','i',75,'alt','QUADRICEPS',
-  'Squat\'tan hemen sonra. 6 haftadır 27-31 kg\'da: bu döngüde aralık 10-15; 15\'e ulaştığınız haftanın ardından 1 plaka artırın. Aynı makine, aynı koltuk ayarı, tepede 1 sn sıkıştırma.'),
- X('Leg Press (ayaklar orta-alt)',3,'10-12','c',120,'alt','QUADRICEPS',
-  'Ayaklar platformun orta-alt kısmında, omuz genişliğinde: quadriceps baskın. En altta dizler ~90°, kalça platformdan kalkmasın. Bitince makineden kalkmayın: baldır burada yapılır.'),
- X("Leg Press'te Baldır (Calf Press)",4,'12-15','i',45,'alt','BALDIR',
-  'NEDEN BURADA: Hf 6-8 arasında baldır 6 seansın 4\'ünde hiç yapılmadı; hep seansın sonundaydı. Artık leg press\'ten kalkmadan, aynı makinede. Ayak uçları platformun alt kenarında, dizler düz; en altta 2 sn gerilme, tepede 1 sn sıkıştırma.'),
- X('Seated Leg Curl',3,'10-12','i',75,'alt','HAMSTRING',
-  'Oturarak leg curl hamstring\'i uzamış pozisyonda çalıştırır ve yatarak versiyona göre daha fazla büyüme sağlamıştır (Maeo ve ark., 2021). Tepede 1 sn, iniş 3 sn.'),
- X('Karın Makinesi (Abdominal Crunch)',3,'12-15','i',45,'alt','KARIN',
-  'Günün tek karın hareketi; 3 set, 4 dakika. Kaburgayı kalçaya yaklaştırarak, belden bükmeden.')
+const F3B=[
+ P('cpress',{s:4,pr:1,blk:'GÖĞÜS'}),
+ P('lpmid',{s:3,blk:'BACAK & BALDIR'}),
+ P('calfp',{s:3,blk:'BACAK & BALDIR'}),
+ P('barfiks',{s:3,blk:'SIRT'}),
+ P('cablat',{s:3,pr:1,blk:'OMUZ'}),
+ P('ezcurl',{s:3,pr:1,ss:'A1',blk:'KOL'}),
+ P('skull',{s:3,pr:1,ss:'A2',blk:'KOL'}),
+ P('abs',{s:3,blk:'KARIN'})
 ];
-
-/* ALT B — baldır (başta) · hamstring · kalça · kol finişeri · karın */
-const LB=[
- X('Seated Calf Raise',4,'12-15','i',45,'alt','BALDIR',
-  'Günün İLK hareketi, ısınmanın parçası: sona bırakılınca atlanıyor. Oturarak versiyon soleus\'u çalıştırır. En altta 2 sn gerilme.'),
- X('Lying Leg Curl',4,'10-12','i',75,'alt','KALÇA & HAMSTRING',
-  'Bugünün ana hamstring hareketi, taze başlıyor. Geçen döngüde istikrarlı ilerledi (30 → 37,5 kg). İniş 4 sn, kalça pedden kalkmaz.'),
- X('Leg Press (ayaklar yüksek ve geniş)',4,'8-12','c',150,'alt','KALÇA & HAMSTRING',
-  'Deadlift\'in yerini tutan ana hareket; bel yüksüz. Ayaklar platformun üst ve geniş kısmında: kalça ve hamstring baskın. Kalça platformdan kalkmayacak kadar derine inin.'),
- X('45° Back Extension (kalça odaklı)',3,'10-15','c',90,'alt','KALÇA & HAMSTRING',
-  'Bel yükü olmadan kalça menteşesi. Hareketi belden değil kalçadan başlatın, tepede kalçayı 2 sn sıkın, beli geriye bükmeyin. 15 tekrara ulaşınca göğse plaka tutun.'),
- X('Hammer Curl (çekiç)',3,'10-12','i',20,'ust','KOL',
-  'SÜPERSET A1 · kol finişeri. Kol haftada üçüncü kez çalışır; öncelikli kasa sık dokunmanın en ucuz yolu. Halatla, kablo istasyonunda (pushdown ile aynı makara).',{ss:'A1'}),
- X('V-Bar Pushdown',3,'10-12','i',60,'ust','KOL',
-  'SÜPERSET A2. Aynı makarada halatı V-bar ile değiştirin. Dirsek gövdeye sabit, altta 1 sn sıkıştırma. Sonra 60 sn dinlenip hammer\'a dönün.',{ss:'A2'}),
- X('Karın Makinesi (Abdominal Crunch)',3,'12-15','i',45,'alt','KARIN',
-  'Haftanın 2. karın günü. Kaburgayı kalçaya yaklaştırarak, belden bükmeden.')
-];
-
-/* 3 GÜN — tek ve tam bacak günü */
-const LF=[
- LA[0], LA[1],
- X('Leg Press (ayaklar yüksek ve geniş)',3,'10-12','c',120,'alt','QUADRICEPS',
-  'Ayaklar platformun üst ve geniş kısmında: squat\'ın ardından kalça ve hamstring\'e de yüklenir. Kalça platformdan kalkmasın. Bitince makineden kalkmayın: baldır burada yapılır.'),
- LA[3],
- X('Seated Leg Curl',4,'10-12','i',75,'alt','KALÇA & HAMSTRING',
-  'Haftada tek bacak günü olduğu için 4 set. Oturarak leg curl hamstring\'i uzamış pozisyonda çalıştırır (Maeo ve ark., 2021). Tepede 1 sn, iniş 3 sn.'),
- X('45° Back Extension (kalça odaklı)',3,'10-15','c',90,'alt','KALÇA & HAMSTRING',
-  'Deadlift yerine kalça menteşesi. Hareketi kalçadan başlatın, tepede kalçayı 2 sn sıkın, beli geriye bükmeyin.'),
- LA[5]
+const F3C=[
+ P('scalf',{s:3,blk:'BALDIR'}),
+ P('incsm',{s:3,blk:'GÖĞÜS & ARKA OMUZ'}),
+ P('pec',{s:3,ss:'A1',rest:15,blk:'GÖĞÜS & ARKA OMUZ'}),
+ P('rpd',{s:3,ss:'A2',rest:90,blk:'GÖĞÜS & ARKA OMUZ'}),
+ P('legext',{s:3,blk:'BACAK'}),
+ P('llc',{s:3,blk:'BACAK'}),
+ P('latpd',{s:3,blk:'SIRT'}),
+ P('cabrow',{s:3,blk:'SIRT'}),
+ P('hammer',{s:3,ss:'B1',blk:'KOL'}),
+ P('pushd',{s:3,ss:'B2',blk:'KOL'})
 ];
 
 const PROGRAMS={
  '4g':{name:'4 Günlük · Üst/Alt · Hacim',days:[
-  {id:'u1',short:'PZT',dow:1,name:'Üst A',sub:'Üst göğüs → Sırt → Omuz → Kol',ex:UA},
-  {id:'a1',short:'SAL',dow:2,name:'Alt A',sub:'Quadriceps → Baldır → Hamstring → Karın',ex:LA},
-  {id:'u2',short:'PER',dow:4,name:'Üst B',sub:'Orta göğüs → Sırt → Omuz → Kol',ex:UB4},
-  {id:'a2',short:'CUM',dow:5,name:'Alt B',sub:'Baldır → Kalça & Hamstring → Kol → Karın',ex:LB}]},
- '3g':{name:'3 Günlük · Üst/Alt/Üst · Hacim',days:[
-  {id:'t1',short:'PZT',dow:1,name:'Üst A',sub:'Üst göğüs → Sırt → Omuz → Kol',ex:UA},
-  {id:'t2',short:'ÇAR',dow:3,name:'Alt',sub:'Quadriceps → Baldır → Hamstring → Karın',ex:LF},
-  {id:'t3',short:'CUM',dow:5,name:'Üst B',sub:'Orta göğüs → Sırt → Omuz → Kol',ex:UB3}]}
+  {id:'u1',short:'PZT',dow:1,name:'Üst A',sub:'Üst göğüs → Sırt → Omuz → Kol',ex:U4A},
+  {id:'a1',short:'SAL',dow:2,name:'Alt A',sub:'Quadriceps → Baldır → Hamstring → Karın',ex:L4A},
+  {id:'u2',short:'PER',dow:4,name:'Üst B',sub:'Göğüs → Sırt → Omuz → Kol',ex:U4B},
+  {id:'a2',short:'CUM',dow:5,name:'Alt B',sub:'Baldır → Kalça & Hamstring → Arka omuz & Kol',ex:L4B}]},
+ '3g':{name:'3 Günlük · Full Body · Hacim',days:[
+  {id:'f1',short:'PZT',dow:1,name:'Full A',sub:'Göğüs → Squat → Sırt → Omuz → Kol',ex:F3A},
+  {id:'f2',short:'ÇAR',dow:3,name:'Full B',sub:'Göğüs → Leg Press → Barfiks → Omuz → Kol',ex:F3B},
+  {id:'f3',short:'CUM',dow:5,name:'Full C',sub:'Baldır → Göğüs → Bacak → Sırt → Kol',ex:F3C}]}
 };
 
 const DIET = {
@@ -514,7 +824,7 @@ let MEM=null, useLS=true;
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ useLS=false; }
 function load(){
   try{ const r = useLS ? localStorage.getItem(KEY) : MEM; if(r) return JSON.parse(r); }catch(e){}
-  return {logs:{},meas:{},diet:{},supp:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1};
+  return {logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1};
 }
 function save(){
   const s=JSON.stringify(S);
@@ -626,6 +936,36 @@ function migrate6(){
 }
 migrate6();
 
+/* ---------- v7 KAYIT GÖÇÜ: v6 hareket sırası → v7 (ada göre) ----------
+   4 gün günleri aynı (u1,a1,u2,a2); 3 gün Üst/Alt/Üst (t1,t2,t3) → Full Body (f1,f2,f3).
+   Her kayıt hareket adına göre aynı programdaki yeni yerine taşınır. Aynı programda artık olmayan
+   hareketlerin (ör. Dips) kayıtları S.bak_v6'da durur ve S.ref7'de "son kayıt" referansı olarak kalır. */
+const V6T={"4g|u1":[["Incline Dumbbell Press (30°)",4],["Incline Smith / Makine Press (30°)",3],["Pec Deck / Üst Göğüs Fly",3],["Chest Supported Row / T-Bar Row",4],["Lat Pulldown (geniş tutuş)",3],["Lateral Raise Makinesi / Kablo Y-Raise",4],["Face Pull",2],["Bayesian Cable Curl (tek kol)",4],["Overhead Rope Triceps Extension",4]],"4g|a1":[["Barbell Back Squat / Hack Squat",4],["Leg Extension",3],["Leg Press (ayaklar orta-alt)",3],["Leg Press'te Baldır (Calf Press)",4],["Seated Leg Curl",3],["Karın Makinesi (Abdominal Crunch)",3]],"4g|u2":[["Chest Press Machine / Flat DB Press",4],["Dips (ağırlıklı / destekli)",3],["Destekli Barfiks (net yük)",3],["Seated Cable Row (V-bar)",3],["Makine Shoulder Press",3],["Cable Lateral Raise (tek kol)",3],["Reverse Pec Deck",3],["EZ / Barbell Curl",3],["Skull Crusher / EZ French Press",3]],"4g|a2":[["Seated Calf Raise",4],["Lying Leg Curl",4],["Leg Press (ayaklar yüksek ve geniş)",4],["45° Back Extension (kalça odaklı)",3],["Hammer Curl (çekiç)",3],["V-Bar Pushdown",3],["Karın Makinesi (Abdominal Crunch)",3]],"3g|t1":[["Incline Dumbbell Press (30°)",4],["Incline Smith / Makine Press (30°)",3],["Pec Deck / Üst Göğüs Fly",3],["Chest Supported Row / T-Bar Row",4],["Lat Pulldown (geniş tutuş)",3],["Lateral Raise Makinesi / Kablo Y-Raise",4],["Face Pull",2],["Bayesian Cable Curl (tek kol)",4],["Overhead Rope Triceps Extension",4]],"3g|t2":[["Barbell Back Squat / Hack Squat",4],["Leg Extension",3],["Leg Press (ayaklar yüksek ve geniş)",3],["Leg Press'te Baldır (Calf Press)",4],["Seated Leg Curl",4],["45° Back Extension (kalça odaklı)",3],["Karın Makinesi (Abdominal Crunch)",3]],"3g|t3":[["Chest Press Machine / Flat DB Press",4],["Dips (ağırlıklı / destekli)",3],["Destekli Barfiks (net yük)",3],["Seated Cable Row (V-bar)",3],["Makine Shoulder Press",3],["Cable Lateral Raise (tek kol)",3],["EZ / Barbell Curl",3],["Skull Crusher / EZ French Press",3],["Hammer Curl (çekiç)",3],["V-Bar Pushdown",3]]};
+function migrate7(){
+  if(S.mig7) return;
+  const old=S.logs||{}, neu={}, ref={};
+  let tasinan=0, arsiv=0;
+  const loc=(pk,name)=>{ const out=[]; PROGRAMS[pk]&&PROGRAMS[pk].days.forEach(d=>d.ex.forEach((e,i)=>{ if(e.n===name) out.push({did:d.id,ei:i}); })); return out; };
+  for(const k in old){
+    const p=k.split('|'), row=(V6T[p[0]+'|'+p[1]]||[])[+p[3]];
+    const L=row?loc(p[0],row[0]):[];
+    const pick=L.find(x=>x.did===p[1])||L[0];
+    const nk=pick?[p[0],pick.did,p[2],pick.ei,p[4]].join('|'):null;
+    if(nk && !neu[nk]){ neu[nk]=old[k]; tasinan++; continue; }
+    arsiv++;
+    const o=old[k]; if(row && o && o.kg>0){ const w=+p[2], r=ref[row[0]];
+      if(!r||w>r.w){ ref[row[0]]={w:w,sets:[]}; }
+      if(ref[row[0]].w===w) ref[row[0]].sets[+p[4]]={kg:o.kg,reps:o.reps}; }
+  }
+  for(const n in ref) ref[n].sets=ref[n].sets.filter(Boolean);
+  S.bak_v6=old; S.logs=neu; S.ref7=ref; S.mig7=1; S.rest=null;
+  if(!S.units) S.units={};
+  S.ui=S.ui||{prog:'4g',week:1}; S.ui.day=null;
+  save();
+  console.log('v7 göç: '+tasinan+' kayıt taşındı, '+arsiv+' kayıt arşivde');
+  return {tasinan:tasinan, arsiv:arsiv};
+}
+migrate7();
 
 /* ---------- YARDIMCI ---------- */
 const $=id=>document.getElementById(id);
@@ -665,11 +1005,52 @@ function lastRec(ei){
     if(any) return {w:w, sets:sets,
       lab: (w===S.ui.week-1 && here(s)) ? 'Geçen hafta' : 'Hf '+w+(s.pk!==S.ui.prog?(s.pk==='4g'?' · 4 gün':' · 3 gün'):'')};
   }
+  const r7=(S.ref7||{})[e.n];
+  if(r7 && r7.sets && r7.sets.length) return {w:r7.w, sets:r7.sets, lab:'Hf '+r7.w+' · önceki program'};
   const b=(S.base6||{})[e.n];
   return b ? {w:0, sets:b.sets, lab:'Önceki döngü'} : null;
 }
 function lk(ei,si,w){ return [S.ui.prog,S.ui.day,(w===undefined?S.ui.week:w),ei,si].join('|'); }
 function get(ei,si,w){ return S.logs[lk(ei,si,w)]||{}; }
+
+/* ---------- BİRİM (kg / lbs) ----------
+   Kayıtta ağırlık her zaman kg olarak saklanır (o.kg). Lbs ile girilen değerin kendisi o.lb'de durur,
+   böylece makinede yazan sayı birebir geri gösterilir. Birim hareket bazında seçilir (S.units[ad]);
+   seçilmemişse makine/kablo → Ayarlar'daki makine birimi, serbest ağırlık → serbest ağırlık birimi. */
+const LB=0.45359237;
+function unitOf(e){ const u=(S.units||{})[e.n]; if(u) return u; return e.eq==='f' ? (ST().uF||'kg') : (ST().uM||'lb'); }
+function togUnit(ei){ const e=curDay().ex[ei]; S.units=S.units||{}; S.units[e.n]=unitOf(e)==='lb'?'kg':'lb'; save(); renderW();
+  toast(e.n.split(' (')[0]+': '+(S.units[e.n]==='lb'?'lbs':'kg')); }
+const r1=v=>Math.round(v*10)/10;
+function snapLb(x){ const a=Math.round(x/5)*5; if(Math.abs(x-a)<=1.6) return a;
+  const b=Math.round(x/2.5)*2.5; if(Math.abs(x-b)<=0.8) return b; return Math.round(x*2)/2; }
+const nf=v=>String(v).replace('.',',');
+/* vücut ağırlığı: seçili haftaya kadar girilen son tartı, yoksa başlangıç ölçümü */
+function bodyW(){ const m=S.meas||{}; for(let w=S.ui.week; w>=1; w--) if(m[w]&&m[w].kilo>0) return m[w].kilo;
+  return (m[0]&&m[0].kilo>0) ? m[0].kilo : null; }
+/* destekli harekette destek (kg): yeni kayıtta o.as, eski kayıtta vücut ağırlığı − net */
+function astKg(o){ if(o.as!==undefined) return o.as; const bw=bodyW(); return (o.kg!==undefined&&bw)? bw-o.kg : undefined; }
+/* giriş kutusunda gösterilecek değer */
+function wOut(e,o){
+  const u=unitOf(e);
+  if(e.eq==='a'){ const a=astKg(o); if(a===undefined) return '';
+    if(u==='lb') return o.lb!==undefined ? o.lb : snapLb(a/LB); return o.lb!==undefined ? r1(a) : r1(a); }
+  if(o.kg===undefined) return '';
+  if(u==='lb') return o.lb!==undefined ? o.lb : snapLb(o.kg/LB);
+  return o.lb!==undefined ? r1(o.kg) : o.kg;
+}
+/* kullanıcının girdiği değeri kayda yaz */
+function wIn(e,o,v){
+  const u=unitOf(e), s=String(v).trim();
+  if(s===''){ delete o.kg; delete o.lb; delete o.as; return; }
+  const x=parseFloat(s.replace(',','.')); if(isNaN(x)) return;
+  const kg = u==='lb' ? +(x*LB).toFixed(3) : x;
+  if(u==='lb') o.lb=x; else delete o.lb;
+  if(e.eq==='a'){ o.as=kg; const bw=bodyW(); if(bw) o.kg=+(bw-kg).toFixed(2); else delete o.kg; }
+  else o.kg=kg;
+}
+/* kg cinsinden bir değeri hareketin biriminde yaz */
+function wTxt(e,kg){ const u=unitOf(e); return u==='lb' ? nf(snapLb(kg/LB))+' lb' : nf(r1(kg))+' kg'; }
 
 /* ---------- SEKME ---------- */
 let TAB='w';
@@ -685,7 +1066,7 @@ $('progSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{
 /* ---------- AYARLAR ---------- */
 function ST(){
   if(!S.set) S.set={};
-  const d={sound:1,vib:1,wake:1,auto:1,notif:0,vol:0.9,cue:1,extra:0};
+  const d={sound:1,vib:1,wake:1,auto:1,notif:0,vol:0.9,cue:1,extra:0,uM:'lb',uF:'kg'};
   for(const k in d) if(S.set[k]===undefined) S.set[k]=d[k];
   return S.set;
 }
@@ -791,36 +1172,74 @@ function paintMode(){
 function restMini(){ R.mini=true; paintMode(); }
 function restBig(){ R.mini=false; paintMode(); unlockAudio(); }
 function fmt(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
-function ssPair(ei){
-  const d=curDay(), e=d.ex[ei]; if(!e||!e.ss) return null;
+function ssPair(ei,d){
+  d=d||curDay(); const e=d.ex[ei]; if(!e||!e.ss) return null;
   const first=e.ss[1]==='1', j=first?ei+1:ei-1, p=d.ex[j];
   return (p&&p.ss===e.ss[0]+(first?'2':'1')) ? {j:j,first:first} : null;
 }
-function restLab(ei){ const ps=ssPair(ei); return (ps&&ps.first)?'SÜPERSET GEÇİŞİ':'DİNLENME'; }
-function nextTxt(ei,si){
-  const d=curDay(); const e=d.ex[ei]; if(!e) return '';
-  const ps=ssPair(ei);
-  if(ps&&ps.first){ const p=d.ex[ps.j]; return 'Süperset → '+p.n+'  ·  '+(si+1)+'. set, '+p.r+' tekrar'; }
-  if(ps){ const a=d.ex[ps.j]; if(si+1 < a.s) return 'Sıradaki tur: '+(si+2)+'. set — '+a.n+'  ·  '+a.r+' tekrar'; }
-  else if(si+1 < e.s) return 'Sıradaki: '+(si+2)+'. set — '+e.n+'  ·  '+e.r+' tekrar, RIR '+e.rir;
-  const nx=d.ex[ei+1];
-  return nx ? 'Sıradaki hareket: '+nx.n+'  ·  '+nx.s+' × '+nx.r
-            : 'Bu günün son seti — antrenman tamam.';
+/* ---------- HAREKETLER ARASI GEÇİŞ SÜRESİ ----------
+   Bir hareketin (ya da süperset turunun) son setinden sonra sayaç, SIRADAKİ hareketin ihtiyacına göre kurulur:
+   · sıradaki kas az önce çalıştıysa (hedef ya da yardımcı kas olarak) → o hareketin tam set arası dinlenmesi
+   · yeni bir kas grubuna geçiliyorsa → kısaltılmış dinlenme (izolasyon −30 sn, ana hareket −60 sn; en az 60 / 90 sn)
+   · istasyon değişimi +30 sn (aynı istasyonda +15 sn: leg press → baldır, EZ bar, aynı makara)
+   · taze kasa ağır bir ana hareketle başlanacaksa ısınma seti süresi eklenir (+30 sn; squat'ta 2 set +60 sn) */
+const work=p=>[p.m].concat(p.syn||[]);
+function transInfo(ei,d){
+  d=d||curDay(); const e=d.ex[ei]; if(!e) return null;
+  const ps=ssPair(ei,d); if(ps&&ps.first) return null;
+  const grp=[e]; if(ps) grp.push(d.ex[ps.j]);
+  const nx=d.ex[ei+1]; if(!nx) return null;
+  const nps=ssPair(ei+1,d), nxp=(nps&&nps.first)?d.ex[nps.j]:null;
+  const need0=nxp?nxp.rest:nx.rest;
+  const targets=[nx.m].concat(nxp?[nxp.m]:[]);
+  const tired=grp.some(p=>targets.some(t=>work(p).includes(t)));
+  const same=grp.some(p=>p.st===nx.st);
+  const setup=same?15:30;
+  const wuN=(nx.k==='c'&&!tired&&!same)?(nx.id==='squat'?2:1):0;
+  const base=tired?need0:Math.max(nx.k==='c'?90:60, need0-(nx.k==='c'?60:30));
+  const sec=Math.round((base+setup+wuN*30)/15)*15;
+  const why=[ tired ? MUS[nx.m]+' az önce çalıştı → tam dinlenme '+fmt(need0)
+                    : 'yeni kas grubu ('+MUS[nx.m]+') → kısaltılmış dinlenme '+fmt(base),
+              same ? 'aynı istasyon +15 sn' : 'istasyon değişimi +30 sn' ];
+  if(wuN) why.push(wuN+' ısınma seti +'+(wuN*30)+' sn');
+  return {sec:sec, wuN:wuN, nx:nx, nxp:nxp, why:why.join(' · ')};
 }
-function startRest(sec,ei,si){
-  R.on=true; R.ei=ei; R.si=si; R.total=sec; R.end=Date.now()+sec*1000; R.alarmed=false; R.lab=restLab(ei);
-  S.rest={end:R.end,total:sec,ei:ei,si:si,day:S.ui.day,prog:S.ui.prog,week:S.ui.week}; save();
+/* ✓'ye basılan setten sonra ne kadar dinlenilecek ve sırada ne var */
+function restPlan(ei,si){
+  const d=curDay(), e=d.ex[ei]; if(!e) return null;
+  const ps=ssPair(ei,d);
+  if(ps&&ps.first){ const p=d.ex[ps.j];
+    if(si<p.s) return {sec:e.rest, lab:'SÜPERSET GEÇİŞİ', next:'Süperset → '+p.n+'  ·  '+(si+1)+'. set, '+p.r+' tekrar',
+      why:'Aynı istasyon, ara vermeden geçin. Dinlenme ikinci hareketten sonra.'}; }
+  if(si<e.s-1){
+    if(ps){ const a=d.ex[ps.j]; return {sec:e.rest, lab:'TUR ARASI', next:'Sıradaki tur: '+(si+2)+'. set — '+a.n+'  ·  '+a.r+' tekrar',
+      why:'Süperset turu bitti; iki hareket de bu sürede toparlanır.'}; }
+    return {sec:e.rest, lab:'SET ARASI', next:'Sıradaki: '+(si+2)+'. set — '+e.n+'  ·  '+e.r+' tekrar · RIR '+e.rir,
+      why:(e.k==='c'?'Ana hareket: tam toparlanma için uzun dinlenme.':'İzolasyon: kısa dinlenme yeterli.')};
+  }
+  const t=transInfo(ei,d);
+  if(!t) return null;
+  return {sec:t.sec, lab:'HAREKET GEÇİŞİ',
+    next:'Sıradaki hareket: '+t.nx.n+(t.nxp?' + '+t.nxp.n:'')+'  ·  '+t.nx.s+' × '+t.nx.r+(t.wuN?'  ·  önce '+t.wuN+' ısınma seti (kaydedilmez)':''),
+    why:'Geçiş süresi: '+t.why};
+}
+function fmtRest(s){ return s<60 ? s+' sn' : fmt(s); }
+function startRest(plan,ei,si){
+  const sec=plan.sec;
+  R.on=true; R.ei=ei; R.si=si; R.total=sec; R.end=Date.now()+sec*1000; R.alarmed=false;
+  R.lab=plan.lab; R.next=plan.next; R.why=plan.why||'';
+  S.rest={end:R.end,total:sec,ei:ei,si:si,day:S.ui.day,prog:S.ui.prog,week:S.ui.week,lab:R.lab,next:R.next,why:R.why}; save();
   const e=curDay().ex[ei];
-  $('rEx').textContent = e ? e.n : '';
-  $('rNext').textContent = nextTxt(ei,si);
-  $('rHint').textContent = ST().sound
+  $('rEx').textContent = e ? (R.lab==='HAREKET GEÇİŞİ' ? '✓ '+e.n+' bitti' : e.n) : '';
+  $('rNext').textContent = R.next;
+  $('rHint').textContent = (R.why?R.why+' — ':'') + (ST().sound
       ? (wakeSupported()&&ST().wake ? 'Ekran açık kalacak, süre bitince alarm çalacak.'
-                                    : 'Süre bitince alarm çalacak. Sesin duyulması için telefonun zil anahtarı açık olmalı.')
-      : 'Ses kapalı — ekran yeşile döndüğünde süre dolmuş demektir.';
+                                    : 'Süre bitince alarm çalacak; zil anahtarı açık olmalı.')
+      : 'Ses kapalı — ekran yeşile döndüğünde süre dolmuştur.');
   R.mini=false; paintMode();
   $('rest').classList.remove('zero'); $('restMini').classList.remove('zero');
-  $('rmEx').textContent = e ? e.n : 'Dinlenme';
-  $('rLab').textContent=R.lab||'DİNLENME'; $('rSub').textContent='KALAN';
+  $('rmEx').textContent = R.lab==='HAREKET GEÇİŞİ' ? 'Geçiş → '+R.next.replace('Sıradaki hareket: ','') : (e ? e.n : 'Dinlenme');
+  $('rLab').textContent=R.lab; $('rSub').textContent='KALAN';
   unlockAudio(); scheduleCues(sec); if(ST().extra) keepOn(); wakeOn();
   paintRest(); clearInterval(R.iv); R.iv=setInterval(paintRest,150);
 }
@@ -846,8 +1265,7 @@ function onRestEnd(){
   $('rLab').textContent='SÜRE DOLDU'; $('rmEx').textContent='Süre doldu — sıradaki set';
   if(R.mini){ R.mini=false; paintMode(); }
   buzz();
-  const e=curDay().ex[R.ei];
-  notify('Dinlenme bitti', e ? nextTxt(R.ei,R.si) : 'Sıradaki sete geçin');
+  notify(R.lab==='HAREKET GEÇİŞİ'?'Geçiş bitti':'Dinlenme bitti', R.next||'Sıradaki sete geçin');
   if(document.hidden){ /* uyandiginda ses zaten planlandi */ }
 }
 function restAdd(s){
@@ -874,8 +1292,8 @@ function restResume(){
   R.on=true; R.ei=r.ei; R.si=r.si; R.total=r.total; R.end=r.end; R.alarmed=left<=0;
   const e=curDay().ex[r.ei];
   $('rEx').textContent=e?e.n:''; $('rmEx').textContent=e?e.n:'Dinlenme';
-  $('rNext').textContent=nextTxt(r.ei,r.si);
-  R.lab=restLab(r.ei); $('rLab').textContent=R.lab;
+  R.lab=r.lab||'DİNLENME'; R.next=r.next||''; R.why=r.why||'';
+  $('rNext').textContent=R.next; $('rLab').textContent=R.lab; $('rHint').textContent=R.why;
   R.mini=false; paintMode();
   if(left>0){ scheduleCues(left); } else { $('rest').classList.add('zero'); $('rLab').textContent='SÜRE DOLDU'; }
   clearInterval(R.iv); R.iv=setInterval(paintRest,150); paintRest();
@@ -891,7 +1309,7 @@ document.addEventListener('visibilitychange',()=>{
   if(ST().wake && S.sess && S.sess.d===today()) wakeOn();
 });
 /* eski API ile uyum */
-function startTimer(sec,label){ startRest(sec,R.ei>=0?R.ei:0,R.si>=0?R.si:0); }
+function startTimer(sec,label){ startRest({sec:sec,lab:label||'DİNLENME',next:''},R.ei>=0?R.ei:0,R.si>=0?R.si:0); }
 function stopTimer(){ restStop(true); }
 
 /* ---------- ÜST BAR ---------- */
@@ -933,26 +1351,42 @@ function progData(ei){
   return out;
 }
 function progPanel(ei){
-  const d=progData(ei);
+  const e=curDay().ex[ei], u=unitOf(e), cv=kg=>u==='lb'?snapLb(kg/LB):r1(kg), ul=u==='lb'?'lb':'kg';
+  const d=progData(ei).map(x=>({w:x.w,v:cv(x.kg)}));
   if(d.length<2) return `<div class="note hidden" data-k="prog"><div class="tiny" style="color:var(--tx2)">
     En az iki farklı haftada kilo girildiğinde ilerleme grafiğiniz burada çizilir. Şu ana kadar ${d.length} hafta kaydı var.</div></div>`;
-  const kg=d.map(x=>x.kg), mn=Math.min.apply(null,kg), mx=Math.max.apply(null,kg), rng=(mx-mn)||1;
-  const W=300,H=66,P=8;
-  const X=i=>P+i*(W-2*P)/(d.length-1), Y=v=>H-P-((v-mn)/rng)*(H-2*P);
-  const pts=d.map((x,i)=>X(i).toFixed(1)+','+Y(x.kg).toFixed(1)).join(' ');
-  const area=P+','+H+' '+pts+' '+(W-P)+','+H;
-  const f=d[0], l=d[d.length-1], dl=+(l.kg-f.kg).toFixed(1), pc=f.kg?Math.round((l.kg-f.kg)/f.kg*100):0;
+  const v=d.map(x=>x.v), mn=Math.min.apply(null,v), mx=Math.max.apply(null,v), rng=(mx-mn)||1;
+  const W=300,H=66,Pd=8;
+  const X=i=>Pd+i*(W-2*Pd)/(d.length-1), Y=y=>H-Pd-((y-mn)/rng)*(H-2*Pd);
+  const pts=d.map((x,i)=>X(i).toFixed(1)+','+Y(x.v).toFixed(1)).join(' ');
+  const area=Pd+','+H+' '+pts+' '+(W-Pd)+','+H;
+  const f=d[0], l=d[d.length-1], dl=+(l.v-f.v).toFixed(1), pc=f.v?Math.round((l.v-f.v)/f.v*100):0;
   return `<div class="note hidden" data-k="prog">
     <div class="spark"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
       <polygon points="${area}" fill="rgba(78,163,255,.13)"/>
       <polyline points="${pts}" fill="none" stroke="#4ea3ff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-      ${d.map((x,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(x.kg).toFixed(1)}" r="${i===d.length-1?3.6:2.3}" fill="${i===d.length-1?'#ffffff':'#4ea3ff'}"/>`).join('')}
+      ${d.map((x,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(x.v).toFixed(1)}" r="${i===d.length-1?3.6:2.3}" fill="${i===d.length-1?'#ffffff':'#4ea3ff'}"/>`).join('')}
     </svg></div>
-    <div class="sparkfoot"><span>${f.w?'Hf '+f.w:'Önceki'} · ${f.kg} kg</span>
-      <b class="${dl>0?'up':(dl<0?'dn':'')}">${dl>0?'+':''}${dl} kg${f.kg?' · %'+pc:''}</b>
-      <span>Hf ${l.w} · ${l.kg} kg</span></div>
-    <div class="tiny" style="color:var(--tx3);margin-top:7px">Grafik, o hareketteki en ağır çalışma setini 3 ve 4 günlük programdaki kayıtlarla birlikte gösterir; ilk nokta önceki döngüdür.
-    Çift ilerleme kuralı: tüm setlerde tekrar aralığının üst sınırına ulaştığınızda ağırlığı artırıp alt sınırdan başlayın.</div>
+    <div class="sparkfoot"><span>${f.w?'Hf '+f.w:'Önceki'} · ${nf(f.v)} ${ul}</span>
+      <b class="${dl>0?'up':(dl<0?'dn':'')}">${dl>0?'+':''}${nf(dl)} ${ul}${f.v?' · %'+pc:''}</b>
+      <span>Hf ${l.w} · ${nf(l.v)} ${ul}</span></div>
+    <div class="tiny" style="color:var(--tx3);margin-top:7px">Grafik o hareketteki en ağır çalışma setini ${e.eq==='a'?'(net yük: vücut ağırlığı − destek) ':''}3 ve 4 günlük programdaki kayıtlarla birlikte, kartta seçili birimde gösterir; ilk nokta önceki döngüdür.</div>
+  </div>`;
+}
+function howSec(t,x){ return x?`<div class="hs"><b>${t}</b><p>${esc(x)}</p></div>`:''; }
+function howPanel(ei){
+  const d=curDay(), e=d.ex[ei], O=ODAK[e.o]||ODAK.his, ps=ssPair(ei,d), t=transInfo(ei,d);
+  let rest;
+  if(ps&&ps.first) rest='Bu hareketin her setinden sonra '+fmtRest(e.rest)+' içinde '+d.ex[ps.j].n+' setine geçin; dinlenme ikinci hareketten sonra.';
+  else if(ps) rest='Süperset turu bitince '+fmtRest(e.rest)+' dinlenin, sonra yeni tura '+d.ex[ps.j].n+' ile başlayın.';
+  else rest='Setler arası '+fmtRest(e.rest)+'.';
+  if(t) rest+=' Son '+(ps?'turdan':'setten')+' sonra '+t.nx.n+' için geçiş '+fmtRest(t.sec)+' ('+t.why+').';
+  else if(!(ps&&ps.first)) rest+=' Günün son hareketi.';
+  return `<div class="how hidden" data-k="how">
+    <div class="odk ${O.c}"><b>Ne yapmalıyım? → ${O.t}</b><p>${esc(e.odak)}</p></div>
+    ${howSec('Kurulum',e.kur)}${howSec('Uygulama',e.yap)}${howSec('Tempo',e.tempo)}
+    ${howSec('Ne zaman kilo artar',e.ilerle)}${howSec('Sık hatalar',e.hata)}${howSec('Neden bu hareket',e.neden)}
+    ${howSec('Dinlenme ve geçiş',rest)}${howSec('İstasyon doluysa',e.alt)}
   </div>`;
 }
 
@@ -963,37 +1397,48 @@ function toggleSet(ei,si){
   o.done=!o.done;
   if(o.done && o.reps===undefined){ const r=lastRec(ei), pr=r&&(r.sets[si]||r.sets[r.sets.length-1]); if(pr&&pr.reps!==undefined) o.reps=pr.reps; }
   S.logs[k]=o; save();
-  if(o.done){ sessOn(); if(ST().auto && e && e.rest) startRest(e.rest,ei,si); }
+  if(o.done){ sessOn();
+    const pl=restPlan(ei,si);
+    if(pl){ if(ST().auto) startRest(pl,ei,si); }
+    else { const d=curDay(); let left=0; d.ex.forEach((x,xi)=>{ for(let s=0;s<x.s;s++) if(!get(xi,s).done) left++; });
+      toast(left?'Hareket bitti · '+left+' set eksik kaldı':'Antrenman tamam 💪'); } }
   renderW();
 }
 function setVal(ei,si,f,v){
-  const k=lk(ei,si), o=S.logs[k]||{};
-  o[f]= v===''?undefined:parseFloat(String(v).replace(',','.'));
-  S.logs[k]=o; save(); updateSummary();
+  const e=curDay().ex[ei], k=lk(ei,si), o=S.logs[k]||{};
+  if(f==='w') wIn(e,o,v);
+  else o[f]= v===''?undefined:parseFloat(String(v).replace(',','.'));
+  S.logs[k]=o; save();
+  if(f==='w' && e.eq==='a') renderW(); else updateSummary();
 }
+function hasW(p){ return p && (p.kg!==undefined || p.as!==undefined); }
 function copyPrev(ei){
-  const ex=curDay().ex[ei], r=lastRec(ei); let n=0;
+  const e=curDay().ex[ei], r=lastRec(ei); let n=0;
   if(!r){ toast('Bu hareket için önceki kayıt yok'); return; }
-  const kgs=r.sets.map(x=>x.kg).filter(x=>x!==undefined);
-  for(let si=0;si<ex.s;si++){ const kg=(r.sets[si]&&r.sets[si].kg!==undefined)?r.sets[si].kg:kgs[kgs.length-1];
-    if(kg!==undefined){ const k=lk(ei,si),o=S.logs[k]||{}; o.kg=kg; S.logs[k]=o; n++; } }
-  save(); renderW(); toast(n?n+' sete kilo yazıldı ('+r.lab.toLowerCase()+')':'Kopyalanacak kilo yok');
+  const ws=r.sets.filter(hasW), bw=bodyW();
+  for(let si=0;si<e.s;si++){ const p=hasW(r.sets[si])?r.sets[si]:ws[ws.length-1]; if(!p) continue;
+    const k=lk(ei,si), o=S.logs[k]||{};
+    if(e.eq==='a'){ const a=astKg(p); if(a===undefined) continue; o.as=+a.toFixed(3); if(bw) o.kg=+(bw-a).toFixed(2); }
+    else o.kg=p.kg;
+    if(p.lb!==undefined) o.lb=p.lb; else delete o.lb;
+    S.logs[k]=o; n++; }
+  save(); renderW(); toast(n?n+' sete ağırlık yazıldı ('+r.lab.toLowerCase()+')':'Kopyalanacak ağırlık yok');
 }
+function wLabel(e,o){ const v=wOut(e,o); if(v==='') return ''; return nf(v)+' '+(unitOf(e)==='lb'?'lb':'kg'); }
 function prevTxt(ei){
-  const r=lastRec(ei); if(!r) return null;
-  let kg=null; const reps=[];
-  r.sets.forEach(p=>{ if(p.kg!==undefined) kg=p.kg; if(p.reps!==undefined) reps.push(p.reps); });
-  if(kg===null&&!reps.length) return null;
-  return {lab:r.lab, txt:(kg!==null?String(kg).replace('.',',')+' kg':'')+(reps.length?' · '+reps.join('/'):'')};
-}
-function restLabel(e){
-  const v=e.rest>=60 ? String(Math.round(e.rest/60*10)/10).replace('.',',')+' dk' : e.rest+' sn';
-  return (e.ss&&e.ss[1]==='1') ? 'geçiş '+v : v+' dinlenme';
+  const e=curDay().ex[ei], r=lastRec(ei); if(!r) return null;
+  let last=null; const reps=[];
+  r.sets.forEach(p=>{ if(hasW(p)) last=p; if(p.reps!==undefined) reps.push(p.reps); });
+  if(!last&&!reps.length) return null;
+  let wt='';
+  if(last){ if(e.eq==='a'){ const w=wLabel(e,last); wt=(w?'destek '+w:'')+(last.kg!==undefined?' (net '+nf(r1(last.kg))+' kg)':''); }
+            else wt=wLabel(e,last); }
+  return {lab:r.lab, txt:wt+(reps.length?(wt?' · ':'')+reps.join('/'):'')};
 }
 function updateSummary(){
   const d=curDay(); let tot=0,done=0,vol=0;
   d.ex.forEach((e,ei)=>{ for(let si=0;si<e.s;si++){ tot++; const o=get(ei,si);
-    if(o.done)done++; if(o.kg&&o.reps) vol+=o.kg*o.reps; }});
+    if(o.done)done++; if(o.kg>0&&o.reps) vol+=o.kg*o.reps; }});
   const pc=tot?Math.round(done/tot*100):0;
   $('pBar').style.width=pc+'%';
   const s=$('sumBox'); if(s) s.innerHTML=
@@ -1008,31 +1453,63 @@ function warnBanner(){
     <div class="tiny" style="color:var(--tx2);margin-top:4px">Bu açılış şeklinde tarayıcı veri saklamıyor; uygulamayı kapatınca girdikleriniz silinir.
     Antrenman bitince ⚙︎ → "Yedeği dosya olarak indir" ile kaydedin.</div></div>`;
 }
+function togGuide(){ S.ui.guide=!S.ui.guide; save(); const g=$('guideBox'); if(g){ g.classList.toggle('open',!!S.ui.guide); g.querySelector('.gb').classList.toggle('hidden',!S.ui.guide); } }
+function guideCard(){
+  const o=!!S.ui.guide;
+  return `<div class="c guide ${o?'open':''}" id="guideBox"><button onclick="togGuide()">⚖︎ Ağır mı, hissederek mi? Nasıl ilerlerim<span>⌄</span></button>
+  <div class="gb ${o?'':'hidden'}">
+    Kası büyüten asıl şey, setin <b>tükenişe yakın</b> bitmesidir; kilonun kendisi değil. 6 ile 30 tekrar arasındaki setler tükenişe yakın bitirildiğinde benzer büyüme sağlar. Ağır yükün avantajı kuvvet ve verimliliktir. Bu yüzden her kartta hareketin <b>ODAK</b> etiketi var:
+    <div class="gi yuk"><b>AĞIR · İLERLET</b>Ana hareketler (presler, row, barfiks, squat, leg press). Önceliğiniz kiloyu ve tekrarı haftadan haftaya artırmak. Ağır girin ama derinlik ve iniş temposu asla kiloya feda edilmez.</div>
+    <div class="gi his"><b>KONTROL · HİSSET</b>Fly, curl, triceps, leg curl/extension. Kası düşünerek, 3 sn inişle, en gergin noktada duraklayarak çalışın; izolasyon hareketlerinde kasa odaklanmak büyümeyi artırabilir. Kilo yine artar, ama tempo bozulmadan.</div>
+    <div class="gi pompa"><b>POMPA · TÜKENİŞ</b>Yan/arka omuz, baldır, pushdown. Hafif-orta kilo, 12-20 tekrar. İlerleme önce tekrar sayısından gelir; yanma başladıktan sonra seti RIR hedefine kadar sürdürün.</div>
+    <b style="color:var(--tx)">Hepsinde ortak kural: çift ilerleme.</b> Bütün setlerde tekrar aralığının üst sınırına ulaştığınızda bir sonraki antrenmanda en küçük kademe kilo ekleyin (dambıl +2-2,5 kg · makine +5 lb ya da 1 kademe · barbell +2,5 kg) ve alt sınırdan devam edin. Kilo artınca tekrarın düşmesi normaldir.<br><br>
+    <b style="color:var(--tx)">Kilo artırmayın, eğer</b> tekrarı ancak hareketi kısaltarak, gövdeyi sallayarak ya da inişi hızlandırarak tutturuyorsanız.<br><br>
+    <b style="color:var(--tx)">RIR:</b> Seti bıraktığınızda kaç tekrar daha yapabilirdiniz? RIR 2 = 2 tekrar daha yapabilecekken bırakmak. Kartlardaki RIR her hafta otomatik değişir.<br><br>
+    <b style="color:var(--tx)">Birim:</b> Makine ve kablolar varsayılan olarak lbs, dambıl ve barbell kg. Kartın üstündeki <b>KG / LBS</b> düğmesine dokunarak o hareketin birimini değiştirin; eski kayıtlar otomatik çevrilir.<br><br>
+    <b style="color:var(--tx)">Dinlenme:</b> ✓'ye basınca sayaç aynı hareketin sonraki seti için set arası süreyi başlatır. Hareketin son setinden sonra ise süre <b>sıradaki harekete göre</b> kurulur: o kas az önce çalıştıysa tam dinlenme, yeni bir kas grubuysa kısaltılmış dinlenme; istasyon değişimi ve ısınma seti süreye eklenir.
+  </div></div>`;
+}
+function volCard(){
+  const p=PROGRAMS[S.ui.prog], w=S.ui.week, m={}, f={};
+  p.days.forEach(d=>d.ex.forEach(e=>{ const s=setsFor(e,w); m[e.m]=(m[e.m]||0)+s; (f[e.m]=f[e.m]||new Set()).add(d.id); }));
+  const keys=Object.keys(MUS).filter(k=>m[k]);
+  return `<div class="c"><h3>Haftalık set dağılımı <small>${esc(p.name)} · Hafta ${w}</small></h3><table>
+    <tr><th>Kas</th><th class="num">Set</th><th class="num">Sıklık</th></tr>
+    ${keys.map(k=>`<tr><td>${MUS[k]}</td><td class="num">${m[k]}</td><td class="num">${f[k].size}×/hafta</td></tr>`).join('')}</table>
+    <p class="tiny" style="margin:9px 0 0;color:var(--tx2)">Yalnızca hareketin hedef kası sayılır. Ön omuz tüm göğüs preslerinde, biceps tüm çekişlerde, triceps tüm preslerde ayrıca çalışır.</p></div>`;
+}
 function renderW(){
   const d=curDay();
-  let h=warnBanner()+`<div class="sum" id="sumBox"></div>`+`<div class="blkrule"><b>Blok kuralı</b>Bir bloğun tüm hareketleri ve tüm setleri bitmeden bir sonraki bloğa geçilmez. İstasyon meşgulse sırayı değil, hareketi değiştirin.</div>`;
+  let h=warnBanner()+`<div class="sum" id="sumBox"></div>`+guideCard()+`<div class="blkrule"><b>Blok kuralı</b>Bir bloğun tüm hareketleri ve tüm setleri bitmeden bir sonraki bloğa geçilmez. İstasyon meşgulse sırayı değil, hareketi değiştirin (her hareketin "Nasıl yapılır" bölümünde alternatifi yazılı).</div>`;
   const bn=blokNo(S.ui.week), BAND={
     D:['⚠ DELOAD HAFTASI','Set sayıları otomatik azaltıldı (4→2, 3→2). Ağırlığı ve tekrarı aynı tutun, RIR 4\'te kalın; antrenman sayısını değiştirmeyin.'+(S.ui.week===16?' Bu hafta tüm ölçümleri alın: yeni döngü bu sonuçlara göre kurulacak.':'')],
-    0:['GİRİŞ HAFTASI','Devam eden hareketlerde kartın üstündeki "Önceki döngü" ağırlığıyla başlayın ama setleri RIR 3\'te bitirin. Yeni hareketlerde (Lateral Raise Makinesi, Bayesian Curl, Makine Shoulder Press, Leg Press\'te Baldır) 2-3 tekrarı rahat kalacak ağırlığı bulun ve kaydedin.'],
-    2:['BLOK 2 · HACİM ARTIŞI','Turuncu "+1 set" etiketli öncelikli hareketlere (göğüs, omuz, kol, barfiks) bir set eklendi. Ana hareketlerde RIR 1-2, izolasyonlarda 0-1.'],
+    0:['GİRİŞ HAFTASI','Kartın üstündeki son kayıt ağırlığıyla başlayın ama setleri RIR 3\'te bitirin. "YENİ" etiketli hareketlerde 2-3 tekrar yedekte kalacak ağırlığı bulun ve kaydedin.'],
+    2:['BLOK 2 · HACİM ARTIŞI','Turuncu "+1 set" etiketli öncelikli hareketlere (göğüs, yan omuz, kol) bir set eklendi. Ana hareketlerde RIR 1-2, izolasyonlarda 0-1.'],
     3:['BLOK 3 · YOĞUNLAŞMA','İzolasyon hareketlerinin SON setinde: tükenince ağırlığı %25-30 düşürüp ara vermeden yeniden tükenene kadar devam (drop set). Ana hareketlerde RIR 1; squat RIR 2\'de kalır.']}[bn];
   if(BAND) h+=`<div class="c" style="border-color:rgba(240,169,46,.4);background:rgba(240,169,46,.08)">
     <b style="color:var(--warn);font-size:14px">${BAND[0]}</b>
     <p class="tiny" style="margin:5px 0 0;color:var(--tx2)">${BAND[1]}</p></div>`;
   let _pb=null;
+  const bw=bodyW();
   h+=d.ex.map((e,ei)=>{
     let allDone=true; for(let si=0;si<e.s;si++) if(!get(ei,si).done) allDone=false;
-    const pv=prevTxt(ei);
-    let rows=`<div class="shead"><div></div><div>KG</div><div>TEKRAR</div><div></div></div>`;
+    const pv=prevTxt(ei), u=unitOf(e), ul=u==='lb'?'lb':'kg', O=ODAK[e.o]||ODAK.his;
+    const ps=ssPair(ei,d), tr=transInfo(ei,d), isNew=!lastRec(ei);
+    const wHead = e.eq==='a' ? 'DESTEK' : (u==='lb'?'LBS':'KG');
+    let rows=`<div class="shead"><div></div><div><button class="ubtn" onclick="togUnit(${ei})">${wHead}${e.eq==='a'?' · '+ul:''} <i>⇄</i></button></div><div>TEKRAR</div><div></div></div>`;
+    const nets=[];
     for(let si=0;si<e.s;si++){ const o=get(ei,si);
+      if(e.eq==='a' && o.kg!==undefined) nets.push(nf(r1(o.kg)));
       rows+=`<div class="srow">
         <div class="slab">${si+1}</div>
-        <div class="fld"><input inputmode="decimal" placeholder="—" value="${o.kg??''}"
-           onchange="setVal(${ei},${si},'kg',this.value)"><em>kg</em></div>
+        <div class="fld"><input inputmode="decimal" placeholder="—" value="${wOut(e,o)}"
+           onchange="setVal(${ei},${si},'w',this.value)"><em>${ul}</em></div>
         <div class="fld"><input inputmode="numeric" placeholder="—" value="${o.reps??''}"
            onchange="setVal(${ei},${si},'reps',this.value)"><em>tk</em></div>
         <button class="chk ${o.done?'on':''}" onclick="toggleSet(${ei},${si})">✓</button>
       </div>`; }
+    if(e.eq==='a') rows+=`<div class="netline">${bw?`Vücut ağırlığı <b>${nf(bw)} kg</b> (Ölçüm sekmesi) · net yük = vücut ağırlığı − destek${nets.length?' → <b>'+nets.join(' / ')+' kg</b>':''}`
+      :'<b style="color:var(--warn)">Net yükün hesaplanması için Ölçüm sekmesine kilonuzu girin.</b>'}</div>`;
     let bh='';
     if(e.blk && e.blk!==_pb){ _pb=e.blk;
       const bx=d.ex.filter(x=>x.blk===e.blk);
@@ -1040,6 +1517,7 @@ function renderW(){
       let bd=0,bt=0; bx.forEach(x=>{const xi=d.ex.indexOf(x); for(let si=0;si<x.s;si++){bt++; if(get(xi,si).done) bd++;}});
       bh=`<div class="blk ${bd===bt?'ok':''}"><b>${esc(e.blk)}</b><span>${bx.length} hareket · ${bs} set · ${bd}/${bt}</span></div>`;
     }
+    const restTag = (ps&&ps.first) ? `geçiş ${fmtRest(e.rest)} → ${esc(d.ex[ps.j].ss)}` : (ps?'tur arası ':'set arası ')+fmtRest(e.rest);
     return bh+`<div class="ex ${allDone?'done':''}">
       <div class="exh">
         <div class="exn">${ei+1}</div>
@@ -1047,24 +1525,28 @@ function renderW(){
           <h3>${esc(e.n)}</h3>
           <div class="tags"><span class="tag sets">${e.s} × ${esc(e.r)}</span>
             <span class="tag rir">RIR ${esc(e.rir)}</span>
+            <span class="tag ${O.c}">${O.t}</span>
+            ${isNew?`<span class="tag new">YENİ</span>`:''}
             ${e.plus?`<span class="tag pr">+1 set</span>`:''}${(blokNo(S.ui.week)===3&&e.k==='i')?`<span class="tag pr">son set: drop</span>`:''}
-            ${e.ss?`<span class="tag ss">Süperset ${esc(e.ss)}</span>`:''}<span class="tag">${restLabel(e)}</span>
-            <span class="tag ${e.t}">${e.t==='ust'?'üst vücut':'alt vücut'}</span></div>
-          ${pv?`<div class="last">${esc(pv.lab)}: <b>${esc(pv.txt)}</b>
+            ${e.ss?`<span class="tag ss">Süperset ${esc(e.ss)}</span>`:''}
+            <span class="tag">${restTag}</span>
+            ${tr?`<span class="tag tr">sonra geçiş ${fmtRest(tr.sec)}</span>`:''}</div>
+          ${pv?`<div class="last"><span style="white-space:nowrap">${esc(pv.lab)}:</span> <b>${esc(pv.txt)}</b>
             <button class="copybtn" onclick="copyPrev(${ei})">kopyala</button></div>`:''}
         </div>
       </div>
       <div class="sets">${rows}</div>
       <div class="exfoot">
-        <button class="notebtn" onclick="tgl(this,'note')">Teknik notu<span>⌄</span></button>
+        <button class="notebtn" onclick="tgl(this,'how')">Nasıl yapılır<span>⌄</span></button>
         <button class="notebtn" onclick="tgl(this,'prog')">İlerleme<span>⌄</span></button>
       </div>
-      <div class="note hidden" data-k="note">${esc(e.note)}</div>
+      ${howPanel(ei)}
       ${progPanel(ei)}
     </div>`;
   }).join('');
   h+=`<div class="c" style="margin-top:4px"><h3>Isınma <small>her antrenman öncesi</small></h3>
-    <p class="tiny" style="margin:0;color:var(--tx2)">5 dk hafif bisiklet → Cat-Cow 10 tekrar → Band Pull-Apart 2×15 → ilk hareketin çalışma ağırlığının %50'siyle 1×10, %75'iyle 1×5. Bu ısınma setleri set sayılarına dahil değildir ve <b>kayda girilmez</b>. Çalışma setlerinin hepsi aynı ağırlıkla yapılır (piramit yok); tüm setlerde tekrar aralığının üst sınırına ulaşınca ağırlık artar.</p></div>`;
+    <p class="tiny" style="margin:0;color:var(--tx2)">5 dk hafif bisiklet → Cat-Cow 10 tekrar → Band Pull-Apart 2×15 → ilk hareketin çalışma ağırlığının %50'siyle 1×10, %75'iyle 1×5. Gün içinde taze bir kas grubuna ağır bir ana hareketle geçerken 1 ısınma seti daha (~%60 × 6); geçiş sayacı bu süreyi içerir. Isınma setleri <b>kayda girilmez</b>. Çalışma setlerinin hepsi aynı ağırlıkla yapılır (piramit yok).</p></div>`;
+  h+=volCard();
   $('app').innerHTML=h; updateSummary();
 }
 
@@ -1199,7 +1681,17 @@ function renderSheet(){
   <h3 style="margin:0 0 4px;font-size:18px;font-weight:800">Ayarlar</h3>
   <p class="tiny" style="margin:0 0 14px">Verileriniz yalnızca bu telefonda saklanır, hiçbir yere gönderilmez.</p>
 
-  <h2 class="sec" style="margin-top:2px">Dinlenme uyarısı</h2>
+  <h2 class="sec" style="margin-top:2px">Ağırlık birimi</h2>
+  <div class="stg"><div class="si"><b>Makine ve kablo hareketleri</b>
+    <span>Yığın (pim takılan) makineler genelde lbs yazar. Bir harekette farklıysa kartındaki KG/LBS düğmesiyle yalnızca o hareketi değiştirin.</span></div>
+    <div class="seg"><button class="${s.uM==='kg'?'on':''}" onclick="setOpt('uM','kg');render()">kg</button><button class="${s.uM!=='kg'?'on':''}" onclick="setOpt('uM','lb');render()">lbs</button></div></div>
+  <div class="stg"><div class="si"><b>Dambıl, barbell, plaka</b>
+    <span>Serbest ağırlıklar için varsayılan birim.</span></div>
+    <div class="seg"><button class="${s.uF!=='lb'?'on':''}" onclick="setOpt('uF','kg');render()">kg</button><button class="${s.uF==='lb'?'on':''}" onclick="setOpt('uF','lb');render()">lbs</button></div></div>
+  ${Object.keys(S.units||{}).length?`<button class="btn" onclick="S.units={};save();renderSheet();render();toast('Hareket bazlı birimler sıfırlandı')">Hareket bazlı birim seçimlerini sıfırla (${Object.keys(S.units).length})</button>`:''}
+  <p class="tiny" style="margin:-2px 0 12px">Kayıtlar her zaman kg olarak saklanır; lbs girdiğiniz değer ayrıca saklandığı için makinede yazan sayı aynen geri gösterilir. 1 lb = 0,4536 kg.</p>
+
+  <h2 class="sec">Dinlenme uyarısı</h2>
   <div class="stg" onclick="togOpt('sound')"><div class="si"><b>Alarm sesi</b>
     <span>Süre bitince yükselen üçlü alarm. iPhone'da sesin duyulması için zil anahtarının açık olması gerekir.</span></div>${sw(s.sound)}</div>
   <div class="stg" onclick="togOpt('cue')"><div class="si"><b>Son 3 saniye bipleri</b>
@@ -1240,7 +1732,7 @@ function renderSheet(){
   <button class="btn" style="margin-top:9px" onclick="importData()">↻ Yedekten geri yükle</button>
   <div style="height:12px"></div>
   <button class="btn dan" onclick="resetAll()">Tüm verileri sil</button>
-  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v6.0 · 14 Ekim 2026 · Hacim döngüsü (16 hafta) · Üst/Alt · deadlift yok</p>`;
+  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v7.0 · 21 Ekim 2026 · Hacim döngüsü (16 hafta) · 4 gün Üst/Alt · 3 gün Full Body · kg/lbs · deadlift yok</p>`;
   $('sheetC').innerHTML=h;
   const ib=$('impBox'); if(ib) ib.value=JSON.stringify(S);
 }
@@ -1270,12 +1762,12 @@ function exportData(){
 function importData(){
   const v=$('impBox').value.trim(); if(!v){toast('Kutu boş');return;}
   try{ const o=JSON.parse(v); if(!o.logs) throw 0; S=o; if(!S.ui)S.ui={prog:'4g',day:null,week:1};
-    migrate4(); migrate5(); migrate6(); S.ui.day=null;
+    migrate4(); migrate5(); migrate6(); migrate7(); S.ui.day=null;
     save(); closeSheet(); render(); toast('Yedek geri yüklendi'); }
   catch(e){ toast('Geçersiz yedek metni'); }
 }
 function resetAll(){ if(!confirm('Tüm antrenman kayıtları, ölçümler ve işaretlemeler silinecek. Emin misiniz?'))return;
-  S={logs:{},meas:{},diet:{},supp:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1}; save(); closeSheet(); render(); toast('Silindi'); }
+  S={logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1}; save(); closeSheet(); render(); toast('Silindi'); }
 
 /* ---------- BAŞLAT ---------- */
 function render(){
@@ -1296,8 +1788,8 @@ if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 if(!useLS) setTimeout(()=>toast('Uyarı: tarayıcı kaydı kapalı — Ana Ekrandan açın'),1200);
-setTimeout(()=>{ if(!S.seen6){ S.seen6=1; save();
-  toast('v6.0 — Hacim döngüsü başladı · Hafta 1'); } },900);
+setTimeout(()=>{ if(!S.seen7){ S.seen7=1; S.seen6=1; save();
+  toast('v7.0 — 3 gün Full Body · kg/lbs · geçiş süreleri'); } },900);
 
 </script>
 </body>

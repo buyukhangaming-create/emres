@@ -1,7 +1,7 @@
 {
  "name": "MEB Fit — Antrenman",
  "short_name": "MEB Fit",
- "description": "Kişiye özel 4 günlük blok antrenman programı, dinlenme kronometresi ve ilerleme takibi.",
+ "description": "Kişiye özel 4 gün Üst/Alt ve 3 gün Full Body hacim programı, kg/lbs kayıt, dinlenme kronometresi ve ilerleme takibi.",
  "start_url": "./index.html",
  "scope": "./",
  "display": "standalone",

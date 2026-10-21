@@ -1,47 +1,33 @@
-MEB Fit v6.0 - Hacim dongusu (14 Ekim 2026)
-=============================================
-Bu klasordeki dosyalari GitHub Pages (veya herhangi bir https adres) uzerine yukleyin,
-eskilerinin uzerine yazin. iPhone'da uygulamayi tamamen kapatip yeniden acin.
-Ilk kurulum icin: Safari ile acip Paylas > Ana Ekrana Ekle.
+MEB Fit v7.0 - 21 Ekim 2026
+===========================
+Bu klasordeki dosyalari GitHub Pages uzerine yukleyin, eskilerinin uzerine yazin.
+iPhone'da uygulamayi tamamen kapatip yeniden acin.
 
 GUNCELLEMEDEN ONCE:
  - Mevcut uygulamada Ayarlar > "Yedegi dosya olarak indir" ile yedek alin.
 
-YENI (v6.0):
- - 16 haftalik HACIM DONGUSU Hafta 1'den baslar.
-     H1        Giris haftasi  - agirliklari bul, RIR 3
-     H2-5      Blok 1 Birikim - RIR 2
-     H6        Deload         - setler otomatik azalir
-     H7-10     Blok 2 Hacim   - oncelikli hareketlere otomatik +1 set
-     H11       Deload
-     H12-15    Blok 3 Yogunlasma - izolasyonlarda son set drop set
-     H16       Deload + olcum - yeni dongu bu sonuclara gore kurulur
-   Set sayisi ve RIR her hafta kartlarda otomatik degisir.
- - Kayitlara gore degisen hareketler:
-     Seated DB Lateral  -> Lateral Raise Makinesi / Kablo Y-Raise (9 hafta durgun)
-     Incline DB Curl    -> Bayesian Cable Curl (9 hafta durgun)
-     Seated DB Shoulder Press -> Makine Shoulder Press (8 hafta durgun)
-     Standing Calf (en sonda, atlaniyordu) -> Leg Press'te Baldir
-     Seated Calf -> Alt B gununun ILK hareketi
-     Reverse Pec Deck geri dondu (Ust B)
-     Hammer + Pushdown supersetinden olusan kol finiseri Alt B'de (4 gun)
-     Captain's Chair cikti; karin her bacak gununde tek hareket
- - Diyet hacim donemine gore artirildi (antrenman 2777 / dinlenme 2322 kcal).
-   Eklenen miktarlar diyet sekmesinde "▲" ile isaretli.
- - Olcum sekmesi hacim donemine gore: kilo artmali, bel en fazla +2,5 cm.
- - "Gecen hafta" satiri artik hareketin EN SON kaydini gosterir; 3 gun ile 4 gun
-   arasinda gecis yapsaniz da referans kaybolmaz. Ilerleme grafigi de iki programi
-   birlikte cizer.
+YENI (v7.0):
+ - 4 GUN (Ust/Alt): PZT Ust A · SAL Alt A · PER Ust B · CUM Alt B
+     Dips cikti, Incline Smith Ust B'ye gecti; Reverse Pec Deck Alt B'de.
+     Kol supersetleri 3+3 set (Blok 2-3'te 4+4).
+ - 3 GUN artik FULL BODY (A/B/C, PZT/CAR/CUM): gogus, sirt, kol haftada 3 kez,
+     bacak her gun dusuk dozda.
+ - Hacim dongusu ayni, hafta sayaciniz korunur (H1 giris, H6/H11/H16 deload).
+ - kg / lbs: her hareket kartinda KG/LBS dugmesi. Makine-kablo varsayilan lbs,
+     dambil-barbell varsayilan kg (Ayarlar > Agirlik birimi). Kayit kg saklanir,
+     lbs girilen sayi aynen geri gosterilir.
+ - Destekli barfiks: makinedeki DESTEK degerini girin; net yuku uygulama
+     Olcum sekmesindeki kilonuza gore hesaplar.
+ - Gecis dinlenmesi: hareketin son setinden sonra sayac SIRADAKI harekete gore
+     kurulur (ayni kas -> tam dinlenme, yeni kas -> kisaltilmis, istasyon
+     degisimi ve isinma seti eklenir). Neden o sure oldugu ekranda yazar.
+ - Her kartta ODAK etiketi (AGIR·ILERLET / KONTROL·HISSET / POMPA·TUKENIS) ve
+     "Nasil yapilir": kurulum, uygulama, tempo, ne zaman kilo artar, hatalar,
+     alternatif. Ust kisimda "Agir mi, hissederek mi?" rehberi.
 
 KAYITLAR:
- - Eski kayitlarin tamami silinmez, S.bak_v5 icinde arsivlenir.
- - Devam eden her hareketin son haftasi Hafta 1'de "Onceki dongu" olarak gorunur
-   ve "kopyala" ile set kutularina yazilabilir.
- - Eski surum bir yedegi geri yuklerseniz o da otomatik olarak yeni donguye tasinir.
+ - v6 kayitlari hareket adina gore yeni yerlerine tasinir; tamami S.bak_v6'da durur.
+ - Yeni 3 gunde olmayan hareketlerin (orn. Dips) son kaydi "onceki program"
+   referansi olarak kartta gorunur.
 
-Dosyalar:
-  index.html             uygulamanin kendisi            (DEGISTI)
-  sw.js                  cevrimdisi calisma + bildirim  (DEGISTI)
-  manifest.webmanifest   uygulama adi/simgesi/tam ekran ayari
-  icon-192.png           simge
-  icon-512.png           simge
+Dosyalar: index.html (DEGISTI) · sw.js (DEGISTI) · manifest.webmanifest · icon-192.png · icon-512.png
