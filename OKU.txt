@@ -1,33 +1,30 @@
-MEB Fit v7.0 - 21 Ekim 2026
-===========================
-Bu klasordeki dosyalari GitHub Pages uzerine yukleyin, eskilerinin uzerine yazin.
-iPhone'da uygulamayi tamamen kapatip yeniden acin.
+MEB Fit v8.0 - Kasim revizyonu (1 Kasim 2026)
+=============================================
+Kurulum: index.html, sw.js ve manifest.webmanifest dosyalarini GitHub Pages'teki
+mevcut dosyalarin yerine yukleyin. iPhone'da uygulamayi kapatip yeniden acin
+(gerekirse Safari'de sayfayi bir kez yenileyin). Kayitlariniz otomatik tasinir.
 
-GUNCELLEMEDEN ONCE:
- - Mevcut uygulamada Ayarlar > "Yedegi dosya olarak indir" ile yedek alin.
+ONCE: mevcut uygulamada Ayarlar > "Yedegi dosya olarak indir" ile yedek alin.
 
-YENI (v7.0):
- - 4 GUN (Ust/Alt): PZT Ust A · SAL Alt A · PER Ust B · CUM Alt B
-     Dips cikti, Incline Smith Ust B'ye gecti; Reverse Pec Deck Alt B'de.
-     Kol supersetleri 3+3 set (Blok 2-3'te 4+4).
- - 3 GUN artik FULL BODY (A/B/C, PZT/CAR/CUM): gogus, sirt, kol haftada 3 kez,
-     bacak her gun dusuk dozda.
- - Hacim dongusu ayni, hafta sayaciniz korunur (H1 giris, H6/H11/H16 deload).
- - kg / lbs: her hareket kartinda KG/LBS dugmesi. Makine-kablo varsayilan lbs,
-     dambil-barbell varsayilan kg (Ayarlar > Agirlik birimi). Kayit kg saklanir,
-     lbs girilen sayi aynen geri gosterilir.
- - Destekli barfiks: makinedeki DESTEK degerini girin; net yuku uygulama
-     Olcum sekmesindeki kilonuza gore hesaplar.
- - Gecis dinlenmesi: hareketin son setinden sonra sayac SIRADAKI harekete gore
-     kurulur (ayni kas -> tam dinlenme, yeni kas -> kisaltilmis, istasyon
-     degisimi ve isinma seti eklenir). Neden o sure oldugu ekranda yazar.
- - Her kartta ODAK etiketi (AGIR·ILERLET / KONTROL·HISSET / POMPA·TUKENIS) ve
-     "Nasil yapilir": kurulum, uygulama, tempo, ne zaman kilo artar, hatalar,
-     alternatif. Ust kisimda "Agir mi, hissederek mi?" rehberi.
+YENI (v8.0):
+ - 3 gunluk Full Body yeniden kuruldu: 79 set/hafta -> 67 set/hafta.
+   Gun basina 22-23 set, tahmini sure ~60 dk (eskisi 65-72 dk + piramit setler).
+ - Ana hareketlerde TOP + back-off: 1. set gunun en agir seti, diger setler ~%90.
+   Isinma basamaklari kartta yazar, KAYDEDILMEZ.
+ - Her set icin onerilen kilo/tekrar (gri sayilar). Tik'e basinca bos kutuya yazilir.
+ - "Bugun nasilsin?": Yorgun secilirse her harekette 1 set az, kilo artisi yok.
+ - Kaydirmali kart gorunumu: hareketler arasinda saga-sola kaydirin,
+   ustteki seritten istediginiz harekete atlayin. Hareket bitince otomatik
+   sonrakine gecer. "Liste" dugmesi eski alt alta gorunume doner.
+ - Kart alani disinda saga-sola kaydirma: Antrenman'da gun degistirir,
+   diger sekmelerde sekme degistirir.
+ - Lateral hareketlerde son set myo-rep.
+ - 3 gunluk programdaki v7 kayitlari ada gore yeni siraya tasinir;
+   ham kopya S.bak_v7 icinde saklanir. 4 gunluk programin sirasi degismedi.
 
-KAYITLAR:
- - v6 kayitlari hareket adina gore yeni yerlerine tasinir; tamami S.bak_v6'da durur.
- - Yeni 3 gunde olmayan hareketlerin (orn. Dips) son kaydi "onceki program"
-   referansi olarak kartta gorunur.
-
-Dosyalar: index.html (DEGISTI) · sw.js (DEGISTI) · manifest.webmanifest · icon-192.png · icon-512.png
+Dosyalar:
+  index.html             uygulamanin kendisi (v8)
+  index_v7_yedek.html    onceki surum (yuklemeyin, yalnizca yedek)
+  manifest.webmanifest   uygulama adi/simgesi
+  sw.js                  cevrimdisi calisma + bildirim (onbellek mebfit-v8)
+  icon-192.png / icon-512.png

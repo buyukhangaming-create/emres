@@ -320,6 +320,44 @@ textarea{width:100%;height:130px;background:var(--bg);border:1px solid var(--lin
  padding:9px 13px;border-radius:10px;flex:none}
 #restMini.zero{background:#17683f;border-color:var(--ok);animation:blink 1s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+/* ===== v8: HAZIR OLMA · HEDEF · KAYDIRMALI KART ===== */
+.rdc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:9px 10px 9px;margin-bottom:10px}
+.rdt{font-size:13px;font-weight:800;margin:0 2px 8px}.rdt small{font-weight:600;color:var(--tx3);font-size:11px;margin-left:4px}
+.rdb{display:flex;gap:7px}
+.rdb button{flex:1;background:var(--card2);border-radius:11px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:0;border:1.5px solid transparent}
+.rdb i{font-style:normal;font-size:16px;line-height:1.2}.rdb b{font-size:12.5px}.rdb span{font-size:9.5px;color:var(--tx3);font-weight:600}
+.rdb button.on.r0{border-color:var(--warn);background:rgba(240,169,46,.12)}
+.rdb button.on.r1{border-color:var(--acc);background:rgba(78,163,255,.12)}
+.rdb button.on.r2{border-color:var(--ok);background:rgba(51,196,129,.12)}
+.tgt{margin:0 13px 10px;display:flex;gap:9px;align-items:center;background:rgba(78,163,255,.08);border:1px solid rgba(78,163,255,.28);border-radius:11px;padding:8px 9px 8px 11px}
+.tgt div{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.tgt b{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:var(--acc);font-weight:800}
+.tgt span{font-size:13.5px;font-weight:700;color:var(--tx)}
+.tgt em{font-style:normal;font-size:11px;color:var(--tx2)}
+.tgt button{background:var(--acc);color:#04121f;font-weight:800;font-size:12px;padding:8px 12px;border-radius:9px;flex:none}
+.srow.top .slab{color:var(--warn)}
+.srow.top input{border-color:rgba(240,169,46,.45)}
+.slab i{display:block;font-style:normal;font-size:8.5px;color:var(--ok);letter-spacing:.3px}
+.tag.tb{background:rgba(240,169,46,.12);color:var(--warn);border:1px solid rgba(240,169,46,.3)}
+.vbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 2px 8px}
+.vbar span{font-size:11.5px;color:var(--tx3);font-weight:600}
+.vbar button{font-size:12px;font-weight:800;color:var(--acc);background:var(--card);border:1px solid var(--line);padding:6px 11px;border-radius:9px}
+.exstrip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -14px 10px;padding:0 14px 2px;scroll-snap-type:x proximity}
+.exstrip::-webkit-scrollbar{display:none}
+.exstrip button{flex:none;display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:6px 10px 6px 7px;max-width:170px}
+.exstrip b{font-size:11px;font-weight:800;background:var(--card2);border-radius:7px;padding:2px 6px;color:var(--tx2)}
+.exstrip span{font-size:11.5px;font-weight:700;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exstrip button.on{border-color:var(--acc);background:rgba(78,163,255,.12)}
+.exstrip button.on span{color:var(--tx)}
+.exstrip button.ok b{background:var(--ok);color:#04121f}
+.car{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+ margin:0 -14px;align-items:flex-start;transition:height .22s ease;overscroll-behavior-x:contain}
+.car::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;padding:0 14px;box-sizing:border-box}
+.slide .blk{margin-top:0}
+.slnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 6px}
+.slnav button{font-size:11.5px;font-weight:700;color:var(--acc);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 11px;max-width:44%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slnav em{font-style:normal;font-size:11px;color:var(--tx3);font-weight:700}
 
 </style>
 </head>
@@ -381,7 +419,9 @@ textarea{width:100%;height:130px;background:var(--bg);border:1px solid var(--lin
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== PROGRAM v7.0 — HACİM DÖNGÜSÜ · 16 hafta · 4 gün Üst/Alt · 3 gün Full Body · deadlift yok =====
+/* ===== PROGRAM v8.0 — HACİM DÖNGÜSÜ · 16 hafta · 4 gün Üst/Alt · 3 gün Full Body (yorgunluk revizyonu) · deadlift yok =====
+   v8: sch:'tb' → 1 TOP set + back-off setleri (%90) · myo:1 → son set myo-rep · günlük hazır olma (yorgun/normal/zinde)
+       · her set için önerilen kilo/tekrar · kaydırmalı kart görünümü
    Hareket kütüphanesi (EX) tek yerde tanımlanır; programlar P(id, ayar) ile hareketi çağırır.
    k   : 'c' ana (çok eklemli) / 'i' izolasyon → RIR bloğa göre otomatik
    m   : hedef kas (geçiş dinlenmesi hesabında kullanılır) · syn: yardımcı kaslar
@@ -401,7 +441,7 @@ const ODAK={
 
 const EX={
  incdb:{n:'Incline Dumbbell Press (30°)',k:'c',m:'gogus',syn:['on_omuz','triceps'],st:'bench',eq:'f',o:'yuk',r:'6-10',rest:150,t:'ust',
-  kur:'Sehpa 30° (genelde 2. veya 3. delik; 45° göğüsten çok ön omzu çalıştırır). Dambılları dizlerinize koyup oturun, sırt üstü uzanırken dizlerle iterek omuz hizasına getirin. Kürek kemiklerini geriye ve aşağıya toplayın, göğüs hafif yukarıda, ayaklar yere basılı, kalça sehpada.',
+  kur:'Sehpa 30° (genelde 2. veya 3. delik; 45° göğüsten çok ön omzu çalıştırır). Dambılları dizlerinize koyup oturun, sırt üstü uzanırken dizlerle iterek omuz hizasına getirin. Kürek kemiklerini geriye ve aşağıya toplayın, göğüs hafif yukarıda, ayaklar yere basılı, kalça sehpada. KAYIT: ağırlık alanına TEK dambılın kilosunu girin (Ekim kayıtları 27,5 = tek dambıl; Kasım kayıtları 55-60 = iki dambılın toplamı görünüyor). Hangisini seçerseniz hep aynısı.',
   yap:'Dambıllar göğsün üst kısmına (meme ucunun biraz üstü) insin; dirsekler gövdeyle 45-60° açı yapsın, tam yana açık değil. En altta göğüste gerilmeyi hissedin ve 1 sn durun. Sonra dambılları hafifçe birbirine yaklaşan bir yayla yukarı itin. Tepede dambılları çarpıştırmayın, dirseği kilitlemeyin.',
   tempo:'İniş 3 sn · altta 1 sn duraklama · çıkış güçlü (≈1 sn) · tepede bekleme yok',
   odak:'Haftanın ana göğüs hareketi; göğüsteki ilerlemeyi bu hareket gösterir. Her hafta ya bir sette 1 tekrar ya da kilo artmalı. Ağır girin ama iniş hızını ve alttaki duraklamayı bırakmayın: duraklaması olmayan tekrar sayılmaz. Hissetmek için kiloyu düşürmenize gerek yok; açı ve derinlik doğruysa göğüs zaten çalışır.',
@@ -695,17 +735,17 @@ const P=(id,o)=>Object.assign({id:id},EX[id],o||{});
 
 /* ===== 4 GÜN · ÜST / ALT ===== PZT Üst A · SAL Alt A · PER Üst B · CUM Alt B */
 const U4A=[
- P('incdb',{s:4,pr:1,blk:'GÖĞÜS'}),
+ P('incdb',{s:4,pr:1,sch:'tb',blk:'GÖĞÜS'}),
  P('pec',{s:3,blk:'GÖĞÜS'}),
  P('csrow',{s:4,blk:'SIRT'}),
  P('latpd',{s:3,blk:'SIRT'}),
- P('latmac',{s:4,pr:1,blk:'OMUZ'}),
+ P('latmac',{s:4,pr:1,myo:1,blk:'OMUZ'}),
  P('facep',{s:2,blk:'OMUZ'}),
  P('bayes',{s:3,pr:1,ss:'A1',blk:'KOL'}),
  P('ohtri',{s:3,pr:1,ss:'A2',blk:'KOL'})
 ];
 const L4A=[
- P('squat',{s:4,blk:'QUADRICEPS'}),
+ P('squat',{s:4,sch:'tb',blk:'QUADRICEPS'}),
  P('legext',{s:3,blk:'QUADRICEPS'}),
  P('lpmid',{s:3,blk:'QUADRICEPS'}),
  P('calfp',{s:4,blk:'BALDIR'}),
@@ -713,7 +753,7 @@ const L4A=[
  P('abs',{s:3,blk:'KARIN'})
 ];
 const U4B=[
- P('cpress',{s:4,pr:1,blk:'GÖĞÜS'}),
+ P('cpress',{s:4,pr:1,sch:'tb',blk:'GÖĞÜS'}),
  P('incsm',{s:3,blk:'GÖĞÜS'}),
  P('barfiks',{s:3,blk:'SIRT'}),
  P('cabrow',{s:3,blk:'SIRT'}),
@@ -725,7 +765,7 @@ const U4B=[
 const L4B=[
  P('scalf',{s:4,blk:'BALDIR'}),
  P('llc',{s:4,blk:'KALÇA & HAMSTRING'}),
- P('lphigh',{s:4,blk:'KALÇA & HAMSTRING'}),
+ P('lphigh',{s:4,sch:'tb',blk:'KALÇA & HAMSTRING'}),
  P('bext',{s:3,blk:'KALÇA & HAMSTRING'}),
  P('rpd',{s:3,blk:'ARKA OMUZ & KOL'}),
  P('hammer',{s:3,ss:'A1',blk:'ARKA OMUZ & KOL'}),
@@ -733,37 +773,42 @@ const L4B=[
  P('abs',{s:2,blk:'KARIN'})
 ];
 
-/* ===== 3 GÜN · FULL BODY ===== her kas haftada 2-3 kez · bacak her gün ama düşük dozda */
+/* ===== 3 GÜN · FULL BODY · v8 YORGUNLUK REVİZYONU =====
+   v7: 24 + 25 + 30 = 79 set/hafta (Blok 2'de 87) · piramit setler ayrıca kaydediliyordu.
+   v8: 22 + 23 + 22 = 67 set/hafta (Blok 2'de 71) · ana hareketlerde 1 TOP + 2 back-off ·
+   ağır bacak haftada 1 kez (A: squat), B orta (leg press), C hafif (izolasyon). */
 const F3A=[
- P('incdb',{s:4,pr:1,blk:'GÖĞÜS'}),
- P('squat',{s:3,blk:'BACAK'}),
+ P('scalf',{s:3,blk:'BALDIR'}),
+ P('incdb',{s:3,pr:1,sch:'tb',blk:'GÖĞÜS'}),
+ P('squat',{s:3,sch:'tb',blk:'BACAK'}),
+ P('csrow',{s:3,blk:'SIRT'}),
  P('slc',{s:3,blk:'BACAK'}),
- P('csrow',{s:4,blk:'SIRT'}),
- P('latmac',{s:4,pr:1,blk:'OMUZ'}),
- P('bayes',{s:3,pr:1,ss:'A1',blk:'KOL'}),
- P('ohtri',{s:3,pr:1,ss:'A2',blk:'KOL'})
+ P('latmac',{s:3,pr:1,myo:1,blk:'OMUZ'}),
+ P('bayes',{s:2,ss:'A1',blk:'KOL'}),
+ P('ohtri',{s:2,ss:'A2',blk:'KOL'})
 ];
 const F3B=[
- P('cpress',{s:4,pr:1,blk:'GÖĞÜS'}),
- P('lpmid',{s:3,blk:'BACAK & BALDIR'}),
- P('calfp',{s:3,blk:'BACAK & BALDIR'}),
- P('barfiks',{s:3,blk:'SIRT'}),
- P('cablat',{s:3,pr:1,blk:'OMUZ'}),
- P('ezcurl',{s:3,pr:1,ss:'A1',blk:'KOL'}),
- P('skull',{s:3,pr:1,ss:'A2',blk:'KOL'}),
+ P('cpress',{s:3,pr:1,sch:'tb',blk:'GÖĞÜS'}),
+ P('barfiks',{s:3,sch:'tb',blk:'SIRT'}),
+ P('lpmid',{s:3,sch:'tb',blk:'BACAK & BALDIR'}),
+ P('calfp',{s:2,blk:'BACAK & BALDIR'}),
+ P('cablat',{s:3,pr:1,myo:1,blk:'OMUZ'}),
+ P('facep',{s:2,blk:'OMUZ'}),
+ P('ezcurl',{s:2,ss:'A1',blk:'KOL'}),
+ P('skull',{s:2,ss:'A2',blk:'KOL'}),
  P('abs',{s:3,blk:'KARIN'})
 ];
 const F3C=[
- P('scalf',{s:3,blk:'BALDIR'}),
  P('incsm',{s:3,blk:'GÖĞÜS & ARKA OMUZ'}),
- P('pec',{s:3,ss:'A1',rest:15,blk:'GÖĞÜS & ARKA OMUZ'}),
- P('rpd',{s:3,ss:'A2',rest:90,blk:'GÖĞÜS & ARKA OMUZ'}),
- P('legext',{s:3,blk:'BACAK'}),
- P('llc',{s:3,blk:'BACAK'}),
- P('latpd',{s:3,blk:'SIRT'}),
- P('cabrow',{s:3,blk:'SIRT'}),
- P('hammer',{s:3,ss:'B1',blk:'KOL'}),
- P('pushd',{s:3,ss:'B2',blk:'KOL'})
+ P('pec',{s:2,ss:'A1',rest:15,blk:'GÖĞÜS & ARKA OMUZ'}),
+ P('rpd',{s:2,ss:'A2',rest:90,blk:'GÖĞÜS & ARKA OMUZ'}),
+ P('latpd',{s:3,sch:'tb',blk:'SIRT'}),
+ P('cabrow',{s:2,blk:'SIRT'}),
+ P('legext',{s:2,blk:'BACAK & KALÇA'}),
+ P('llc',{s:2,blk:'BACAK & KALÇA'}),
+ P('bext',{s:2,blk:'BACAK & KALÇA'}),
+ P('hammer',{s:2,ss:'B1',blk:'KOL'}),
+ P('pushd',{s:2,ss:'B2',blk:'KOL'})
 ];
 
 const PROGRAMS={
@@ -773,9 +818,9 @@ const PROGRAMS={
   {id:'u2',short:'PER',dow:4,name:'Üst B',sub:'Göğüs → Sırt → Omuz → Kol',ex:U4B},
   {id:'a2',short:'CUM',dow:5,name:'Alt B',sub:'Baldır → Kalça & Hamstring → Arka omuz & Kol',ex:L4B}]},
  '3g':{name:'3 Günlük · Full Body · Hacim',days:[
-  {id:'f1',short:'PZT',dow:1,name:'Full A',sub:'Göğüs → Squat → Sırt → Omuz → Kol',ex:F3A},
-  {id:'f2',short:'ÇAR',dow:3,name:'Full B',sub:'Göğüs → Leg Press → Barfiks → Omuz → Kol',ex:F3B},
-  {id:'f3',short:'CUM',dow:5,name:'Full C',sub:'Baldır → Göğüs → Bacak → Sırt → Kol',ex:F3C}]}
+  {id:'f1',short:'PZT',dow:1,name:'Full A',sub:'Baldır → Üst göğüs → Squat → Sırt → Omuz → Kol · 22 set',ex:F3A},
+  {id:'f2',short:'ÇAR',dow:3,name:'Full B',sub:'Göğüs presi → Barfiks → Leg Press → Omuz → Kol → Karın · 23 set',ex:F3B},
+  {id:'f3',short:'CUM',dow:5,name:'Full C',sub:'Göğüs → Sırt → Hafif bacak → Kol (pompa günü) · 22 set',ex:F3C}]}
 };
 
 const DIET = {
@@ -824,7 +869,7 @@ let MEM=null, useLS=true;
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ useLS=false; }
 function load(){
   try{ const r = useLS ? localStorage.getItem(KEY) : MEM; if(r) return JSON.parse(r); }catch(e){}
-  return {logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1};
+  return {logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1,mig8:1,seen8:1};
 }
 function save(){
   const s=JSON.stringify(S);
@@ -967,6 +1012,30 @@ function migrate7(){
 }
 migrate7();
 
+/* ---------- v8 KAYIT GÖÇÜ: v7 3 gün Full Body sırası → v8 (ada göre) ----------
+   Yalnızca 3 günlük programın kayıtları taşınır; 4 günlük programda sıra değişmedi.
+   Ham v7 kayıtları S.bak_v7 içinde saklanır. */
+const V7T3={'3g|f1':['incdb','squat','slc','csrow','latmac','bayes','ohtri'],
+ '3g|f2':['cpress','lpmid','calfp','barfiks','cablat','ezcurl','skull','abs'],
+ '3g|f3':['scalf','incsm','pec','rpd','legext','llc','latpd','cabrow','hammer','pushd']};
+function migrate8(){
+  if(S.mig8) return;
+  const old=S.logs||{}, neu={}, bak={}; let tasinan=0, arsiv=0;
+  const loc=name=>{ const out=[]; PROGRAMS['3g'].days.forEach(d=>d.ex.forEach((e,i)=>{ if(e.n===name) out.push({did:d.id,ei:i}); })); return out; };
+  for(const k in old){ const p=k.split('|'), tbl=V7T3[p[0]+'|'+p[1]];
+    if(!tbl){ neu[k]=old[k]; continue; }
+    bak[k]=old[k];
+    const id=tbl[+p[3]], L=id?loc(EX[id].n):[], pick=L.find(x=>x.did===p[1])||L[0];
+    const nk=pick?[p[0],pick.did,p[2],pick.ei,p[4]].join('|'):null;
+    if(nk && !neu[nk]){ neu[nk]=old[k]; tasinan++; } else arsiv++; }
+  S.bak_v7=bak; S.logs=neu; S.mig8=1; S.rest=null;
+  if(S.ui) S.ui.day=null;
+  save();
+  console.log('v8 göç: '+tasinan+' kayıt taşındı, '+arsiv+' kayıt arşivde');
+  return {tasinan:tasinan, arsiv:arsiv};
+}
+migrate8();
+
 /* ---------- YARDIMCI ---------- */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -986,9 +1055,19 @@ function setsFor(e,w){ return blokNo(w)==='D' ? Math.max(2,Math.floor(e.s*0.6)) 
 function rirFor(e,w){ const b=blokNo(w); if(b==='D') return '4';
   if(e.safe && (b===2||b===3)) return '2';
   return {0:['3','2'],1:['2','1'],2:['1-2','0-1'],3:['1','0']}[b][e.k==='c'?0:1]; }
+/* günlük hazır olma: 0 yorgun · 1 normal · 2 zinde  (gün + hafta bazında saklanır) */
+function rdKey(){ return S.ui.prog+'|'+S.ui.day+'|'+S.ui.week; }
+function rdNow(){ const v=(S.rd||{})[rdKey()]; return v===undefined?1:v; }
+function setRd(v){ S.rd=S.rd||{}; S.rd[rdKey()]=v; save(); renderW();
+  toast(['Yorgun gün: her harekette 1 set az, kilo artışı yok','Normal gün','Zinde gün: hedef kilolar ilerletildi'][v]); }
+/* TOP + back-off setlerinde RIR */
+function rirBO(w){ const b=blokNo(w); return b==='D'?'4':({0:'3',1:'2-3',2:'2',3:'2'}[b]); }
 function curDay(){
   const p=PROGRAMS[S.ui.prog], d=p.days.find(x=>x.id===S.ui.day)||p.days[0], w=S.ui.week;
-  return Object.assign({},d,{ex:d.ex.map(e=>Object.assign({},e,{s:setsFor(e,w),rir:rirFor(e,w),plus:plusOn(e,w)}))});
+  const tired=(((S.rd||{})[S.ui.prog+'|'+d.id+'|'+w])===0);
+  return Object.assign({},d,{ex:d.ex.map(e=>{ let s=setsFor(e,w);
+    if(tired && s>2 && (e.k==='c'||s>=3)) s--;
+    return Object.assign({},e,{s:s,rir:rirFor(e,w),rirb:e.sch==='tb'?rirBO(w):null,plus:plusOn(e,w)}); })});
 }
 /* aynı hareketin 3 ve 4 günlük programdaki tüm yerleri */
 function exSources(name){ const out=[];
@@ -1051,6 +1130,70 @@ function wIn(e,o,v){
 }
 /* kg cinsinden bir değeri hareketin biriminde yaz */
 function wTxt(e,kg){ const u=unitOf(e); return u==='lb' ? nf(snapLb(kg/LB))+' lb' : nf(r1(kg))+' kg'; }
+
+/* ---------- HEDEF MOTORU (v8) ----------
+   Son kayda göre her set için önerilen ağırlık + tekrar.
+   · TOP + back-off (sch:'tb'): 1. set günün en ağır seti (RIR 1-2), sonraki setler TOP'un ~%90'ı.
+     TOP'ta tekrar üst sınıra ulaştıysa kademe eklenir; ulaşmadıysa aynı kilo, +1 tekrar hedefi.
+   · Düz set: tüm setler aynı kilo (piramit yok). Tüm setler üst sınırdaysa kademe eklenir.
+   · Destekli barfiks: ilerleme desteği azaltmaktır; back-off setlerinde destek vücut ağırlığının ~%10'u kadar artar.
+   · Yorgun gün: kilo artışı ve tekrar artışı yok. */
+function repRng(e){ const m=String(e.r).split('-').map(Number); return {lo:m[0],hi:m[1]||m[0]}; }
+function incKg(e){ return unitOf(e)==='lb' ? 5*LB : 2.5; }
+function roundKg(e,kg){ if(unitOf(e)==='lb') return snapLb(kg/LB)*LB; return Math.round(kg/2.5)*2.5; }
+function dispW(e,kg){ return unitOf(e)==='lb' ? snapLb(kg/LB) : r1(kg); }
+function targets(ei){
+  const d=curDay(), e=d.ex[ei], r=lastRec(ei); if(!r) return null;
+  const R=repRng(e), rd=rdNow(), up=rd>0, out=[];
+  if(e.eq==='a'){
+    const arr=r.sets.filter(o=>astKg(o)!==undefined&&o.reps>0); if(!arr.length) return null;
+    const A=Math.min.apply(null,arr.map(astKg)), atA=arr.filter(o=>Math.abs(astKg(o)-A)<0.6), Rt=Math.max.apply(null,atA.map(o=>o.reps));
+    const inc=incKg(e), bw=bodyW()||0;
+    let topA=A, topR=Math.min(R.hi,Rt+(up?1:0));
+    if(Rt>=R.hi && up){ topA=A-inc; topR=R.lo; }
+    const boA=Math.max(0, topA+Math.max(inc, roundKg(e,bw*0.1)));
+    for(let si=0;si<e.s;si++){ const isTop=(e.sch!=='tb')||si===0, a=isTop?topA:boA;
+      const reps=isTop?topR:Math.min(R.hi,Math.max(R.lo,Rt+2));
+      out.push({as:a, v:dispW(e,a), reps:reps, lab:e.sch==='tb'?(isTop?'TOP':'B/O'):String(si+1),
+        txt:(a<=0.01? (a<-0.01?'kemer +'+wTxt(e,-a):'vücut ağırlığı') : 'destek '+wTxt(e,a))+' × '+reps}); }
+    return out;
+  }
+  const arr=r.sets.filter(o=>o.kg>0&&o.reps>0); if(!arr.length) return null;
+  const T=Math.max.apply(null,arr.map(o=>o.kg)), atT=arr.filter(o=>Math.abs(o.kg-T)<0.6);
+  const Rt=Math.max.apply(null,atT.map(o=>o.reps)), Rmin=Math.min.apply(null,atT.map(o=>o.reps));
+  const inc=incKg(e);
+  if(e.sch==='tb'){
+    let top=T, tr=Math.min(R.hi,Rt+(up?1:0));
+    if(Rt>=R.hi && up){ top=roundKg(e,T+inc); if(top<=T) top=T+inc; tr=R.lo; }
+    const bo=roundKg(e,top*0.9), br=Math.min(R.hi,Math.max(R.lo,tr+2));
+    for(let si=0;si<e.s;si++){ const isTop=si===0, kg=isTop?top:bo, reps=isTop?tr:br;
+      out.push({kg:kg, v:dispW(e,kg), reps:reps, lab:isTop?'TOP':'B/O', txt:wTxt(e,kg)+' × '+reps}); }
+    return out;
+  }
+  /* düz set: en çok set yapılan kilo esas alınır (tek seferlik ağır set hedefi şişirmez); eşitlikte ağır olan */
+  const grp={}; arr.forEach(o=>{ const k=Math.round(o.kg*2)/2; (grp[k]=grp[k]||[]).push(o); });
+  const Wk=Object.keys(grp).map(Number).sort((a,b)=>(grp[b].length-grp[a].length)||(b-a))[0], atW=grp[Wk];
+  const W0=atW[0].kg, Ravg=Math.round(atW.reduce((s,o)=>s+o.reps,0)/atW.length);
+  const allHi = atW.every(o=>o.reps>=R.hi) && (atW.length>=Math.min(2,arr.length));
+  let W=W0, tr=Math.min(R.hi, Math.max(R.lo, Ravg+(up?1:0)));
+  if(allHi && up){ W=roundKg(e,W0+inc); if(W<=W0) W=W0+inc; tr=R.lo; }
+  for(let si=0;si<e.s;si++){ const myo=e.myo&&si===e.s-1&&blokNo(S.ui.week)!=='D';
+    out.push({kg:W, v:dispW(e,W), reps:tr, lab:String(si+1), myo:myo, txt:wTxt(e,W)+' × '+tr+(myo?' + myo':'')}); }
+  return out;
+}
+/* ısınma basamakları (kaydedilmez): ana hareketin TOP hedefinden hesaplanır */
+function warmTxt(e,tg){
+  if(!tg||e.sch!=='tb'||e.eq==='a') return '';
+  const top=tg[0].kg, st=e.id==='squat'?[[.5,8],[.7,4],[.85,2]]:[[.6,6],[.8,3]];
+  return st.map(([p,r])=>wTxt(e,roundKg(e,top*p))+'×'+r).join(' → ');
+}
+function fillTargets(ei){
+  const e=curDay().ex[ei], tg=targets(ei); if(!tg){ toast('Bu hareket için hedef hesaplanamadı'); return; }
+  let n=0; tg.forEach((t,si)=>{ const k=lk(ei,si), o=S.logs[k]||{};
+    if(o.kg===undefined && o.as===undefined){ wIn(e,o,String(t.v)); n++; }
+    S.logs[k]=o; });
+  save(); renderW(); toast(n?n+' sete hedef kilo yazıldı':'Ağırlıklar zaten girilmiş');
+}
 
 /* ---------- SEKME ---------- */
 let TAB='w';
@@ -1395,10 +1538,13 @@ function toggleSet(ei,si){
   const e=curDay().ex[ei];
   const k=lk(ei,si), o=S.logs[k]||{};
   o.done=!o.done;
-  if(o.done && o.reps===undefined){ const r=lastRec(ei), pr=r&&(r.sets[si]||r.sets[r.sets.length-1]); if(pr&&pr.reps!==undefined) o.reps=pr.reps; }
+  if(o.done){ const tg=targets(ei), t=tg&&tg[si];
+    if(t && o.kg===undefined && o.as===undefined) wIn(e,o,String(t.v));
+    if(o.reps===undefined){ if(t) o.reps=t.reps; else { const r=lastRec(ei), pr=r&&(r.sets[si]||r.sets[r.sets.length-1]); if(pr&&pr.reps!==undefined) o.reps=pr.reps; } } }
   S.logs[k]=o; save();
   if(o.done){ sessOn();
     const pl=restPlan(ei,si);
+    if(pl && pl.lab==='HAREKET GEÇİŞİ') ADV=true;
     if(pl){ if(ST().auto) startRest(pl,ei,si); }
     else { const d=curDay(); let left=0; d.ex.forEach((x,xi)=>{ for(let s=0;s<x.s;s++) if(!get(xi,s).done) left++; });
       toast(left?'Hareket bitti · '+left+' set eksik kaldı':'Antrenman tamam 💪'); } }
@@ -1464,6 +1610,9 @@ function guideCard(){
     <div class="gi pompa"><b>POMPA · TÜKENİŞ</b>Yan/arka omuz, baldır, pushdown. Hafif-orta kilo, 12-20 tekrar. İlerleme önce tekrar sayısından gelir; yanma başladıktan sonra seti RIR hedefine kadar sürdürün.</div>
     <b style="color:var(--tx)">Hepsinde ortak kural: çift ilerleme.</b> Bütün setlerde tekrar aralığının üst sınırına ulaştığınızda bir sonraki antrenmanda en küçük kademe kilo ekleyin (dambıl +2-2,5 kg · makine +5 lb ya da 1 kademe · barbell +2,5 kg) ve alt sınırdan devam edin. Kilo artınca tekrarın düşmesi normaldir.<br><br>
     <b style="color:var(--tx)">Kilo artırmayın, eğer</b> tekrarı ancak hareketi kısaltarak, gövdeyi sallayarak ya da inişi hızlandırarak tutturuyorsanız.<br><br>
+    <b style="color:var(--tx)">TOP + back-off (v8):</b> Ana hareketlerde ilk çalışma seti günün en ağır setidir (TOP). Sonraki setler ~%10 hafif (B/O) ve 2-3 tekrar fazla. Piramit gibi kiloyu set set artırmayın: ısınma setleri (kartta yazar) kaydedilmez. Bu yapı aynı uyarıyı daha az yorgunlukla verir.<br><br>
+    <b style="color:var(--tx)">Myo-rep (son set):</b> Lateral hareketlerin son setinde tükenince 5 nefes bekleyin, 3-4 tekrar daha; bunu 2-3 kez tekrarlayın. Ekstra set eklemeden yan omuza ek uyarı.<br><br>
+    <b style="color:var(--tx)">Bugün nasılsın?</b> Kötü uyku, belirgin kas ağrısı ya da düşük enerji varsa "Yorgun"u seçin: her harekette 1 set azalır, kilo artışı önerilmez. Antrenmanı atlamaktan daima iyidir.<br><br>
     <b style="color:var(--tx)">RIR:</b> Seti bıraktığınızda kaç tekrar daha yapabilirdiniz? RIR 2 = 2 tekrar daha yapabilecekken bırakmak. Kartlardaki RIR her hafta otomatik değişir.<br><br>
     <b style="color:var(--tx)">Birim:</b> Makine ve kablolar varsayılan olarak lbs, dambıl ve barbell kg. Kartın üstündeki <b>KG / LBS</b> düğmesine dokunarak o hareketin birimini değiştirin; eski kayıtlar otomatik çevrilir.<br><br>
     <b style="color:var(--tx)">Dinlenme:</b> ✓'ye basınca sayaç aynı hareketin sonraki seti için set arası süreyi başlatır. Hareketin son setinden sonra ise süre <b>sıradaki harekete göre</b> kurulur: o kas az önce çalıştıysa tam dinlenme, yeni bir kas grubuysa kısaltılmış dinlenme; istasyon değişimi ve ısınma seti süreye eklenir.
@@ -1478,33 +1627,43 @@ function volCard(){
     ${keys.map(k=>`<tr><td>${MUS[k]}</td><td class="num">${m[k]}</td><td class="num">${f[k].size}×/hafta</td></tr>`).join('')}</table>
     <p class="tiny" style="margin:9px 0 0;color:var(--tx2)">Yalnızca hareketin hedef kası sayılır. Ön omuz tüm göğüs preslerinde, biceps tüm çekişlerde, triceps tüm preslerde ayrıca çalışır.</p></div>`;
 }
+let ADV=false;
+function rdCard(){ const v=rdNow(), L=[['😴','Yorgun','−1 set · kilo sabit'],['🙂','Normal','planlandığı gibi'],['💪','Zinde','hedefler ilerler']];
+  return `<div class="rdc"><div class="rdt">Bugün nasılsın? <small>uyku · ağrı · enerji</small></div><div class="rdb">${L.map((x,i)=>
+    `<button class="${v===i?'on r'+i:''}" onclick="setRd(${i})"><i>${x[0]}</i><b>${x[1]}</b><span>${x[2]}</span></button>`).join('')}</div></div>`; }
+function viewMode(){ return (S.ui.view||'kart'); }
+function togView(){ S.ui.view=viewMode()==='kart'?'liste':'kart'; save(); renderW(); window.scrollTo(0,0); }
+function slKey(){ return S.ui.prog+'|'+S.ui.day; }
 function renderW(){
   const d=curDay();
-  let h=warnBanner()+`<div class="sum" id="sumBox"></div>`+guideCard()+`<div class="blkrule"><b>Blok kuralı</b>Bir bloğun tüm hareketleri ve tüm setleri bitmeden bir sonraki bloğa geçilmez. İstasyon meşgulse sırayı değil, hareketi değiştirin (her hareketin "Nasıl yapılır" bölümünde alternatifi yazılı).</div>`;
+  let h=warnBanner()+`<div class="sum" id="sumBox"></div>`+rdCard(); let INFO=guideCard()+`<div class="blkrule"><b>Blok kuralı</b>Bir bloğun tüm hareketleri ve tüm setleri bitmeden bir sonraki bloğa geçilmez. İstasyon meşgulse sırayı değil, hareketi değiştirin (her hareketin "Nasıl yapılır" bölümünde alternatifi yazılı).</div>`;
   const bn=blokNo(S.ui.week), BAND={
     D:['⚠ DELOAD HAFTASI','Set sayıları otomatik azaltıldı (4→2, 3→2). Ağırlığı ve tekrarı aynı tutun, RIR 4\'te kalın; antrenman sayısını değiştirmeyin.'+(S.ui.week===16?' Bu hafta tüm ölçümleri alın: yeni döngü bu sonuçlara göre kurulacak.':'')],
     0:['GİRİŞ HAFTASI','Kartın üstündeki son kayıt ağırlığıyla başlayın ama setleri RIR 3\'te bitirin. "YENİ" etiketli hareketlerde 2-3 tekrar yedekte kalacak ağırlığı bulun ve kaydedin.'],
-    2:['BLOK 2 · HACİM ARTIŞI','Turuncu "+1 set" etiketli öncelikli hareketlere (göğüs, yan omuz, kol) bir set eklendi. Ana hareketlerde RIR 1-2, izolasyonlarda 0-1.'],
-    3:['BLOK 3 · YOĞUNLAŞMA','İzolasyon hareketlerinin SON setinde: tükenince ağırlığı %25-30 düşürüp ara vermeden yeniden tükenene kadar devam (drop set). Ana hareketlerde RIR 1; squat RIR 2\'de kalır.']}[bn];
-  if(BAND) h+=`<div class="c" style="border-color:rgba(240,169,46,.4);background:rgba(240,169,46,.08)">
+    1:['BLOK 1 · BİRİKİM','Ana hareketlerde 1 TOP set (en ağır, RIR 1-2) + back-off setleri (TOP\'un ~%90\'ı, RIR 2-3). Isınma setlerini kaydetmeyin. Kutulardaki gri sayılar bugünün önerilen kilo/tekrarıdır: ✓\'ye basınca boş kutuya otomatik yazılır.'],
+    2:['BLOK 2 · HACİM ARTIŞI','Turuncu "+1 set" etiketli öncelikli hareketlere (göğüs, yan omuz) bir back-off seti eklendi. TOP set RIR 1-2, back-off RIR 2; izolasyonlarda RIR 0-1.'],
+    3:['BLOK 3 · YOĞUNLAŞMA','İzolasyonların SON setinde drop set (ağırlık −%25-30, ara vermeden). Ana hareketlerde yalnızca TOP set RIR 1; back-off setleri RIR 2\'de kalır, squat her zaman RIR 2.']}[bn];
+  if(BAND) INFO+=`<div class="c" style="border-color:rgba(240,169,46,.4);background:rgba(240,169,46,.08)">
     <b style="color:var(--warn);font-size:14px">${BAND[0]}</b>
     <p class="tiny" style="margin:5px 0 0;color:var(--tx2)">${BAND[1]}</p></div>`;
   let _pb=null;
   const bw=bodyW();
-  h+=d.ex.map((e,ei)=>{
+  const CARDS=d.ex.map((e,ei)=>{
     let allDone=true; for(let si=0;si<e.s;si++) if(!get(ei,si).done) allDone=false;
     const pv=prevTxt(ei), u=unitOf(e), ul=u==='lb'?'lb':'kg', O=ODAK[e.o]||ODAK.his;
     const ps=ssPair(ei,d), tr=transInfo(ei,d), isNew=!lastRec(ei);
     const wHead = e.eq==='a' ? 'DESTEK' : (u==='lb'?'LBS':'KG');
     let rows=`<div class="shead"><div></div><div><button class="ubtn" onclick="togUnit(${ei})">${wHead}${e.eq==='a'?' · '+ul:''} <i>⇄</i></button></div><div>TEKRAR</div><div></div></div>`;
     const nets=[];
-    for(let si=0;si<e.s;si++){ const o=get(ei,si);
+    const tg=targets(ei);
+    for(let si=0;si<e.s;si++){ const o=get(ei,si), t=tg&&tg[si];
       if(e.eq==='a' && o.kg!==undefined) nets.push(nf(r1(o.kg)));
-      rows+=`<div class="srow">
-        <div class="slab">${si+1}</div>
-        <div class="fld"><input inputmode="decimal" placeholder="—" value="${wOut(e,o)}"
+      const sl = e.sch==='tb' ? (si===0?'TOP':'B/O') : String(si+1);
+      rows+=`<div class="srow ${e.sch==='tb'&&si===0?'top':''}">
+        <div class="slab">${sl}${t&&t.myo?'<i>myo</i>':''}</div>
+        <div class="fld"><input inputmode="decimal" placeholder="${t?nf(t.v):'—'}" value="${wOut(e,o)}"
            onchange="setVal(${ei},${si},'w',this.value)"><em>${ul}</em></div>
-        <div class="fld"><input inputmode="numeric" placeholder="—" value="${o.reps??''}"
+        <div class="fld"><input inputmode="numeric" placeholder="${t?t.reps:'—'}" value="${o.reps??''}"
            onchange="setVal(${ei},${si},'reps',this.value)"><em>tk</em></div>
         <button class="chk ${o.done?'on':''}" onclick="toggleSet(${ei},${si})">✓</button>
       </div>`; }
@@ -1517,6 +1676,10 @@ function renderW(){
       let bd=0,bt=0; bx.forEach(x=>{const xi=d.ex.indexOf(x); for(let si=0;si<x.s;si++){bt++; if(get(xi,si).done) bd++;}});
       bh=`<div class="blk ${bd===bt?'ok':''}"><b>${esc(e.blk)}</b><span>${bx.length} hareket · ${bs} set · ${bd}/${bt}</span></div>`;
     }
+    const tgLine = tg ? `<div class="tgt"><div><b>Bugünün hedefi${rdNow()===0?' · yorgun gün':''}</b><span>${
+        e.sch==='tb' ? 'TOP '+esc(tg[0].txt)+(tg.length>1?' · B/O '+esc(tg[1].txt):'') : esc(tg[0].txt)+(tg.some(x=>x.myo)?' · son set myo-rep':'')}</span>${
+        warmTxt(e,tg)?`<em>Isınma (kaydetme): ${esc(warmTxt(e,tg))}</em>`:''}</div>
+        <button onclick="fillTargets(${ei})">yaz</button></div>` : '';
     const restTag = (ps&&ps.first) ? `geçiş ${fmtRest(e.rest)} → ${esc(d.ex[ps.j].ss)}` : (ps?'tur arası ':'set arası ')+fmtRest(e.rest);
     return bh+`<div class="ex ${allDone?'done':''}">
       <div class="exh">
@@ -1524,7 +1687,8 @@ function renderW(){
         <div class="exi">
           <h3>${esc(e.n)}</h3>
           <div class="tags"><span class="tag sets">${e.s} × ${esc(e.r)}</span>
-            <span class="tag rir">RIR ${esc(e.rir)}</span>
+            <span class="tag rir">${e.rirb?'TOP RIR '+esc(e.rir)+' · B/O '+esc(e.rirb):'RIR '+esc(e.rir)}</span>
+            ${e.sch==='tb'?`<span class="tag tb">TOP + back-off</span>`:''}${e.myo&&blokNo(S.ui.week)!=='D'?`<span class="tag pompa">son set myo</span>`:''}
             <span class="tag ${O.c}">${O.t}</span>
             ${isNew?`<span class="tag new">YENİ</span>`:''}
             ${e.plus?`<span class="tag pr">+1 set</span>`:''}${(blokNo(S.ui.week)===3&&e.k==='i')?`<span class="tag pr">son set: drop</span>`:''}
@@ -1535,6 +1699,7 @@ function renderW(){
             <button class="copybtn" onclick="copyPrev(${ei})">kopyala</button></div>`:''}
         </div>
       </div>
+      ${tgLine}
       <div class="sets">${rows}</div>
       <div class="exfoot">
         <button class="notebtn" onclick="tgl(this,'how')">Nasıl yapılır<span>⌄</span></button>
@@ -1543,12 +1708,64 @@ function renderW(){
       ${howPanel(ei)}
       ${progPanel(ei)}
     </div>`;
-  }).join('');
+  });
+  /* slaytlar: tek hareket ya da süperset çifti */
+  const SL=[]; for(let ei=0;ei<d.ex.length;ei++){ const ps=ssPair(ei,d);
+    if(ps&&ps.first){ SL.push([ei,ps.j]); ei=ps.j; } else SL.push([ei]); }
+  const exDone=ei=>{ for(let si=0;si<d.ex[ei].s;si++) if(!get(ei,si).done) return false; return true; };
+  h+=`<div class="vbar"><span>${viewMode()==='kart'?'← kaydır → hareketler arasında':'Tüm hareketler alt alta'}</span><button onclick="togView()">${viewMode()==='kart'?'☰ Liste':'⇆ Kart'}</button></div>`;
+  if(viewMode()!=='kart') h+=INFO;
+  if(viewMode()==='kart'){
+    h+=`<div class="exstrip" id="exstrip">${SL.map((g,i)=>`<button data-i="${i}" class="${g.every(exDone)?'ok':''}" onclick="goSlide(${i},true)"><b>${g.map(x=>x+1).join('+')}</b><span>${esc(d.ex[g[0]].n.split(' (')[0].split(' / ')[0])}</span></button>`).join('')}</div>`;
+    h+=`<div class="car" id="car">${SL.map((g,i)=>`<div class="slide" data-i="${i}">${g.map(x=>CARDS[x]).join('')}
+      <div class="slnav">${i>0?`<button onclick="goSlide(${i-1},true)">‹ ${esc(d.ex[SL[i-1][0]].n.split(' (')[0])}</button>`:'<span></span>'}<em>${i+1}/${SL.length}</em>${i<SL.length-1?`<button onclick="goSlide(${i+1},true)">${esc(d.ex[SL[i+1][0]].n.split(' (')[0])} ›</button>`:'<span></span>'}</div></div>`).join('')}</div>`;
+    h+=`<h2 class="sec" style="margin-top:14px">Program notları</h2>`+INFO;
+  } else h+=CARDS.join('');
   h+=`<div class="c" style="margin-top:4px"><h3>Isınma <small>her antrenman öncesi</small></h3>
     <p class="tiny" style="margin:0;color:var(--tx2)">5 dk hafif bisiklet → Cat-Cow 10 tekrar → Band Pull-Apart 2×15 → ilk hareketin çalışma ağırlığının %50'siyle 1×10, %75'iyle 1×5. Gün içinde taze bir kas grubuna ağır bir ana hareketle geçerken 1 ısınma seti daha (~%60 × 6); geçiş sayacı bu süreyi içerir. Isınma setleri <b>kayda girilmez</b>. Çalışma setlerinin hepsi aynı ağırlıkla yapılır (piramit yok).</p></div>`;
   h+=volCard();
   $('app').innerHTML=h; updateSummary();
+  if(viewMode()==='kart') carInit();
 }
+/* ---------- KAYDIRMALI KART GÖRÜNÜMÜ ---------- */
+let CAR_RO=null, CAR_T=0;
+function curSlide(){ return ((S.ui.sl||{})[slKey()])||0; }
+function setSlide(i){ S.ui.sl=S.ui.sl||{}; if(S.ui.sl[slKey()]!==i){ S.ui.sl[slKey()]=i; save(); } }
+function carFit(){ const car=$('car'); if(!car) return; const s=car.children[curSlide()]; if(s) car.style.height=s.offsetHeight+'px'; }
+function stripMark(){ const st=$('exstrip'); if(!st) return; const i=curSlide();
+  st.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));
+  const b=st.querySelector('button.on'); if(b){ const l=b.offsetLeft-st.clientWidth/2+b.offsetWidth/2; st.scrollTo({left:l,behavior:'smooth'}); } }
+function goSlide(i,smooth){ const car=$('car'); if(!car) return; i=Math.max(0,Math.min(car.children.length-1,i));
+  setSlide(i); car.scrollTo({left:i*car.clientWidth,behavior:smooth?'smooth':'auto'}); carFit(); stripMark();
+  if(smooth){ const top=car.getBoundingClientRect().top+window.scrollY-150; if(window.scrollY>top) window.scrollTo({top:Math.max(0,top),behavior:'smooth'}); } }
+function carInit(){
+  const car=$('car'); if(!car) return;
+  let i=Math.min(curSlide(), car.children.length-1);
+  if(ADV){ ADV=false; i=Math.min(i+1, car.children.length-1); }
+  setSlide(i);
+  car.scrollLeft=i*car.clientWidth; carFit(); stripMark();
+  car.addEventListener('scroll',()=>{ clearTimeout(CAR_T); CAR_T=setTimeout(()=>{
+    const n=Math.round(car.scrollLeft/car.clientWidth); if(n!==curSlide()){ setSlide(n); stripMark(); } carFit(); },70); },{passive:true});
+  if(CAR_RO) CAR_RO.disconnect();
+  if('ResizeObserver' in window){ CAR_RO=new ResizeObserver(()=>carFit()); Array.from(car.children).forEach(s=>CAR_RO.observe(s)); }
+}
+window.addEventListener('resize',()=>{ const car=$('car'); if(car){ car.scrollLeft=curSlide()*car.clientWidth; carFit(); } });
+/* kart alanı dışında yatay kaydırma: Antrenman'da gün değiştirir, diğer sekmelerde sekme değiştirir */
+(function(){ let x0=0,y0=0,ok=false;
+  document.addEventListener('touchstart',ev=>{ const t=ev.touches[0]; x0=t.clientX; y0=t.clientY;
+    ok=!ev.target.closest('.car,.exstrip,.days,input,textarea,#rest,#sheet,#restMini'); },{passive:true});
+  document.addEventListener('touchend',ev=>{ if(!ok) return; const t=ev.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0;
+    if(Math.abs(dx)<80||Math.abs(dy)>45) return;
+    const dir=dx<0?1:-1;
+    if(TAB==='w'){ const ds=PROGRAMS[S.ui.prog].days, i=ds.findIndex(x=>x.id===S.ui.day);
+      let j=i+dir;
+      if(j>=ds.length){ if(S.ui.week<16){ S.ui.week++; j=0; } else return; }
+      if(j<0){ if(S.ui.week>1){ S.ui.week--; j=ds.length-1; } else return; }
+      S.ui.day=ds[j].id; save(); render(); toast(ds[j].name+' · Hafta '+S.ui.week);
+    } else { const T=['w','m','d','s'], k=T.indexOf(TAB)+dir; if(k<0||k>=T.length) return;
+      document.querySelector('nav button[data-t="'+T[k]+'"]').click(); }
+  },{passive:true});
+})();
 
 /* ---------- ÖLÇÜM ---------- */
 const MF=[['kilo','Kilo (kg)','0.0'],['bel','BEL çevresi (cm)','0.0'],['gogus','Göğüs (cm)',''],
@@ -1732,7 +1949,7 @@ function renderSheet(){
   <button class="btn" style="margin-top:9px" onclick="importData()">↻ Yedekten geri yükle</button>
   <div style="height:12px"></div>
   <button class="btn dan" onclick="resetAll()">Tüm verileri sil</button>
-  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v7.0 · 21 Ekim 2026 · Hacim döngüsü (16 hafta) · 4 gün Üst/Alt · 3 gün Full Body · kg/lbs · deadlift yok</p>`;
+  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v8.0 · 1 Kasım 2026 · Yorgunluk revizyonu · TOP + back-off · kaydırmalı kartlar · 4 gün Üst/Alt · 3 gün Full Body · deadlift yok</p>`;
   $('sheetC').innerHTML=h;
   const ib=$('impBox'); if(ib) ib.value=JSON.stringify(S);
 }
@@ -1762,12 +1979,12 @@ function exportData(){
 function importData(){
   const v=$('impBox').value.trim(); if(!v){toast('Kutu boş');return;}
   try{ const o=JSON.parse(v); if(!o.logs) throw 0; S=o; if(!S.ui)S.ui={prog:'4g',day:null,week:1};
-    migrate4(); migrate5(); migrate6(); migrate7(); S.ui.day=null;
+    migrate4(); migrate5(); migrate6(); migrate7(); migrate8(); S.ui.day=null;
     save(); closeSheet(); render(); toast('Yedek geri yüklendi'); }
   catch(e){ toast('Geçersiz yedek metni'); }
 }
 function resetAll(){ if(!confirm('Tüm antrenman kayıtları, ölçümler ve işaretlemeler silinecek. Emin misiniz?'))return;
-  S={logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1}; save(); closeSheet(); render(); toast('Silindi'); }
+  S={logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1,mig8:1,seen8:1}; save(); closeSheet(); render(); toast('Silindi'); }
 
 /* ---------- BAŞLAT ---------- */
 function render(){
@@ -1788,8 +2005,8 @@ if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 if(!useLS) setTimeout(()=>toast('Uyarı: tarayıcı kaydı kapalı — Ana Ekrandan açın'),1200);
-setTimeout(()=>{ if(!S.seen7){ S.seen7=1; S.seen6=1; save();
-  toast('v7.0 — 3 gün Full Body · kg/lbs · geçiş süreleri'); } },900);
+setTimeout(()=>{ if(!S.seen8){ S.seen8=1; S.seen7=1; S.seen6=1; save();
+  toast('v8.0 — kaydırmalı kartlar · TOP + back-off · 3 gün 67 set'); } },900);
 
 </script>
 </body>
