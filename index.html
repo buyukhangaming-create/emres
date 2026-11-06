@@ -419,7 +419,7 @@ textarea{width:100%;height:130px;background:var(--bg);border:1px solid var(--lin
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== PROGRAM v8.0 — HACİM DÖNGÜSÜ · 16 hafta · 4 gün Üst/Alt · 3 gün Full Body (yorgunluk revizyonu) · deadlift yok =====
+/* ===== PROGRAM v8.1 — HACİM DÖNGÜSÜ · 16 hafta · 4 gün Üst/Alt · 3 gün Full Body (yorgunluk revizyonu) · deadlift yok =====
    v8: sch:'tb' → 1 TOP set + back-off setleri (%90) · myo:1 → son set myo-rep · günlük hazır olma (yorgun/normal/zinde)
        · her set için önerilen kilo/tekrar · kaydırmalı kart görünümü
    Hareket kütüphanesi (EX) tek yerde tanımlanır; programlar P(id, ayar) ile hareketi çağırır.
@@ -580,15 +580,45 @@ const EX={
   neden:'NEDEN DEĞİŞTİ: Incline DB Curl 9 hafta 7,5-10 kg\'da kaldı. Bayesian aynı gerilmeyi verir, kablo küçük artışla ilerletir. SÜPERSET 1. hareket: bitince 15 sn içinde triceps\'e geçin.',
   alt:'Incline Dumbbell Curl.'},
 
- ohtri:{n:'Overhead Rope Triceps Extension',k:'i',m:'triceps',syn:[],st:'cable2',eq:'m',o:'his',r:'10-15',rest:90,t:'ust',
-  kur:'Makara en altta ya da bel hizasında, halat takılı. Makineye sırtınızı dönüp bir adım öne çıkın, bir ayak önde. Halat başınızın arkasında, dirsekler yukarıda.',
-  yap:'Dirsekler kulaklara yakın ve sabit; kolları başın üstüne doğru tam açın, sonda halatı hafifçe ayırın. İnişte elleri başın arkasına, triceps\'in uzun başı gerilene kadar indirin.',
-  tempo:'Açılış ≈1 sn · sonda 1 sn · iniş 3 sn · altta gerilme',
-  odak:'Triceps\'in en büyük bölümü (uzun baş) yalnızca kol baş üstündeyken tam gerilir; baş üstü uzatma pushdown\'a göre belirgin biçimde daha fazla büyüme sağlamıştır. Alttaki gerilmeyi hissedin; dirsekler açılıyorsa kilo fazladır.',
-  ilerle:'3 setin hepsinde 15 tekrar → +5 lb.',
-  hata:'Dirsekleri yana açmak · Gövdeyi öne yatırıp hareketi pushdown\'a çevirmek · Altta yarım iniş.',
-  neden:'SÜPERSET 2. hareket. Bitince yazılan süre kadar dinlenip curl\'e dönün.',
-  alt:'Tek kol dambıl overhead extension.'},
+ ohtri:{n:'Overhead Rope Triceps Extension',k:'i',m:'triceps',syn:[],st:'cable2',eq:'m',o:'his',r:'12-15',rest:90,t:'ust',
+  kur:'Makarayı göğüs ile göz hizası arasına ayarlayın, halat takın. Makaraya sırtınızı dönün, bir adım önde bir adım geride durun. Gövdeyi 30-45° öne eğin, karnı sıkın, belde boşluk oluşturmayın. Halat ensenizin arkasında, dirsekler kulak hizasında, öne bakıyor ve omuz genişliğinde.',
+  yap:'Başlangıç: eller ensenin arkasında, triceps tamamen gerilmiş. Yalnızca dirsekten açın; üst kol sabit kalsın. Sona doğru halatı iki yana ayırın, kolu tam kilitlemeden durun. Geri dönüşte elleri yeniden ensenin arkasına, gerilme hissedilene kadar indirin ve 1 sn bekleyin.',
+  tempo:'Açılış ≈1 sn · sonda kısa sıkma · iniş 3 sn · altta (gerilmiş) 1 sn duraklama',
+  odak:'Triceps\'in en büyük bölümü (uzun baş) yalnızca kol baş üstündeyken tam gerilir; baş üstü uzatma pushdown\'a göre belirgin biçimde daha fazla büyüme sağlamıştır (Maeo 2023). Kilo 12,5 kg civarında sabit kalsın; form oturduktan sonra artırın.',
+  ilerle:'3 setin hepsinde 15 tekrar, dirsekler sabit → +1 kademe.',
+  hata:'Dirsekleri yana açmak · Omzu öne-arkaya oynatmak · Beli boşaltmak · Gövdeyi öne yatırıp hareketi pushdown\'a çevirmek · Altta yarım iniş. Bunlardan biri varsa kilo fazladır (kayıtlarda gün sonu 20 → 10 kg düşüşünün sebebi).',
+  neden:'SÜPERSET 2. hareket (A2). Preacher curl ile eşleşir; bitince yazılan süre kadar dinlenip A1\'e dönün.',
+  alt:'1) Tek kol kablo overhead extension (katana): makara omuz hizası, yan dönük, kol baş üstünden çapraz uzar · 5-7,5 kg × 12-15. 2) Oturarak tek dambıl overhead extension: dik sırtlı bench, iki elle tek dambıl · 20-22,5 kg × 10-12.'},
+
+ preacher:{n:'Preacher Curl (makine)',k:'i',m:'biceps',syn:['onkol'],st:'preach',eq:'m',o:'his',r:'10-12',rest:15,t:'ust',
+  kur:'Koltuk yüksekliğini koltuk altınız pedin üst kenarına tam oturacak şekilde ayarlayın. Üst kolun arka yüzü pede tamamen yaslansın; omuzlar düşük, göğüs pede yakın. Makine yoksa tek kol dambıl ile preacher sehpasında (12-14 kg ile başlayın).',
+  yap:'Kolu altta tam açmadan 2-3 cm önce durun ve 1 sn bekleyin; biceps\'in gerildiğini hissedin. Dirsek pedden kalkmadan eli omza doğru bükün. Tepede beklemeyin, hemen kontrollü inişe geçin.',
+  tempo:'Kaldırış ≈1 sn · tepede bekleme yok · iniş 3 sn · altta 1 sn',
+  odak:'Kol desteğe sabitlendiği için gövde ve omuz harekete karışamaz; biceps uzamış pozisyonda yüklenir. Bayesian curl\'de hissedilemeyen kasılma burada belirgindir. İlk seans kalibrasyon: 10-12 tekrarı 2 tekrar kalacak şekilde yapabildiğiniz kiloyu bulun.',
+  ilerle:'3 setin hepsinde 12 tekrar → +1 kademe. Zinde günde son sette tükenince kiloyu ~%20 düşürüp tükenişe kadar devam (drop set).',
+  hata:'Dirseği pedden kaldırmak · Altta kolu tam kilitleyip zıplatmak · Omzu öne itmek.',
+  neden:'v8.1: Bayesian Cable Curl yerine. SÜPERSET 1. hareket (A1): bitince 15 sn içinde overhead triceps\'e geçin.',
+  alt:'Tek kol dambıl preacher curl ya da Incline Dumbbell Curl.'},
+
+ ccurl:{n:'Cable Curl (alt makara, EZ bar)',k:'i',m:'biceps',syn:['onkol'],st:'cable1',eq:'m',o:'yuk',r:'8-12',rest:15,t:'ust',
+  kur:'Alt makaraya EZ ya da düz bar takın. Makaraya dönük, bir adım geride durun; dirsekler gövdenin yanında, dizler hafif bükük.',
+  yap:'Dirsekleri sabit tutarak barı göğse doğru bükün, tepede 1 sn sıkın. Kollar tamamen açılana kadar kontrollü indirin; altta kablo gerilimini bırakmayın.',
+  tempo:'Kaldırış ≈1 sn · tepede 1 sn · iniş 3 sn',
+  odak:'Haftanın ağır biceps hareketi; yük ilerlemesi önemli. Kablo, serbest bara göre alt noktada da gerilimi korur.',
+  ilerle:'2 setin ikisinde de 12 tekrar → +1 kademe.',
+  hata:'Belden savurmak · Dirsekleri öne getirmek · Hızlı iniş.',
+  neden:'v8.1: EZ Curl yerine. SÜPERSET 1. hareket (A1). Triceps de AYNI istasyon ve aynı barla yapılır; yalnızca pimi değiştirin.',
+  alt:'Dambıl curl (2 × 15 kg × 8-12).'},
+
+ lcext:{n:'Yatarak Kablo Triceps Extension (kablo skull crusher)',k:'i',m:'triceps',syn:[],st:'cable1',eq:'m',o:'his',r:'10-12',rest:90,t:'ust',
+  kur:'Aynı alt makara ve aynı bar. Başınız makaraya dönük şekilde yere ya da makaranın önüne koyduğunuz düz bench\'e sırt üstü uzanın. Barı tutup kolları başın hafif gerisine doğru eğik tutun (dik değil).',
+  yap:'Üst kollar sabit; yalnızca dirsekleri bükerek barı alnın gerisine indirin, triceps gerildiğinde açın. Tepede tam kilitlemeden durun.',
+  tempo:'İniş 3 sn · altta kısa duraklama · açılış ≈1 sn',
+  odak:'Kablo, gerilmiş pozisyonda gerilimi korur ve dirseği serbest bara göre daha az zorlar. Dirsekler içe-dışa oynamasın.',
+  ilerle:'2 setin ikisinde de 12 tekrar → +1 kademe.',
+  hata:'Dirsekleri yana açmak · Üst kolu oynatıp hareketi pullover\'a çevirmek · Yarım iniş.',
+  neden:'v8.1: Skull Crusher yerine (iki bar taşıma derdi yok). SÜPERSET 2. hareket (A2); sonra yazılan süre kadar dinlenip A1\'e dönün.',
+  alt:'Yatarak dambıl triceps extension (nötr tutuş, 2 × 12,5 kg × 10-12).'},
 
  ezcurl:{n:'EZ / Barbell Curl',k:'i',m:'biceps',syn:['onkol'],st:'ez',eq:'f',o:'yuk',r:'8-12',rest:15,t:'ust',
   kur:'EZ barı omuz genişliğinde, eğimli kısımdan tutun. Ayaklar kalça genişliğinde, dizler hafif bükük, dirsekler gövdenin yanında.',
@@ -778,14 +808,14 @@ const L4B=[
    v8: 22 + 23 + 22 = 67 set/hafta (Blok 2'de 71) · ana hareketlerde 1 TOP + 2 back-off ·
    ağır bacak haftada 1 kez (A: squat), B orta (leg press), C hafif (izolasyon). */
 const F3A=[
- P('scalf',{s:3,blk:'BALDIR'}),
- P('incdb',{s:3,pr:1,sch:'tb',blk:'GÖĞÜS'}),
- P('squat',{s:3,sch:'tb',blk:'BACAK'}),
- P('csrow',{s:3,blk:'SIRT'}),
- P('slc',{s:3,blk:'BACAK'}),
- P('latmac',{s:3,pr:1,myo:1,blk:'OMUZ'}),
- P('bayes',{s:2,ss:'A1',blk:'KOL'}),
- P('ohtri',{s:2,ss:'A2',blk:'KOL'})
+ P('scalf',{s:3,sy:3,sz:4,blk:'BALDIR'}),
+ P('incdb',{s:4,sy:2,sz:4,sch:'tb',blk:'GÖĞÜS'}),
+ P('squat',{s:3,sy:2,sz:4,sch:'tb',blk:'BACAK'}),
+ P('csrow',{s:3,sy:2,sz:3,blk:'SIRT'}),
+ P('slc',{s:3,sy:2,sz:3,blk:'BACAK'}),
+ P('latmac',{s:3,sy:3,sz:4,pr:1,myo:1,blk:'OMUZ'}),
+ P('preacher',{s:3,sy:2,sz:3,ss:'A1',def:{kg:25,reps:10},blk:'KOL'}),
+ P('ohtri',{s:3,sy:2,sz:3,ss:'A2',blk:'KOL'})
 ];
 const F3B=[
  P('cpress',{s:3,pr:1,sch:'tb',blk:'GÖĞÜS'}),
@@ -794,8 +824,8 @@ const F3B=[
  P('calfp',{s:2,blk:'BACAK & BALDIR'}),
  P('cablat',{s:3,pr:1,myo:1,blk:'OMUZ'}),
  P('facep',{s:2,blk:'OMUZ'}),
- P('ezcurl',{s:2,ss:'A1',blk:'KOL'}),
- P('skull',{s:2,ss:'A2',blk:'KOL'}),
+ P('ccurl',{s:2,ss:'A1',def:{kg:30,reps:10},blk:'KOL'}),
+ P('lcext',{s:2,ss:'A2',def:{kg:25,reps:10},blk:'KOL'}),
  P('abs',{s:3,blk:'KARIN'})
 ];
 const F3C=[
@@ -818,7 +848,7 @@ const PROGRAMS={
   {id:'u2',short:'PER',dow:4,name:'Üst B',sub:'Göğüs → Sırt → Omuz → Kol',ex:U4B},
   {id:'a2',short:'CUM',dow:5,name:'Alt B',sub:'Baldır → Kalça & Hamstring → Arka omuz & Kol',ex:L4B}]},
  '3g':{name:'3 Günlük · Full Body · Hacim',days:[
-  {id:'f1',short:'PZT',dow:1,name:'Full A',sub:'Baldır → Üst göğüs → Squat → Sırt → Omuz → Kol · 22 set',ex:F3A},
+  {id:'f1',short:'PZT',dow:1,name:'Full A',sub:'Baldır → Üst göğüs → Squat → Sırt → Omuz → Kol · 25 set (yorgun 18 · zinde 28)',ex:F3A},
   {id:'f2',short:'ÇAR',dow:3,name:'Full B',sub:'Göğüs presi → Barfiks → Leg Press → Omuz → Kol → Karın · 23 set',ex:F3B},
   {id:'f3',short:'CUM',dow:5,name:'Full C',sub:'Göğüs → Sırt → Hafif bacak → Kol (pompa günü) · 22 set',ex:F3C}]}
 };
@@ -869,7 +899,7 @@ let MEM=null, useLS=true;
 try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ useLS=false; }
 function load(){
   try{ const r = useLS ? localStorage.getItem(KEY) : MEM; if(r) return JSON.parse(r); }catch(e){}
-  return {logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1,mig8:1,seen8:1};
+  return {logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1,mig8:1,seen8:1,mig81:1,seen81:1};
 }
 function save(){
   const s=JSON.stringify(S);
@@ -1036,6 +1066,26 @@ function migrate8(){
 }
 migrate8();
 
+/* ---------- v8.1 GÖÇÜ: 3g f1 #7 (Bayesian → Preacher), f2 #7-8 (EZ curl/Skull → kablo süperseti) ----------
+   Bu pozisyonlardaki eski kayıtlar S.bak_v81 içine alınır; son kayıt eski adla S.ref7'ye yazılır
+   (4 günlük programdaki Bayesian/EZ/Skull hedefleri bozulmasın). */
+function migrate81(){
+  if(S.mig81) return;
+  const map={'f1|6':EX.bayes.n,'f2|6':EX.ezcurl.n,'f2|7':EX.skull.n}, bak={}, last={}; let n=0;
+  for(const k of Object.keys(S.logs||{})){ const p=k.split('|'); if(p[0]!=='3g') continue;
+    const nm=map[p[1]+'|'+p[3]]; if(!nm) continue;
+    bak[k]=S.logs[k]; delete S.logs[k]; n++;
+    const w=+p[2], o=bak[k]; if(o && o.kg!==undefined){ const L=last[nm]=last[nm]||{w:0,sets:[]};
+      if(w>L.w){ L.w=w; L.sets=[]; } if(w===L.w) L.sets[+p[4]]=o; } }
+  S.ref7=S.ref7||{};
+  for(const nm in last){ const L=last[nm], cur=S.ref7[nm]; L.sets=L.sets.filter(Boolean);
+    if(L.sets.length && (!cur||!(cur.w>=L.w))) S.ref7[nm]={w:L.w,sets:L.sets}; }
+  S.bak_v81=bak; S.mig81=1; save();
+  console.log('v8.1 göç: '+n+' kayıt arşive alındı');
+  return n;
+}
+migrate81();
+
 /* ---------- YARDIMCI ---------- */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1059,14 +1109,16 @@ function rirFor(e,w){ const b=blokNo(w); if(b==='D') return '4';
 function rdKey(){ return S.ui.prog+'|'+S.ui.day+'|'+S.ui.week; }
 function rdNow(){ const v=(S.rd||{})[rdKey()]; return v===undefined?1:v; }
 function setRd(v){ S.rd=S.rd||{}; S.rd[rdKey()]=v; save(); renderW();
-  toast(['Yorgun gün: her harekette 1 set az, kilo artışı yok','Normal gün','Zinde gün: hedef kilolar ilerletildi'][v]); }
+  toast(['Yorgun gün: daha az set, kilolar ~%10 hafif','Normal gün: tam program','Zinde gün: ek setler, kilolar +1 kademe'][v]); }
 /* TOP + back-off setlerinde RIR */
 function rirBO(w){ const b=blokNo(w); return b==='D'?'4':({0:'3',1:'2-3',2:'2',3:'2'}[b]); }
 function curDay(){
   const p=PROGRAMS[S.ui.prog], d=p.days.find(x=>x.id===S.ui.day)||p.days[0], w=S.ui.week;
-  const tired=(((S.rd||{})[S.ui.prog+'|'+d.id+'|'+w])===0);
-  return Object.assign({},d,{ex:d.ex.map(e=>{ let s=setsFor(e,w);
-    if(tired && s>2 && (e.k==='c'||s>=3)) s--;
+  const rdv=((S.rd||{})[S.ui.prog+'|'+d.id+'|'+w]), tired=rdv===0, fresh=rdv===2;
+  return Object.assign({},d,{ex:d.ex.map(e=>{
+    const base = tired&&e.sy!==undefined ? e.sy : fresh&&e.sz!==undefined ? e.sz : e.s;
+    let s=setsFor(Object.assign({},e,{s:base}),w);
+    if(tired && e.sy===undefined && s>2 && (e.k==='c'||s>=3)) s--;
     return Object.assign({},e,{s:s,rir:rirFor(e,w),rirb:e.sch==='tb'?rirBO(w):null,plus:plusOn(e,w)}); })});
 }
 /* aynı hareketin 3 ve 4 günlük programdaki tüm yerleri */
@@ -1137,13 +1189,45 @@ function wTxt(e,kg){ const u=unitOf(e); return u==='lb' ? nf(snapLb(kg/LB))+' lb
      TOP'ta tekrar üst sınıra ulaştıysa kademe eklenir; ulaşmadıysa aynı kilo, +1 tekrar hedefi.
    · Düz set: tüm setler aynı kilo (piramit yok). Tüm setler üst sınırdaysa kademe eklenir.
    · Destekli barfiks: ilerleme desteği azaltmaktır; back-off setlerinde destek vücut ağırlığının ~%10'u kadar artar.
-   · Yorgun gün: kilo artışı ve tekrar artışı yok. */
+   · Yorgun gün (v8.1): kilo ~%10 hafif, tekrar artışı yok, myo-rep yok; set sayısı programdaki sy değeri.
+   · Zinde gün (v8.1): Normal hedefin +1 kademe üstü, tekrar hedefi 1 düşük (kademe %15'ten büyükse kilo yerine +2 tekrar); set sayısı sz değeri. */
 function repRng(e){ const m=String(e.r).split('-').map(Number); return {lo:m[0],hi:m[1]||m[0]}; }
 function incKg(e){ return unitOf(e)==='lb' ? 5*LB : 2.5; }
 function roundKg(e,kg){ if(unitOf(e)==='lb') return snapLb(kg/LB)*LB; return Math.round(kg/2.5)*2.5; }
 function dispW(e,kg){ return unitOf(e)==='lb' ? snapLb(kg/LB) : r1(kg); }
 function targets(ei){
-  const d=curDay(), e=d.ex[ei], r=lastRec(ei); if(!r) return null;
+  const t=targetsBase(ei); if(!t) return null;
+  const e=curDay().ex[ei], rd=rdNow(), inc=incKg(e);
+  if(rd===0){ /* yorgun: ~%10 hafif, tekrar artışı yok, myo yok */
+    if(e.eq==='a'){ const add=Math.max(inc, roundKg(e,(bodyW()||0)*0.1));
+      return t.map(x=>Object.assign({},x,{as:x.as+add, v:dispW(e,x.as+add),
+        txt:'destek '+wTxt(e,x.as+add)+' × '+x.reps})); }
+    return t.map(x=>{ let kg=roundKg(e,x.kg*0.9); if(kg>=x.kg||kg<=0) kg=x.kg;
+      return Object.assign({},x,{kg:kg, v:dispW(e,kg), myo:false, txt:wTxt(e,kg)+' × '+x.reps}); });
+  }
+  if(rd===2 && !t.def){ /* zinde: +1 kademe, tekrar hedefi 1 düşük (alt sınırın altına inmez) */
+    const R=repRng(e);
+    if(e.eq==='a') return t.map(x=>{ const a=x.as-inc, reps=Math.max(R.lo,x.reps-1);
+      return Object.assign({},x,{as:a, v:dispW(e,a), reps:reps,
+        txt:(a<=0.01?(a<-0.01?'kemer +'+wTxt(e,-a):'vücut ağırlığı'):'destek '+wTxt(e,a))+' × '+reps}); });
+    const up1=k=>{ let n=roundKg(e,k+inc); if(n<=k) n=k+inc; return n; };
+    const top=up1(t[0].kg), big=(top-t[0].kg)/t[0].kg>0.15;
+    return t.map((x,si)=>{ /* hafif harekette (kademe > %15) kilo yerine +2 tekrar */
+      if(big) { const reps=Math.min(R.hi+2, x.reps+2);
+        return Object.assign({},x,{reps:reps, txt:wTxt(e,x.kg)+' × '+reps+(x.myo?' + myo':'')}); }
+      let kg = (e.sch==='tb' && si>0) ? roundKg(e,top*0.9) : (e.sch==='tb' ? top : up1(x.kg));
+      const reps=Math.max(R.lo, x.reps-1);
+      return Object.assign({},x,{kg:kg, v:dispW(e,kg), reps:reps, txt:wTxt(e,kg)+' × '+reps+(x.myo?' + myo':'')}); });
+  }
+  return t;
+}
+/* son kayıt yoksa: programdaki başlangıç tahmini (def) */
+function defTargets(e){ if(!e.def) return null; const out=[];
+  for(let si=0;si<e.s;si++) out.push({kg:e.def.kg, v:dispW(e,e.def.kg), reps:e.def.reps, lab:String(si+1),
+    txt:wTxt(e,e.def.kg)+' × '+e.def.reps+' (başlangıç tahmini)'});
+  out.def=true; return out; }
+function targetsBase(ei){
+  const d=curDay(), e=d.ex[ei], r=lastRec(ei); if(!r) return defTargets(e);
   const R=repRng(e), rd=rdNow(), up=rd>0, out=[];
   if(e.eq==='a'){
     const arr=r.sets.filter(o=>astKg(o)!==undefined&&o.reps>0); if(!arr.length) return null;
@@ -1177,7 +1261,7 @@ function targets(ei){
   const allHi = atW.every(o=>o.reps>=R.hi) && (atW.length>=Math.min(2,arr.length));
   let W=W0, tr=Math.min(R.hi, Math.max(R.lo, Ravg+(up?1:0)));
   if(allHi && up){ W=roundKg(e,W0+inc); if(W<=W0) W=W0+inc; tr=R.lo; }
-  for(let si=0;si<e.s;si++){ const myo=e.myo&&si===e.s-1&&blokNo(S.ui.week)!=='D';
+  for(let si=0;si<e.s;si++){ const myo=e.myo&&si===e.s-1&&blokNo(S.ui.week)!=='D'&&rd!==0;
     out.push({kg:W, v:dispW(e,W), reps:tr, lab:String(si+1), myo:myo, txt:wTxt(e,W)+' × '+tr+(myo?' + myo':'')}); }
   return out;
 }
@@ -1612,7 +1696,7 @@ function guideCard(){
     <b style="color:var(--tx)">Kilo artırmayın, eğer</b> tekrarı ancak hareketi kısaltarak, gövdeyi sallayarak ya da inişi hızlandırarak tutturuyorsanız.<br><br>
     <b style="color:var(--tx)">TOP + back-off (v8):</b> Ana hareketlerde ilk çalışma seti günün en ağır setidir (TOP). Sonraki setler ~%10 hafif (B/O) ve 2-3 tekrar fazla. Piramit gibi kiloyu set set artırmayın: ısınma setleri (kartta yazar) kaydedilmez. Bu yapı aynı uyarıyı daha az yorgunlukla verir.<br><br>
     <b style="color:var(--tx)">Myo-rep (son set):</b> Lateral hareketlerin son setinde tükenince 5 nefes bekleyin, 3-4 tekrar daha; bunu 2-3 kez tekrarlayın. Ekstra set eklemeden yan omuza ek uyarı.<br><br>
-    <b style="color:var(--tx)">Bugün nasılsın?</b> Kötü uyku, belirgin kas ağrısı ya da düşük enerji varsa "Yorgun"u seçin: her harekette 1 set azalır, kilo artışı önerilmez. Antrenmanı atlamaktan daima iyidir.<br><br>
+    <b style="color:var(--tx)">Bugün nasılsın? (v8.1)</b> Varsayılan <b>Normal</b> = tam program. Karar için squat ısınmasındaki 70 kg × 3 setine bakın: bar hızlı kalkıyor, uyku iyi ve kas ağrısı yoksa <b>Zinde</b> (ek setler, kilolar +1 kademe). Bar ağır ve yavaşsa ya da uyku 6 saatin altındaysa <b>Yorgun</b> (daha az set, kilolar ~%10 hafif, myo-rep yok). Zinde günde TOP sette hedef tekrarı tutturamazsanız back-off setlerini Normal kilolarla yapın. Yorgun gün bile antrenmanı atlamaktan iyidir.<br><br>
     <b style="color:var(--tx)">RIR:</b> Seti bıraktığınızda kaç tekrar daha yapabilirdiniz? RIR 2 = 2 tekrar daha yapabilecekken bırakmak. Kartlardaki RIR her hafta otomatik değişir.<br><br>
     <b style="color:var(--tx)">Birim:</b> Makine ve kablolar varsayılan olarak lbs, dambıl ve barbell kg. Kartın üstündeki <b>KG / LBS</b> düğmesine dokunarak o hareketin birimini değiştirin; eski kayıtlar otomatik çevrilir.<br><br>
     <b style="color:var(--tx)">Dinlenme:</b> ✓'ye basınca sayaç aynı hareketin sonraki seti için set arası süreyi başlatır. Hareketin son setinden sonra ise süre <b>sıradaki harekete göre</b> kurulur: o kas az önce çalıştıysa tam dinlenme, yeni bir kas grubuysa kısaltılmış dinlenme; istasyon değişimi ve ısınma seti süreye eklenir.
@@ -1628,7 +1712,7 @@ function volCard(){
     <p class="tiny" style="margin:9px 0 0;color:var(--tx2)">Yalnızca hareketin hedef kası sayılır. Ön omuz tüm göğüs preslerinde, biceps tüm çekişlerde, triceps tüm preslerde ayrıca çalışır.</p></div>`;
 }
 let ADV=false;
-function rdCard(){ const v=rdNow(), L=[['😴','Yorgun','−1 set · kilo sabit'],['🙂','Normal','planlandığı gibi'],['💪','Zinde','hedefler ilerler']];
+function rdCard(){ const v=rdNow(), L=[['😴','Yorgun','az set · −%10 kilo'],['🙂','Normal','tam program'],['💪','Zinde','+set · +1 kademe']];
   return `<div class="rdc"><div class="rdt">Bugün nasılsın? <small>uyku · ağrı · enerji</small></div><div class="rdb">${L.map((x,i)=>
     `<button class="${v===i?'on r'+i:''}" onclick="setRd(${i})"><i>${x[0]}</i><b>${x[1]}</b><span>${x[2]}</span></button>`).join('')}</div></div>`; }
 function viewMode(){ return (S.ui.view||'kart'); }
@@ -1676,7 +1760,7 @@ function renderW(){
       let bd=0,bt=0; bx.forEach(x=>{const xi=d.ex.indexOf(x); for(let si=0;si<x.s;si++){bt++; if(get(xi,si).done) bd++;}});
       bh=`<div class="blk ${bd===bt?'ok':''}"><b>${esc(e.blk)}</b><span>${bx.length} hareket · ${bs} set · ${bd}/${bt}</span></div>`;
     }
-    const tgLine = tg ? `<div class="tgt"><div><b>Bugünün hedefi${rdNow()===0?' · yorgun gün':''}</b><span>${
+    const tgLine = tg ? `<div class="tgt"><div><b>Bugünün hedefi${[' · yorgun gün','',' · zinde gün'][rdNow()]}</b><span>${
         e.sch==='tb' ? 'TOP '+esc(tg[0].txt)+(tg.length>1?' · B/O '+esc(tg[1].txt):'') : esc(tg[0].txt)+(tg.some(x=>x.myo)?' · son set myo-rep':'')}</span>${
         warmTxt(e,tg)?`<em>Isınma (kaydetme): ${esc(warmTxt(e,tg))}</em>`:''}</div>
         <button onclick="fillTargets(${ei})">yaz</button></div>` : '';
@@ -1949,7 +2033,7 @@ function renderSheet(){
   <button class="btn" style="margin-top:9px" onclick="importData()">↻ Yedekten geri yükle</button>
   <div style="height:12px"></div>
   <button class="btn dan" onclick="resetAll()">Tüm verileri sil</button>
-  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v8.0 · 1 Kasım 2026 · Yorgunluk revizyonu · TOP + back-off · kaydırmalı kartlar · 4 gün Üst/Alt · 3 gün Full Body · deadlift yok</p>`;
+  <p class="tiny" style="text-align:center;margin:14px 0 0">MEB Fit · kişiye özel hipertrofi programı<br>v8.1 · 6 Kasım 2026 · Yorgun / Normal / Zinde · Preacher curl · kablo kol süperseti<br>v8.0 · 1 Kasım 2026 · Yorgunluk revizyonu · TOP + back-off · kaydırmalı kartlar · 4 gün Üst/Alt · 3 gün Full Body · deadlift yok</p>`;
   $('sheetC').innerHTML=h;
   const ib=$('impBox'); if(ib) ib.value=JSON.stringify(S);
 }
@@ -1984,7 +2068,7 @@ function importData(){
   catch(e){ toast('Geçersiz yedek metni'); }
 }
 function resetAll(){ if(!confirm('Tüm antrenman kayıtları, ölçümler ve işaretlemeler silinecek. Emin misiniz?'))return;
-  S={logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1,mig8:1,seen8:1}; save(); closeSheet(); render(); toast('Silindi'); }
+  S={logs:{},meas:{},diet:{},supp:{},units:{},ui:{prog:'4g',day:null,week:1},mig4:1,mig5:1,mig6:1,seen6:1,mig7:1,seen7:1,mig8:1,seen8:1,mig81:1,seen81:1}; save(); closeSheet(); render(); toast('Silindi'); }
 
 /* ---------- BAŞLAT ---------- */
 function render(){
@@ -2005,8 +2089,8 @@ if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 if(!useLS) setTimeout(()=>toast('Uyarı: tarayıcı kaydı kapalı — Ana Ekrandan açın'),1200);
-setTimeout(()=>{ if(!S.seen8){ S.seen8=1; S.seen7=1; S.seen6=1; save();
-  toast('v8.0 — kaydırmalı kartlar · TOP + back-off · 3 gün 67 set'); } },900);
+setTimeout(()=>{ if(!S.seen81){ S.seen81=1; S.seen8=1; S.seen7=1; S.seen6=1; save();
+  toast('v8.1 — Yorgun / Normal / Zinde'); } },900);
 
 </script>
 </body>
