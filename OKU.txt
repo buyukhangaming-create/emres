@@ -1,29 +1,31 @@
-MEB Fit v8.1 - 6 Kasim 2026
-===========================
-Kurulum: Bu klasordeki index.html, sw.js, manifest.webmanifest ve ikonlari
-GitHub Pages'teki mevcut dosyalarin yerine yukleyin. iPhone'da uygulamayi
-kapatip yeniden acin (gerekirse Safari'de sayfayi bir kez yenileyin).
+MEB Fit v8.2 - 12 Kasim 2026
+============================
+Kurulum: Bu klasordeki TUM dosyalari (index.html, sw.js, manifest.webmanifest,
+icon-192.png, icon-512.png, apple-touch-icon.png) GitHub Pages'teki mevcut
+dosyalarin yerine yukleyin. iPhone'da uygulamayi kapatip yeniden acin.
 
 ONCE: mevcut uygulamada Ayarlar > "Yedegi dosya olarak indir" ile yedek alin.
+Kayitlar telefonda durur; guncelleme kayitlari silmez, program v8.1 ile aynidir.
 
-YENI (v8.1):
- - "Bugun nasilsin?" yeniden tanimlandi. Normal = tam program (artik hafifletilmis degil).
-     Yorgun : daha az set, kilolar ~%10 hafif, tekrar artisi yok, myo-rep yok
-     Normal : tam program, cift ilerleme
-     Zinde  : ek setler, kilolar Normal'in +1 kademe ustu (hafif harekette +2 tekrar)
-   Full A (PZT) set sayisi: Yorgun 18 / Normal 25 / Zinde 28
-     Seated Calf 3/3/4 · Incline DB 2/4/4 · Squat 2/3/4 · CS Row 2/3/3
-     Seated Leg Curl 2/3/3 · Lateral makine 3/3/4 · Preacher 2/3/3 · OH Triceps 2/3/3
- - Full A: Bayesian Cable Curl yerine Preacher Curl (makine).
- - Overhead Rope Triceps: detayli kurulum/teknik + 2 alternatif kartta.
- - Full B: EZ Curl + Skull Crusher yerine tek kablo istasyonu superseti:
-     Cable Curl (alt makara, EZ bar) + Yatarak Kablo Triceps Extension (ayni bar).
- - Yeni hareketlerde ilk hafta "baslangic tahmini" yazar; ilk seansta kiloyu
-   2 tekrar kalacak sekilde ayarlayin, sonrasini uygulama kendisi hesaplar.
- - Eski Bayesian / EZ curl / skull kayitlari arsive alinir (S.bak_v81);
-   son kayitlari 4 gunluk programdaki ayni hareketlerin hedefinde kullanilir.
+YENI (v8.2):
+ - HAREKET NOTU: her hareket kartinin altinda "Not" tusu. Tam ekran not ekrani acilir;
+   yazdikca kendiliginden kaydedilir. Hazir ifadeler (Kilo artir, Form bozuldu,
+   Koltuk ayari...) tek dokunusla eklenir. Not o gunun o hareketine yazilir;
+   sonraki haftalarda ayni hareketin kartinda "Onceki not" olarak gorunur.
+   Dinlenme ekraninda da "Bu harekete not yaz" tusu var.
+   Ayarlar > "Tum hareket notlari" butun notlari listeler. Notlar yedege dahildir.
+ - UST BAR: yalnizca baslik satiri sabit kalir; gun ve hafta secimi sayfayla birlikte
+   yukari kayar (set satirlarina ~120 px daha fazla yer). Basliga veya logoya
+   dokununca en uste doner. Hareket seridi (1, 2, 3...) basligin altina yapisir.
+ - Siradaki set mavi cerceveli ✓ ile isaretlenir.
+ - Sayi kutusuna dokununca icerik secilir: yeni deger dogrudan uzerine yazilir.
+ - "Bugun nasilsin?" karti tek satira indirildi.
+ - YENI LOGO. iPhone ana ekranindaki simge kendiliginden degismez: yeni simge icin
+   ana ekrandaki MEB Fit'i silip Safari > Paylas > Ana Ekrana Ekle ile yeniden ekleyin.
+   DIKKAT: silmeden once mutlaka yedek alin, sonra Ayarlar > "Yedekten geri yukle".
+   (Simgeyi degistirmek sart degil; uygulama eski simgeyle de v8.2 olarak calisir.)
 
 Dosyalar:
-  index.html             uygulama (v8.1)
-  sw.js                  cevrimdisi calisma (onbellek mebfit-v8-1)
-  manifest.webmanifest, icon-192.png, icon-512.png
+  index.html             uygulama (v8.2)
+  sw.js                  cevrimdisi calisma (onbellek mebfit-v8-2)
+  manifest.webmanifest, icon-192.png, icon-512.png, apple-touch-icon.png
